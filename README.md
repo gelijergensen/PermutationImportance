@@ -9,7 +9,7 @@ method of computing variable importance in an arbitrary model. Importance for a
 given variable is computed in accordance with Lakshmanan et al. (2015)'s
 paper[1]. Variables which, when their values are permuted, cause the worst
 resulting score are considered most important. This implementation provides the
-functionality for an arbitrary method for computing the ``worst'' score and for
+functionality for an arbitrary method for computing the "worst" score and for
 using an arbitrary scoring metric. The most common case of this is to chose the
 variable which most negatively impacts the accuracy of the model.
 
