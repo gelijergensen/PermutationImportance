@@ -1,7 +1,7 @@
 """This is a standalone set of functions which compute the importances for each variable in a dataset, according to a
 particular model using multiprocessing.
 
-The main method is the permutation_selection_variable_importances function.
+The main method is the permutation_selection_importance function.
 
 This file uses two different methods for computing the importance, one which tries to share memory between threads
 and one which does not. The "windows" method does not share memory (this is a consequence of the fact that forking is a
@@ -28,9 +28,9 @@ inputs_share = None
 outputs_share = None
 
 
-def permutation_selection_variable_importances(model, classes, testing_input, testing_output, npermute, subsamples=None,
-                                               score_fn=None, optimization='minimize', nimportant_variables=None,
-                                               njobs=None, share_vars=True, diagnostics=False):
+def permutation_selection_importance(model, classes, testing_input, testing_output, npermute, subsamples=None,
+                                     score_fn=None, optimization='minimize', nimportant_variables=None,
+                                     njobs=None, share_vars=True, diagnostics=False):
     """Determines the variable importances for an estimator for a particular testing set using permutation selection
 
     :param model: An object with a method named predict of the form (testing_input) -> class
@@ -311,8 +311,8 @@ if __name__ == "__main__":
     share_vars = False  # not testing this right now
     njobs = 3  # just so I don't kill my machine entirely
 
-    results = permutation_selection_variable_importances(model, classes, fake_model_input, fake_model_output, npermute,
-                                                         subsamples=subsamples, score_fn=score_fn, optimization=optimization, share_vars=share_vars, njobs=njobs)
+    results = permutation_selection_importance(model, classes, fake_model_input, fake_model_output, npermute,
+                                               subsamples=subsamples, score_fn=score_fn, optimization=optimization, share_vars=share_vars, njobs=njobs)
     statement = "Permutation selection will return an ordering of the most important variables along with their scores"
     if results[-1][0] != [0, 1, 3, 2]:
         print(
