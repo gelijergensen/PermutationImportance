@@ -283,14 +283,15 @@ if __name__ == "__main__":
     """This is the debugger, which also provides an example for using the above"""
 
     class FakeModel(object):
-        """Computes a particular linear combination of the first 3 input variables of a dataset"""
+        """Computes a particular linear combination of the input variables of a dataset"""
 
-        def __init__(self, *coefs):
-            """Store the coeficients to multiply the first 3 input variables by"""
+        def __init__(self, cutoff, *coefs):
+            """Store the coeficients to multiply the input variables by"""
+            self.cutoff = cutoff
             self.coefs = coefs
 
         def predict(self, input_data):
-            return np.array([sum([self.coefs[i]*data[i] for i in range(len(data))]) > 20 for data in input_data])
+            return np.array([sum([self.coefs[i]*data[i] for i in range(len(data))]) > self.cutoff for data in input_data])
 
     # For simplicity, our data has 4 input variables: one really, one kinda, and one slightly important, and one useless
     def population_def(x, y, z, w): return int(3*x + 2*y + w > 20)
@@ -298,7 +299,7 @@ if __name__ == "__main__":
     fake_model_output = [population_def(*data_point)
                          for data_point in fake_model_input]
 
-    model = FakeModel(3, 2, 0, 1)
+    model = FakeModel(20, 3, 2, 0, 1)
 
     classes = [0, 1]
 
