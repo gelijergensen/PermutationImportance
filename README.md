@@ -74,7 +74,7 @@ def population_def(x, y, z, w): return int(3*x + 2*y + w > 20)
     fake_model_input = np.random.randint(0, 10, size=(1000, 4))
     fake_model_output = [population_def(*data_point)
                          for data_point in fake_model_input]
-    classes = 20
+    classes = [0, 1]
 ```
 
 Lastly, for the most simple usage of the model, you also require the number of
