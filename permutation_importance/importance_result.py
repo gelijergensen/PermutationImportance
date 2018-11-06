@@ -35,9 +35,6 @@ class PermutationImportanceResult(object):
 
         : param complete_results: result of the recursive variable importance code
         """
-
-        'these_results = (list(important_col_idxs), previous_score, all_scores)  # clone the list of indices'
-
         # last iteration's ordered list of important variables
         variable_rank_indices = complete_results[-1][0]
 

@@ -17,7 +17,7 @@ of the model.
 Breiman offers an O(n) algorithm for this, which orders the variables according
 to those whose scoring is most adversely affected by permutation. In this
 repository, this is referred to as **variable importance**. Lakshmanan offers an
-O(n) algorithm which determines the next most important variable given a
+O(n^2) algorithm which determines the next most important variable given a
 previous listing of important variables. This ensures that if multiple variables
 are highly correlated, then only one will appear as important. In this
 repository, this is referred to as **variable rank**.
