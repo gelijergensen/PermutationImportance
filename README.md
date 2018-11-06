@@ -6,22 +6,30 @@ and Unix systems and Python 2 and 3.
 
 This repository provides the stand-alone functionality of a permutation-based
 method of computing variable importance in an arbitrary model. Importance for a
-given variable is computed in accordance with Lakshmanan et al. (2015)'s
-paper[1]. Variables which, when their values are permuted, cause the worst
-resulting score are considered most important. This implementation provides the
-functionality for an arbitrary method for computing the "worst" score and for
-using an arbitrary scoring metric. The most common case of this is to chose the
-variable which most negatively impacts the accuracy of the model.
+given variable is computed in accordance with either Breiman (2001)'s paper[1]
+or Lakshmanan et al. (2015)'s paper[2]. Variables which, when their values are
+permuted, cause the worst resulting score are considered most important. This
+implementation provides the functionality for an arbitrary method for computing
+the "worst" score and for using an arbitrary scoring metric. The most common
+case of this is to chose the variable which most negatively impacts the accuracy
+of the model.
 
-Functionality is provided not only for returning the most important variable
-(along with the raw scores for each variable) but also for returning the
-sequential importance of variables. To do this, the most important variable is
-determined and then it is left permuted while the next most important variable
-is determined. In the extreme case, this is continued until the sequential
-ordering of all variables is determined, but this can be terminated at an
-earlier level by choice.
+Breiman offers an O(n) algorithm for this, which orders the variables according
+to those whose scoring is most adversely affected by permutation. In this
+repository, this is referred to as **variable importance**. Lakshmanan offers an
+O(n^2) algorithm which determines the next most important variable given a
+previous listing of important variables. This ensures that if multiple variables
+are highly correlated, then only one will appear as important. In this
+repository, this is referred to as **variable rank**.
 
-<sup>1</sup>Lakshmanan, V., C. Karstens, J. Krause, K. Elmore, A. Ryzhkov, and
+Functionality is provided not only for returning the variable importance and
+ranks, but also for the scores which determined those rankings, which may be
+useful for visualization.
+
+<sup>1</sup>Breiman, Leo. "Random forests." Machine learning 45.1 (2001): 5-32.
+https://doi.org/10.1023/A:1010933404324
+
+<sup>2</sup>Lakshmanan, V., C. Karstens, J. Krause, K. Elmore, A. Ryzhkov, and
 S. Berkseth, 2015: Which Polarimetric Variables Are Important for
 Weather/No-Weather Discrimination?. J. Atmos. Oceanic Technol., 32, 1209–1223,
 https://doi.org/10.1175/JTECH-D-13-00205.1
@@ -83,69 +91,25 @@ statistics. Here is the simplest call:
 
 ```python
 results = permutation_selection_importance(model, classes, fake_model_input, fake_model_output, npermute=30)
-# Returns a list of triples which is as long as the number of input variables
-len(results)
-# 4
-(important_variable_indices_ordered, score_before_permuting, all_scores_after_permuting) = results[i]
-```
-
-For the triple in the `k`th element of `results`,
-`important_variable_indices_ordered` contains a list of the indices of the `k`
-variables which are most important together. `results[0][0]` is a list
-containing only the index of the most important individual variable.
-`results[1][0]` contains the index of the most important variable and then the
-index of the variable which is most important after the first variable has been
-removed. `results[2][0]` contains those same two indices followed by the index
-of the variable which is most important after those two variables have been
-removed, etc. So for the example above
-
-```python
-results[0][0]
-# [0]
-results[1][0]
-# [0, 1]
-results[2][0]
-# [0, 1, 3]
-results[3][0]
-# [0, 1, 3, 2]
-```
-
-In this manner, `results[k][0]` contains the ordering of the "ranks" of the
-`k`+1 most important variables (Section 2.e of the paper).
-
-`score_before_permuting` is the score after permuting all variables of a "rank"
-before the (`k`+1)th variable, and `all_scores_after_permuting` is a list of the
-scores for all of the variables, with `None` for the scores of the variables of
-"rank" lower than `k`+1. (These may be handy for plotting the results.)
-
-There are two typical ways to determine the relative importances of each
-variable:
-
-1. Use the "ranks" of all the variables: `results[-1][0]`. This takes
-   `O(n`<sup>`2`</sup>`)` time
-2. Use the ordering of the scores after each variable is permuted only once:
-   `np.argsort(results[0][2])[::-1]`. This takes `O(n)` time
-
-```python
-results = permutation_selection_importance(model, classes, fake_model_input, fake_model_output, npermute=30)
-
-rank_importances = results[-1][0]
-# Reverse the order here because the variable with the worst score is the most important
-permutation_importances = np.argsort(results[0][2])[::-1]
+# Returns an object which contains the importances, ranks, and scores which determined those
+importances, original_score, importances_scores = results.get_variable_importances_and_scores() # O(n) algorithm (Breiman's)
+ranks, original_score, rank_scores = results.get_variable_ranks_and_scores() # O(n^2) algorithm (Lakshmanan's)
 ```
 
 ### Options
 
 #### nimportant_variables
 
-By default, the algorithm will execute the `O(n`<sup>`2`</sup>`)` version of the
-algorithm (1. above), but if you only want the first `m` entries of `results`,
-you can specify `nimportant_variables=m` in the function call. To execute the
-`O(n)` version of the algorithm (2. above), set `nimportant_variables=1`. e.g.
+By default, the algorithm will execute the entire `O(n`<sup>`2`</sup>`)` version
+of the algorithm (Lakshmanan's), but if you only want the first `m` entries of
+`ranks`, you can specify `nimportant_variables=m` in the function call. If you
+only care about Breiman's version of the algorithm, set
+`nimportant_variables=1`. e.g.
 
 ```python
 results = permutation_selection_importance(model, classes, fake_model_input, fake_model_output, npermute=30, nimportant_variables=1)
-importances = np.argsort(results[0][2])[::-1]
+importances, original_score, importances_scores = results.get_variable_importances_and_scores() # still intact
+ranks, original_score, rank_scores = results.get_variable_ranks_and_scores()  # only one element long... not very useful
 ```
 
 #### subsample

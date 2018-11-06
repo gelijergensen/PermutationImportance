@@ -22,6 +22,7 @@ import numpy as np
 import sys
 
 import scorers
+from importance_result import PermutationImportanceResult
 
 # These are global variables which are inherited by compute_score_for_column
 inputs_share = None
@@ -191,7 +192,6 @@ def permutation_selection_importance(model, classes, testing_input, testing_outp
         if num_times_to_test == 1:
             results = deque()
         else:
-
             results = find_most_import_var_rec(
                 important_col_idxs, most_important_score, num_times_to_test-1)
         results.appendleft(these_results)
@@ -199,7 +199,11 @@ def permutation_selection_importance(model, classes, testing_input, testing_outp
 
     complete_results = find_most_import_var_rec(
         list(), original_score, nimportant_variables)  # recursive!
-    return list(complete_results)  # convert from a deque back to a list
+    # Here we convert to a much cleaner object
+    result_object = PermutationImportanceResult(
+        model, optimization, score_fn, nimportant_variables, list(complete_results))
+
+    return result_object
 
 
 def compute_score_for_column_unpack(args):
@@ -313,11 +317,25 @@ if __name__ == "__main__":
     njobs = 3  # just so I don't kill my machine entirely
 
     results = permutation_selection_importance(model, classes, fake_model_input, fake_model_output, npermute,
-                                               subsamples=subsamples, score_fn=score_fn, optimization=optimization, share_vars=share_vars, njobs=njobs)
-    statement = "Permutation selection will return an ordering of the most important variables along with their scores"
-    if results[-1][0] != [0, 1, 3, 2]:
+                                               subsamples=subsamples, score_fn=score_fn, optimization=optimization, share_vars=share_vars, njobs=njobs, nimportant_variables=3)
+
+    importances, original_score, importances_scores = results.get_variable_importances_and_scores()
+    ranks, original_score, rank_scores = results.get_variable_ranks_and_scores()
+
+    tests_passed = True
+    statement = "get_variable_importances_and_scores will return the importances and scores"
+    if importances != [0, 1, 3, 2]:
         print(
-            statement, "Expected: results[-1][0] = [0, 1, 3, 2]", "Received:", results[-1][0])
-        print("Entire result:", results)
+            statement, "Expected importances = [0, 1, 3, 2]", "Received:", importances)
+        tests_passed = False
+    statement = "get_variable_ranks_and_scores will return the ranks and scores"
+    if ranks != [0, 1, None, 2]:
+        print(
+            statement, "Expected ranks = [0, 1, None, 2]", "Received:", ranks)
+        tests_passed = False
+
+    if not tests_passed:
+        print("Entire results object")
+        print(results.__dict__)
     else:
         print("Tests passed!")
