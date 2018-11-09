@@ -21,8 +21,8 @@ from multiprocessing.sharedctypes import RawArray
 import numpy as np
 import sys
 
-import scorers
-from importance_result import PermutationImportanceResult
+from .scorers import accuracy_scorer
+from .importance_result import PermutationImportanceResult
 
 # These are global variables which are inherited by compute_score_for_column
 inputs_share = None
@@ -73,7 +73,7 @@ def permutation_selection_importance(model, classes, testing_input, testing_outp
         subsamples = int(len(testing_output) * subsamples)
     # Check if the score_fn is None
     if score_fn is None:
-        score_fn = scorers.accuracy_scorer
+        score_fn = accuracy_scorer
     # Determine how many variables to return at the end
     if nimportant_variables is None:
         nimportant_variables = len(testing_input[0])

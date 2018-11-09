@@ -3,7 +3,7 @@ call. You can also use your own"""
 
 import numpy as np
 
-import utilities
+from .utilities import confusion_matrix, MulticlassContingencyTable
 
 
 def accuracy_scorer(new_predictions, truths, classes):
@@ -30,8 +30,8 @@ def gerrity_skill_scorer(new_predictions, truths, classes):
     :returns: a single value for the gerrity skill score
     """
     # get the confusion matrices
-    new_cm = utilities.confusion_matrix(new_predictions, truths, classes)
-    new_table = utilities.MulticlassContingencyTable(
+    new_cm = confusion_matrix(new_predictions, truths, classes)
+    new_table = MulticlassContingencyTable(
         table=new_cm, n_classes=len(classes), class_names=classes)
 
     return new_table.gerrity_score()
@@ -46,8 +46,8 @@ def peirce_skill_scorer(new_predictions, truths, classes):
     :returns: a single value for the peirce skill score
     """
     # get the confusion matrices
-    new_cm = utilities.confusion_matrix(new_predictions, truths, classes)
-    new_table = utilities.MulticlassContingencyTable(
+    new_cm = confusion_matrix(new_predictions, truths, classes)
+    new_table = MulticlassContingencyTable(
         table=new_cm, n_classes=len(classes), class_names=classes)
 
     return new_table.peirce_skill_score()
@@ -62,8 +62,8 @@ def heidke_skill_scorer(new_predictions, truths, classes):
     :returns: a single value for the heidke skill score
     """
     # get the confusion matrices
-    new_cm = utilities.confusion_matrix(new_predictions, truths, classes)
-    new_table = utilities.MulticlassContingencyTable(
+    new_cm = confusion_matrix(new_predictions, truths, classes)
+    new_table = MulticlassContingencyTable(
         table=new_cm, n_classes=len(classes), class_names=classes)
 
     return new_table.heidke_skill_score()
