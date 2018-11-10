@@ -62,9 +62,9 @@ class PermutationImportanceResult(object):
         # The last score needs to be computed using the optimization function (sorry!)
         final_scores = complete_results[-1][-1]
         valid_scores = list()
-        for idx, score in enumerate(final_scores):
+        for score in final_scores:
             if score is not None:
-                valid_scores.append(idx)
+                valid_scores.append(score)
         scores_for_permutation_rank.append(
             valid_scores[self.optimization(valid_scores)])
         return scores_for_permutation_importance, scores_for_permutation_rank
