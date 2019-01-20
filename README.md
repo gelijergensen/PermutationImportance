@@ -1,5 +1,7 @@
 # PermutationImportance
 
+[![Build Status](https://travis-ci.com/gelijergensen/PermutationImportance.svg?branch=master)](https://travis-ci.com/gelijergensen/PermutationImportance)
+
 Provides an efficient method to compute variable importance through the
 permutation of input variables. Uses multithreading and supports both Windows
 and Unix systems and Python 2 and 3.
