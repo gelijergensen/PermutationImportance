@@ -1,0 +1,4 @@
+language: python
+jobs:
+  include:
+    - script: pytest
