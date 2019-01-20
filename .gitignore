@@ -10,3 +10,6 @@ dist/
 
 # Virtual environments
 env/
+
+# Vscode directory
+.vscode/
