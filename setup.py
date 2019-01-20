@@ -20,7 +20,7 @@ CLASSIFIERS = [
     'Operating System :: OS Independent',
     'Topic :: Scientific/Engineering :: Information Analysis']
 
-PACKAGE_REQUIREMENTS = ['numpy']
+PACKAGE_REQUIREMENTS = ['numpy', 'pandas']
 
 if __name__ == '__main__':
     setup(name='PermutationImportance', version='1.1.0.2',

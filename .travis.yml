@@ -1,4 +1,7 @@
 language: python
+install:
+  - "pip install -U pip"
+  - "python setup.py install"
 jobs:
   include:
     - script: pytest

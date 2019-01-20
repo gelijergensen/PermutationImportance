@@ -15,3 +15,14 @@ class InvalidStrategyException(Exception):
         super(InvalidStrategyException, self).__init__(msg)
         self.strategy = strategy
         self.options = None
+
+
+class InvalidDataException(Exception):
+    """Thrown when the training or scoring data is not of the right type"""
+
+    def __init__(self, data, msg=None):
+        if msg is None:
+            msg = "Data is not of the right format"
+
+        super(InvalidDataException, self).__init__(msg)
+        self.data = data
