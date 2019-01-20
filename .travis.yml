@@ -1,4 +1,7 @@
 language: python
+before_install:
+  - "pip install -U pip"
+  - "python setup.py install"
 jobs:
   include:
     - script: pytest
