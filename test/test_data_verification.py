@@ -3,8 +3,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src.data_verification import verify_data
-from src.error_handling import InvalidDataException
+from src.data_verification import verify_data, determine_variable_names
+from src.error_handling import InvalidDataException, InvalidInputException
 
 
 def test_numpy_arrays():
@@ -51,3 +51,99 @@ def test_invalid_numpy_string():
     data = (inputs, outputs)
     with pytest.raises(InvalidDataException):
         verify_data(data)
+
+
+def test_invalid_data_noniterable():
+    data = "Hi"
+    with pytest.raises(InvalidDataException):
+        verify_data(data)
+
+
+def test_invalid_data_length():
+    inputs = np.array([[1, 2, 3], [2, 4, 6]])
+    outputs = np.array([1, 0])
+    other = np.array(["A", "B"])
+    data = (inputs, outputs, other)
+    with pytest.raises(InvalidDataException):
+        verify_data(data)
+
+
+def test_invalid_pandas_numpy():
+    A = [1, 2]
+    B = [2, 4]
+    C = [3, 6]
+    D = [1, 0]
+    inputs = pd.DataFrame({'A': A, 'B': B, 'C': C})
+    outputs = pd.DataFrame({'D': D}).values
+    data = (inputs, outputs)
+    with pytest.raises(InvalidDataException):
+        verify_data(data)
+
+
+def test_invalid_string_string():
+    inputs = "Hi"
+    outputs = "Bye"
+    data = (inputs, outputs)
+    with pytest.raises(InvalidDataException):
+        verify_data(data)
+
+
+def test_variable_names():
+    A = [1, 2]
+    B = [2, 4]
+    C = [3, 6]
+    D = [1, 0]
+    inputs = pd.DataFrame({'A': A, 'B': B, 'C': C})
+    outputs = pd.DataFrame({'D': D})
+    data = (inputs, outputs)
+    variable_names = np.array(["Fred", "George", "Bob"])
+    assert (variable_names == determine_variable_names(
+        data, variable_names)).all()
+
+
+def test_pandas_variable_names():
+    A = [1, 2]
+    B = [2, 4]
+    C = [3, 6]
+    D = [1, 0]
+    inputs = pd.DataFrame({'A': A, 'B': B, 'C': C})
+    outputs = pd.DataFrame({'D': D})
+    data = (inputs, outputs)
+    variable_names = np.array(["A", "B", "C"])
+    assert (variable_names == determine_variable_names(
+        data, variable_names=None)).all()
+
+
+def test_range_variable_names():
+    inputs = np.array([[1, 2, 3], [2, 4, 6]])
+    outputs = np.array([1, 0])
+    data = (inputs, outputs)
+    variable_names = np.array([0, 1, 2])
+    assert (variable_names == determine_variable_names(
+        data, variable_names=None)).all()
+
+
+def test_invalid_variable_names_length():
+    A = [1, 2]
+    B = [2, 4]
+    C = [3, 6]
+    D = [1, 0]
+    inputs = pd.DataFrame({'A': A, 'B': B, 'C': C})
+    outputs = pd.DataFrame({'D': D})
+    data = (inputs, outputs)
+    variable_names = ["A", "B", "C", "D"]
+    with pytest.raises(InvalidInputException):
+        determine_variable_names(data, variable_names)
+
+
+def test_invalid_variable_names_noniterable():
+    A = [1, 2]
+    B = [2, 4]
+    C = [3, 6]
+    D = [1, 0]
+    inputs = pd.DataFrame({'A': A, 'B': B, 'C': C})
+    outputs = pd.DataFrame({'D': D})
+    data = (inputs, outputs)
+    variable_names = 0
+    with pytest.raises(InvalidInputException):
+        determine_variable_names(data, variable_names)

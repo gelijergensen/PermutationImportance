@@ -17,6 +17,17 @@ class InvalidStrategyException(Exception):
         self.options = None
 
 
+class InvalidInputException(Exception):
+    """Thrown when the input to the program does not match expectations"""
+
+    def __init__(self, value, msg=None):
+        if msg is None:
+            msg = "Input value does not match expectations: %s" % value
+
+        super(InvalidInputException, self).__init__(msg)
+        self.value = value
+
+
 class InvalidDataException(Exception):
     """Thrown when the training or scoring data is not of the right type"""
 
