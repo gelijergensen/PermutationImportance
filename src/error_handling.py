@@ -37,3 +37,8 @@ class InvalidDataException(Exception):
 
         super(InvalidDataException, self).__init__(msg)
         self.data = data
+
+
+class FullImportanceResultWarning(Warning):
+    """Thrown when we try to add a result to a full ImportanceResult"""
+    pass
