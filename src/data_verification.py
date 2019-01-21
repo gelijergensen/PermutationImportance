@@ -4,9 +4,9 @@ two different dataframes, or two numpy arrays"""
 import numpy as np
 import pandas as pd
 
-from src.error_handling import InvalidDataException
+from src.error_handling import InvalidDataException, InvalidInputException
 
-__all__ = ["verify_data"]
+__all__ = ["verify_data", "determine_variable_names"]
 
 
 def verify_data(data):
@@ -48,3 +48,30 @@ def verify_data(data):
             else:
                 raise InvalidDataException(
                     data, "First element of data must be a numpy array or pandas dataframe")
+
+
+def determine_variable_names(data, variable_names):
+    """Uses the data and/or the variable_names to determine what the variable 
+    names are. If variable_names are not specified, defaults to the column indices
+
+    :param data: a 2-tuple where the input data is the first item
+    :param variable_names: either a list of variable names or None
+    :returns: a list of variable names
+    """
+    if variable_names is not None:
+        try:
+            iter(variable_names)
+        except TypeError:
+            raise InvalidInputException(
+                variable_names, "Variable names must be iterable")
+        else:
+            if len(variable_names) != data[0].shape[1]:
+                raise InvalidInputException(
+                    variable_names, "Variable names should have length %i" % data[0].shape[1])
+            else:
+                return variable_names
+    else:
+        if isinstance(data[0], pd.DataFrame):
+            return data[0].columns.values
+        else:
+            return np.arange(data[0].shape[1])

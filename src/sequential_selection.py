@@ -5,7 +5,7 @@ selection, they all use the same base idea, which is represented here"""
 from src.scoring_strategies import verify_scoring_strategy
 
 
-def sequential_selection(training_data, scoring_data, scoring_fn, scoring_strategy, selection_strategy):
+def sequential_selection(training_data, scoring_data, scoring_fn, scoring_strategy, selection_strategy, variable_names=None):
     """Performs an abstract sequential selection over data given a particular 
     set of functions for scoring, determining optimal variables, and selecting
     data
@@ -20,6 +20,9 @@ def sequential_selection(training_data, scoring_data, scoring_fn, scoring_strate
         variables. Should be of the form ([floats]) -> index
     :param selection_strategy: a function to be used for selecting a fraction of
         the data to be used at each iteration. Should be of the form ?????
+    :param variable_names: an optional list for variable names. If not given, 
+        will use names of columns of data (if pandas dataframe) or column 
+        indices
     :returns: ???? - object representing result
     """
     pass
