@@ -2,10 +2,12 @@
 selection, they all use the same base idea, which is represented here"""
 
 
+from src.data_verification import verify_data, determine_variable_names
+from src.result import ImportanceResult
 from src.scoring_strategies import verify_scoring_strategy
 
 
-def sequential_selection(training_data, scoring_data, scoring_fn, scoring_strategy, selection_strategy, variable_names=None):
+def sequential_selection(training_data, scoring_data, scoring_fn, scoring_strategy, selection_strategy, variable_names=None, nimportant_vars=None):
     """Performs an abstract sequential selection over data given a particular 
     set of functions for scoring, determining optimal variables, and selecting
     data
@@ -25,6 +27,27 @@ def sequential_selection(training_data, scoring_data, scoring_fn, scoring_strate
     :param variable_names: an optional list for variable names. If not given, 
         will use names of columns of data (if pandas dataframe) or column 
         indices
-    :returns: ???? - object representing result
+    :param nimportant_vars: number of times to compute the next most important
+        variable. Defaults to all
+    :returns: ImportanceResult object which contains the results for each run
     """
-    pass
+
+    training_inputs, training_outputs = verify_data(training_data)
+    scoring_inputs, scoring_outputs = verify_data(scoring_data)
+
+    variable_names = determine_variable_names(
+        (training_inputs, training_outputs), variable_names)
+
+    nimportant_vars = len(
+        variable_names) if nimportant_vars is None else nimportant_vars
+
+    result_obj = ImportanceResult("FILL_THE_METHOD_IN_LATER", variable_names)
+
+    important_vars = list()
+    num_vars = len(variable_names)
+    for i in range(nimportant_vars):
+
+        # Do the actual work
+        pass
+
+    return result_obj
