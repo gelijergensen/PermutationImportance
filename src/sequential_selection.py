@@ -20,7 +20,8 @@ def sequential_selection(training_data, scoring_data, scoring_fn, scoring_strate
         variables. Should be of the form ([floats]) -> index
     :param selection_strategy: a function to be used for selecting a fraction of
         the data to be used at each iteration. Should be of the form 
-        (num_vars, important_vars: [index], current: index) -> column_list
+        (num_vars, important_vars: [index]) -> 
+            list of (variable being evaluated, data columns to include)
     :param variable_names: an optional list for variable names. If not given, 
         will use names of columns of data (if pandas dataframe) or column 
         indices
