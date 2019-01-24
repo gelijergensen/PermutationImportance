@@ -13,7 +13,7 @@ from src.utils import convert_result_list_to_dict, get_data_subset
 __all__ = ["sequential_forward_selection"]
 
 
-def sequential_selection(training_data, scoring_data, scoring_fn, scoring_strategy, selection_strategy, variable_names=None, nimportant_vars=None, method=None):
+def sequential_selection(training_data, scoring_data, scoring_fn, scoring_strategy, selection_strategy, variable_names=None, nimportant_vars=None, method=None, nbootstrap=1, subsample=None):
     """Performs an abstract sequential selection over data given a particular
     set of functions for scoring, determining optimal variables, and selecting
     data
@@ -30,7 +30,7 @@ def sequential_selection(training_data, scoring_data, scoring_fn, scoring_strate
         scoring_strategies.VALID_SCORING_STRATEGIES
     :param selection_strategy: a function to be used for selecting a fraction of
         the data to be used at each iteration. Should be of the form
-        (num_vars, important_vars: [index]) ->
+        (num_vars, important_vars: [index], bootstrap_iter, subsample) ->
             list of (variable being evaluated, data columns to include)
     :param variable_names: an optional list for variable names. If not given,
         will use names of columns of data (if pandas dataframe) or column
@@ -39,6 +39,13 @@ def sequential_selection(training_data, scoring_data, scoring_fn, scoring_strate
         variable. Defaults to all
     :param method: a string for the name of the method used. Defaults to the
         name of the selection_strategy if not given
+    :param nbootstrap: number of times to perform scoring on each variable. 
+        Results over different bootstrap iterations are averaged. Defaults to 1
+    :param subsample: number of elements to sample (with replacement) per 
+        bootstrap round. If between 0 and 1, treated as a fraction of the number
+        of total number of events (e.g. 0.5 means half the number of events). 
+        If not specified, subsampling will not be used and the entire data will 
+        be used (without replacement)
     :returns: ImportanceResult object which contains the results for each run
     """
 
@@ -59,10 +66,21 @@ def sequential_selection(training_data, scoring_data, scoring_fn, scoring_strate
     important_vars = list()
     num_vars = len(variable_names)
     for _ in range(nimportant_vars):
-        result = _singlethread_iteration(training_data, scoring_data, scoring_fn,
-                                         selection_strategy(num_vars, important_vars))
+        result = None
+        result_names = None
+        for i in range(nbootstrap):
+            # This must return in the same order each time
+            result_i = _singlethread_iteration(training_data, scoring_data, scoring_fn,
+                                               selection_strategy(num_vars, important_vars, bootstrap_iter=i, subsample=subsample))
+            if result is None:
+                result = np.zeros((len(result_i), nbootstrap))
+            if result_names is None:
+                result_names = [res[0] for res in result_i]
+            result[:, i] = [res[1] for res in result_i]
+        avg_result = list(zip(result_names, np.average(result, axis=-1)))
+
         next_result = convert_result_list_to_dict(
-            result, variable_names, scoring_strategy)
+            avg_result, variable_names, scoring_strategy)
         best_var = min(
             next_result.keys(), key=lambda key: next_result[key][0])
         best_index = np.flatnonzero(variable_names == best_var)[0]
@@ -100,7 +118,7 @@ def _singlethread_iteration(training_data, scoring_data, scoring_fn, selection_i
     return result
 
 
-def sequential_forward_selection(training_data, scoring_data, scoring_fn, scoring_strategy, variable_names=None, nimportant_vars=None):
+def sequential_forward_selection(training_data, scoring_data, scoring_fn, scoring_strategy, variable_names=None, nimportant_vars=None, nbootstrap=1, subsample=None):
     """Performs an abstract sequential selection over data given a particular
     set of functions for scoring, determining optimal variables, and selecting
     data
@@ -118,6 +136,13 @@ def sequential_forward_selection(training_data, scoring_data, scoring_fn, scorin
         indices
     :param nimportant_vars: number of times to compute the next most important
         variable. Defaults to all
+    :param nbootstrap: number of times to perform scoring on each variable. 
+        Results over different bootstrap iterations are averaged. Defaults to 1
+    :param subsample: number of elements to sample (with replacement) per 
+        bootstrap round. If between 0 and 1, treated as a fraction of the number
+        of total number of events (e.g. 0.5 means half the number of events). 
+        If not specified, subsampling will not be used and the entire data will 
+        be used (without replacement)
     :returns: ImportanceResult object which contains the results for each run
     """
     return sequential_selection(training_data, scoring_data, scoring_fn, scoring_strategy, sfs_strategy, variable_names=variable_names, nimportant_vars=nimportant_vars, method="Sequential Forward Selection")
