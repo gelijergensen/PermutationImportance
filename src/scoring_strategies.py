@@ -22,8 +22,10 @@ VALID_SCORING_STRATEGIES = {
 def verify_scoring_strategy(scoring_strategy):
     """Asserts that the scoring strategy is valid and interprets various strings
 
-    :param scoring_strategy: a function or a string. If a string, must be one of
-        the options in VALID_SCORING_STRATEGIES
+    :param scoring_strategy: a function to be used for determining optimal
+        variables or a string. If a function, should be of the form 
+            ([floats]) -> index. If a string, must be one of the options in 
+        VALID_SCORING_STRATEGIES
     :returns: a function to be used for determining optimal variables
     """
     if callable(scoring_strategy):
