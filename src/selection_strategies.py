@@ -6,28 +6,11 @@ from src.utils import get_data_subset
 __all__ = ["SequentialForwardSelectionStrategy"]
 
 
-def sfs_strategy(num_vars, important_vars, bootstrap_iter, subsample):
-    """Check each of the non-important variables. Dataset is the columns which
-    are important plus the one being evaluated
-
-    :param num_vars: integer for the total number of variables
-    :param important_vars: a list of the indices of variables which are already
-        considered important
-    :param bootstrap_iter: ignored
-    :param subsample: ignored
-    :returns: a list of (variable being evaluated, columns to include)
-    """
-
-    to_test = list()
-    for var in range(num_vars):
-        if var not in important_vars:
-            to_test.append((var, important_vars + [var, ]))
-    return to_test
-
-
 class SelectionStrategy(object):
     """Selection strategies accept the data and know how to provide necessary
     subsets of it"""
+
+    name = "Abstract Selection Strategy"
 
     def __init__(self, training_data, scoring_data, num_vars, important_vars, bootstrap_iter, subsample):
         """Initializes the object by storing the data and keeping track of other
@@ -41,7 +24,6 @@ class SelectionStrategy(object):
         :param bootstrap_iter: number for which bootstrap iteration this is
         :param subsample: number of training examples to take
         """
-        self.__name__ = "Abstract Selection Strategy"
         self.training_data = training_data
         self.scoring_data = scoring_data
         self.num_vars = num_vars
@@ -52,7 +34,7 @@ class SelectionStrategy(object):
     def generate_datasets(self):
         """Generator which returns triples (variable, training_data, scoring_data)"""
         raise NotImplementedError(
-            "Please implement a strategy for generating datasets on class %s" % self.__name__)
+            "Please implement a strategy for generating datasets on class %s" % self.name)
 
     def __iter__(self):
         return self.generate_datasets()
@@ -62,10 +44,7 @@ class SequentialForwardSelectionStrategy(SelectionStrategy):
     """Sequential Forward Selection tests each variable and attempts to add one
     new variable to the dataset on each iteration"""
 
-    def __init__(self, training_data, scoring_data, num_vars, important_vars, bootstrap_iter, subsample):
-        super(SequentialForwardSelectionStrategy, self).__init__(
-            training_data, scoring_data, num_vars, important_vars, bootstrap_iter, subsample)
-        self.__name__ = "Sequential Forward Selection"
+    name = "Sequential Forward Selection"
 
     def generate_datasets(self):
         """Check each of the non-important variables. Dataset is the columns which
