@@ -22,9 +22,12 @@ def test_convert_result_list_to_dict():
 
 def test_get_data_subset():
     data = np.array([[0, 1, 2, 3], [1, 2, 3, 4]])
+    rows = np.arange(data.shape[0])
     columns = [1, 0]
     expected = np.array([[1, 0], [2, 1]])
-    assert (expected == get_data_subset(data, columns)).all()
+    assert (expected == get_data_subset(data, rows, columns)).all()
+    expected = data
+    assert (expected == get_data_subset(data, rows)).all()
 
     A = [1, 2]
     B = [2, 4]
@@ -32,8 +35,11 @@ def test_get_data_subset():
     D = [1, 0]
     data = pd.DataFrame({'A': A, 'B': B, 'C': C, 'D': D})
     expected = pd.DataFrame({'B': B, 'A': A}).loc[:, ['B', 'A']]
-    assert expected.equals(get_data_subset(data, columns))
+    assert expected.equals(get_data_subset(
+        data, rows, columns))
+    expected = data
+    assert expected.equals(get_data_subset(data, rows))
 
     data = [[0, 1, 2], [1, 2, 3]]
     with pytest.raises(InvalidDataException):
-        get_data_subset(data, columns)
+        get_data_subset(data, rows, columns)

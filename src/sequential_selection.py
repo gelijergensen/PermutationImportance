@@ -39,12 +39,12 @@ def sequential_selection(training_data, scoring_data, scoring_fn, scoring_strate
         variable. Defaults to all
     :param method: a string for the name of the method used. Defaults to the
         name of the selection_strategy if not given
-    :param nbootstrap: number of times to perform scoring on each variable. 
+    :param nbootstrap: number of times to perform scoring on each variable.
         Results over different bootstrap iterations are averaged. Defaults to 1
-    :param subsample: number of elements to sample (with replacement) per 
+    :param subsample: number of elements to sample (with replacement) per
         bootstrap round. If between 0 and 1, treated as a fraction of the number
-        of total number of events (e.g. 0.5 means half the number of events). 
-        If not specified, subsampling will not be used and the entire data will 
+        of total number of events (e.g. 0.5 means half the number of events).
+        If not specified, subsampling will not be used and the entire data will
         be used (without replacement)
     :returns: ImportanceResult object which contains the results for each run
     """
@@ -109,8 +109,9 @@ def _singlethread_iteration(training_data, scoring_data, scoring_fn, selection_i
     result = list()
     for var, column_indices in selection_iterator:
         training_inputs_subset = get_data_subset(
-            training_inputs, column_indices)
-        scoring_inputs_subset = get_data_subset(scoring_inputs, column_indices)
+            training_inputs, np.arange(len(training_inputs)), column_indices)
+        scoring_inputs_subset = get_data_subset(
+            scoring_inputs, np.arange(len(scoring_inputs)), column_indices)
 
         score = scoring_fn((training_inputs_subset, training_outputs),
                            (scoring_inputs_subset, scoring_outputs))
@@ -136,12 +137,12 @@ def sequential_forward_selection(training_data, scoring_data, scoring_fn, scorin
         indices
     :param nimportant_vars: number of times to compute the next most important
         variable. Defaults to all
-    :param nbootstrap: number of times to perform scoring on each variable. 
+    :param nbootstrap: number of times to perform scoring on each variable.
         Results over different bootstrap iterations are averaged. Defaults to 1
-    :param subsample: number of elements to sample (with replacement) per 
+    :param subsample: number of elements to sample (with replacement) per
         bootstrap round. If between 0 and 1, treated as a fraction of the number
-        of total number of events (e.g. 0.5 means half the number of events). 
-        If not specified, subsampling will not be used and the entire data will 
+        of total number of events (e.g. 0.5 means half the number of events).
+        If not specified, subsampling will not be used and the entire data will
         be used (without replacement)
     :returns: ImportanceResult object which contains the results for each run
     """
