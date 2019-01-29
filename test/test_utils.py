@@ -4,11 +4,11 @@ import pandas as pd
 import pytest
 
 from src.error_handling import InvalidDataException
-from src.utils import convert_result_list_to_dict, get_data_subset
+from src.utils import add_ranks_to_dict, get_data_subset
 
 
-def test_convert_result_list_to_dict():
-    result = [(10, 0.5), (9, 0.4), (4, 0.6)]
+def test_add_ranks_to_dict():
+    result = {10: 0.5, 9: 0.4, 4: 0.6}
     variable_names = list(range(11))
     scoring_strategy = np.argmin
     expected = {
@@ -16,7 +16,7 @@ def test_convert_result_list_to_dict():
         10: (1, 0.5),
         4: (2, 0.6),
     }
-    assert expected == convert_result_list_to_dict(
+    assert expected == add_ranks_to_dict(
         result, variable_names, scoring_strategy)
 
 

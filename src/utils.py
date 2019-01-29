@@ -6,15 +6,15 @@ import pandas as pd
 
 from src.error_handling import InvalidDataException
 
-__all__ = ["convert_result_list_to_dict"]
+__all__ = ["add_ranks_to_dict", "get_data_subset"]
 
 
-def convert_result_list_to_dict(result, variable_names, scoring_strategy):
+def add_ranks_to_dict(result, variable_names, scoring_strategy):
     """Takes a list of (var, score) and converts to a dictionary
 
-    :param result: a list of (var_index, score)
+    :param result: a dict of {var_index: score}
     :param variable_names: a list of variable names
-    :param scoring_strategy: a function to be used for determining optimal 
+    :param scoring_strategy: a function to be used for determining optimal
         variables. Should be of the form ([floats]) -> index
     """
     if len(result) == 0:
@@ -23,11 +23,11 @@ def convert_result_list_to_dict(result, variable_names, scoring_strategy):
     result_dict = dict()
     rank = 0
     while len(result) > 1:
-        best_index = scoring_strategy([res[1] for res in result])
-        var, score = result.pop(best_index)
-        result_dict[variable_names[var]] = (rank, score)
+        best_var = result.keys()[scoring_strategy(result.values())]
+        score = result.pop(best_var)
+        result_dict[variable_names[best_var]] = (rank, score)
         rank += 1
-    var, score = result[0]
+    var, score = result.items()[0]
     result_dict[variable_names[var]] = (rank, score)
     return result_dict
 
