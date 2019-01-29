@@ -32,17 +32,24 @@ def convert_result_list_to_dict(result, variable_names, scoring_strategy):
     return result_dict
 
 
-def get_data_subset(data, columns):
+def get_data_subset(data, rows, columns=None):
     """Returns a subset of the data corresponding to the desired columns
 
     :param data: either a pandas dataframe or a numpy array
+    :param rows: a list of row indices
     :param columns: a list of column indices
     :returns: data_subset (same type as data)
     """
     if isinstance(data, pd.DataFrame):
-        return data.loc[:, data.columns.values[columns]]
+        if columns is None:
+            return data.iloc[rows]
+        else:
+            return data.iloc[rows, columns]
     elif isinstance(data, np.ndarray):
-        return data[:, columns]
+        if columns is None:
+            return data[rows]
+        else:
+            return data[np.ix_(rows, columns)]
     else:
         raise InvalidDataException(
             data, "Data must be a pandas dataframe or numpy array")
