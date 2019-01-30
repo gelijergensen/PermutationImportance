@@ -32,7 +32,7 @@ def add_ranks_to_dict(result, variable_names, scoring_strategy):
     return result_dict
 
 
-def get_data_subset(data, rows, columns=None):
+def get_data_subset(data, rows=None, columns=None):
     """Returns a subset of the data corresponding to the desired columns
 
     :param data: either a pandas dataframe or a numpy array
@@ -40,6 +40,9 @@ def get_data_subset(data, rows, columns=None):
     :param columns: a list of column indices
     :returns: data_subset (same type as data)
     """
+    if rows is None:
+        rows = np.arange(data.shape[0])
+
     if isinstance(data, pd.DataFrame):
         if columns is None:
             return data.iloc[rows]

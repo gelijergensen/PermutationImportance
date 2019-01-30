@@ -25,20 +25,38 @@ class SelectionStrategy(object):
         :param bootstrap_iter: number for which bootstrap iteration this is
         :param subsample: number of training examples to take
         """
-        self.training_data = training_data
         self.scoring_data = scoring_data
         self.num_vars = num_vars
         self.important_vars = important_vars
         self.bootstrap_iter = bootstrap_iter
         self.subsample = subsample
 
-    def generate_datasets(self):
+        # We need to subsample the training_data now
+        if self.subsample == training_data[0].shape[0]:
+            # Deterministic
+            train_rows = np.arange(training_data[0].shape[0])
+        else:
+            # First we randomly pick the examples for training
+            train_rows = np.random.choice(
+                training_data[0].shape[0], self.subsample)
+        self.training_data = (get_data_subset(
+            training_data[0], train_rows), get_data_subset(training_data[1], train_rows))
+
+    def generate_datasets(self, important_variables):
         """Generator which returns triples (variable, training_data, scoring_data)"""
         raise NotImplementedError(
             "Please implement a strategy for generating datasets on class %s" % self.name)
 
+    def generate_all_datasets(self):
+        """By default, loops over all variables not yet considered important"""
+        for var in range(self.num_vars):
+            if var not in self.important_vars:
+                training_data, scoring_data = self.generate_datasets(
+                    self.important_vars + [var, ])
+                yield (var, training_data, scoring_data)
+
     def __iter__(self):
-        return self.generate_datasets()
+        return self.generate_all_datasets()
 
 
 class SequentialForwardSelectionStrategy(SelectionStrategy):
@@ -47,36 +65,23 @@ class SequentialForwardSelectionStrategy(SelectionStrategy):
 
     name = "Sequential Forward Selection"
 
-    def generate_datasets(self):
+    def generate_datasets(self, important_variables):
         """Check each of the non-important variables. Dataset is the columns which
         are important plus the one being evaluated
 
-        :yields: a sequence of (variable being evaluated, columns to include)
+        :returns: (training_data, scoring_data)
         """
         training_inputs, training_outputs = self.training_data
         scoring_inputs, scoring_outputs = self.scoring_data
 
-        if self.subsample == training_inputs.shape[0]:
-            # Deterministic
-            train_rows = np.arange(training_inputs.shape[0])
-        else:
-            # First we randomly pick the examples for training
-            train_rows = np.random.choice(
-                training_inputs.shape[0], self.subsample)
-        all_score_rows = np.arange(scoring_inputs.shape[0])
-
-        for var in range(self.num_vars):
-            if var not in self.important_vars:
-                columns = self.important_vars + [var, ]
-                # Make a slice of the training data
-                training_inputs_subset = get_data_subset(
-                    training_inputs, train_rows, columns)
-                training_outputs_subset = get_data_subset(
-                    training_outputs, train_rows)
-                # Make a slice of the scoring data
-                scoring_inputs_subset = get_data_subset(
-                    scoring_inputs, all_score_rows, columns)
-                yield((var, (training_inputs_subset, training_outputs_subset), (scoring_inputs_subset, scoring_outputs)))
+        columns = important_variables
+        # Make a slice of the training inputs
+        training_inputs_subset = get_data_subset(
+            training_inputs, None, columns)
+        # Make a slice of the scoring inputs
+        scoring_inputs_subset = get_data_subset(
+            scoring_inputs, None, columns)
+        return (training_inputs_subset, training_outputs), (scoring_inputs_subset, scoring_outputs)
 
 
 class SequentialBackwardSelectionStrategy(SelectionStrategy):
@@ -85,7 +90,7 @@ class SequentialBackwardSelectionStrategy(SelectionStrategy):
 
     name = "Sequential Backward Selection"
 
-    def generate_datasets(self):
+    def generate_datasets(self, important_variables):
         """Check each of the non-important variables. Dataset is the columns which
         are not important minus the one being evaluated
 
@@ -94,25 +99,12 @@ class SequentialBackwardSelectionStrategy(SelectionStrategy):
         training_inputs, training_outputs = self.training_data
         scoring_inputs, scoring_outputs = self.scoring_data
 
-        if self.subsample == training_inputs.shape[0]:
-            # Deterministic
-            train_rows = np.arange(training_inputs.shape[0])
-        else:
-            # First we randomly pick the examples for training
-            train_rows = np.random.choice(
-                training_inputs.shape[0], self.subsample)
-        all_score_rows = np.arange(scoring_inputs.shape[0])
-
-        for var in range(self.num_vars):
-            if var not in self.important_vars:
-                columns = [x for x in range(self.num_vars) if x not in (
-                    self.important_vars + [var, ])]
-                # Make a slice of the training data
-                training_inputs_subset = get_data_subset(
-                    training_inputs, train_rows, columns)
-                training_outputs_subset = get_data_subset(
-                    training_outputs, train_rows)
-                # Make a slice of the scoring data
-                scoring_inputs_subset = get_data_subset(
-                    scoring_inputs, all_score_rows, columns)
-                yield((var, (training_inputs_subset, training_outputs_subset), (scoring_inputs_subset, scoring_outputs)))
+        columns = [x for x in range(self.num_vars)
+                   if x not in important_variables]
+        # Make a slice of the training inputs
+        training_inputs_subset = get_data_subset(
+            training_inputs, None, columns)
+        # Make a slice of the scoring inputs
+        scoring_inputs_subset = get_data_subset(
+            scoring_inputs, None, columns)
+        return (training_inputs_subset, training_outputs), (scoring_inputs_subset, scoring_outputs)

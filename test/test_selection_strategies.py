@@ -6,13 +6,13 @@ from src.selection_strategies import SequentialForwardSelectionStrategy, Sequent
 
 
 def test_selection_strategy():
-
-    strategy = SelectionStrategy(None, None, None, None, None, None)
+    x = np.array([])
+    strategy = SelectionStrategy((x, x), (x, x), 1, [], 0, 0)
 
     assert getattr(strategy, "name") == "Abstract Selection Strategy"
 
     with pytest.raises(NotImplementedError):
-        iter(strategy)
+        next(iter(strategy))
 
 
 def test_sfs_strategy():

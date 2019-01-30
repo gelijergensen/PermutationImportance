@@ -9,7 +9,7 @@ def test_result():
     method = "test"
     variable_names = ["A", "B", "C", "D"]
 
-    imp_result = ImportanceResult(method, variable_names)
+    imp_result = ImportanceResult(method, variable_names, 0)
 
     imp_result.add_new_results({
         "A": (0, 0.5),
@@ -31,6 +31,7 @@ def test_result():
     imp_result.add_new_results({
         "C": (0, 0.0),
     })
+    assert imp_result.original_score == 0
     assert imp_result.complete
     assert len(imp_result) == 5
     expected_breiman = {
