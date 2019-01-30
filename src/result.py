@@ -17,15 +17,18 @@ class ImportanceResult(object):
     convenience methods for retrieving the results with no context and the
     most complete context"""
 
-    def __init__(self, method, variable_names):
+    def __init__(self, method, variable_names, original_score):
         """Initializes the results object with the method used and a list of
         variable names
 
         :param method: string for the type of variable importance used
         :param variable_names: a list of names for variables
+        :param original_score: the score of the model when no variables are 
+            important
         """
         self.method = method
         self.variable_names = variable_names
+        self.original_score = original_score
         # The initial context is "empty"
         self.contexts = [{}]
         self.results = list()

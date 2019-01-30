@@ -31,10 +31,7 @@ def sequential_selection(training_data, scoring_data, scoring_fn, scoring_strate
             ([floats]) -> index. If a string, must be one of the options in
         scoring_strategies.VALID_SCORING_STRATEGIES
     :param selection_strategy: an object which, when iterated, produces triples
-        (var, training_data, scoring_data). Typically a SelectionStrategy.
-        Alternatively can be a function of the form (training_data,
-            scoring_data, num_vars, important_vars, bootstrap_iter, subsample)
-            -> generator of (var, training_data, scoring_data)
+        (var, training_data, scoring_data). Almost certainly a SelectionStrategy
     :param variable_names: an optional list for variable names. If not given,
         will use names of columns of data (if pandas dataframe) or column
         indices
@@ -66,10 +63,13 @@ def sequential_selection(training_data, scoring_data, scoring_fn, scoring_strate
                     subsample) if subsample <= 1 else subsample
     njobs = mp.cpu_count() + njobs if njobs <= 0 else njobs
 
-    result_obj = ImportanceResult(method, variable_names)
-
     important_vars = list()
     num_vars = len(variable_names)
+
+    # Compute the original score (score over no variables considered important)
+    original_score = scoring_fn(*selection_strategy(
+        training_data, scoring_data, num_vars, important_vars, 0, subsample).generate_datasets([]))
+    result_obj = ImportanceResult(method, variable_names, original_score)
     for _ in range(nimportant_vars):
         result = dict()
         for i in range(nbootstrap):

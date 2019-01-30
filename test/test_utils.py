@@ -26,6 +26,7 @@ def test_get_data_subset():
     columns = [1, 0]
     expected = np.array([[1, 0], [2, 1]])
     assert (expected == get_data_subset(data, rows, columns)).all()
+    assert (expected == get_data_subset(data, None, columns)).all()
     expected = data
     assert (expected == get_data_subset(data, rows)).all()
 

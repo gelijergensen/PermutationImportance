@@ -54,13 +54,15 @@ def test_sequential_forward_selection():
     scoring_data = (inputs, outputs)
 
     def scoring_fn(training_data, scoring_data):
+        if len(training_data[0].columns) == 0:
+            return 0
         if 'A' in training_data[0].columns:
             return scoring_data[0].iloc[1, -1]
         else:
             return scoring_data[0].iloc[1, -1] / 2
 
     expected = ImportanceResult(
-        "Sequential Forward Selection", ["A", "B", "C"])
+        "Sequential Forward Selection", ["A", "B", "C"], 0)
     expected.add_new_results({'A': (0, 2), 'B': (1, 2), 'C': (2, 3)})
     expected.add_new_results({'B': (0, 4), 'C': (1, 6)})
     expected.add_new_results({'C': (0, 6)})
@@ -69,6 +71,7 @@ def test_sequential_forward_selection():
         training_data, scoring_data, scoring_fn, "argmin", nbootstrap=2)
 
     assert expected.method == result.method
+    assert expected.original_score == result.original_score
     assert (expected.variable_names == result.variable_names).all()
     assert expected.retrieve_breiman() == result.retrieve_breiman()
     assert expected.retrieve_laks() == result.retrieve_laks()
@@ -97,7 +100,7 @@ def test_sequential_backward_selection():
             return scoring_data[0].iloc[1, 0] / 2
 
     expected = ImportanceResult(
-        "Sequential Backward Selection", ["A", "B", "C"])
+        "Sequential Backward Selection", ["A", "B", "C"], 1)
     expected.add_new_results({'A': (2, 4), 'B': (0, 1), 'C': (1, 1)})
     expected.add_new_results({'A': (1, 6), 'C': (0, 1)})
     expected.add_new_results({'A': (0, 0)})
@@ -106,6 +109,7 @@ def test_sequential_backward_selection():
         training_data, scoring_data, scoring_fn, "argmin", nbootstrap=2)
 
     assert expected.method == result.method
+    assert expected.original_score == result.original_score
     assert (expected.variable_names == result.variable_names).all()
     assert expected.retrieve_breiman() == result.retrieve_breiman()
     assert expected.retrieve_laks() == result.retrieve_laks()
