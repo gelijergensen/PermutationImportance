@@ -39,6 +39,45 @@ class InvalidDataException(Exception):
         self.data = data
 
 
+class UnmatchedLengthPredictionsException(Exception):
+    """Thrown when the number of predictions doesn't match truths"""
+
+    def __init__(self, truths, predictions, msg=None):
+        if msg is None:
+            msg = "Shapes of truths and predictions do not match: %r and %r" % (
+                truths.shape, predictions.shape)
+
+        super(UnmatchedLengthPredictionsException, self).__init__(msg)
+        self.truths = truths
+        self.predictions = predictions
+
+
+class UnmatchingProbabilisticForecastsException(Exception):
+    """Thrown when the shape of probabilisic predictions doesn't match the truths"""
+
+    def __init__(self, truths, predictions, msg=None):
+        if msg is None:
+            msg = "Shapes of truths and predictions do not match: %r and %r" % (
+                truths.shape, predictions.shape)
+
+        super(UnmatchingProbabilisticForecastsException, self).__init__(msg)
+        self.truths = truths
+        self.predictions = predictions
+
+
+class AmbiguousProbabilisticForecastsException(Exception):
+    """Thrown when classes were not provided for converting probabilistic 
+    predictions to deterministic ones"""
+
+    def __init__(self, truths, predictions, msg=None):
+        if msg is None:
+            msg = "Classes not provided for converting probabilistic predictions to deterministic ones"
+
+        super(AmbiguousProbabilisticForecastsException, self).__init__(msg)
+        self.truths = truths
+        self.predictions = predictions
+
+
 class FullImportanceResultWarning(Warning):
     """Thrown when we try to add a result to a full ImportanceResult"""
     pass
