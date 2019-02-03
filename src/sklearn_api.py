@@ -47,7 +47,7 @@ class model_scorer(object):
         :param evaluation_fn: a function which takes the deterministic or 
             probabilistic model predictions and scores them against the true 
             values. Must be of the form (truths, predictions) -> float
-            Probably one of the metrics in scorers
+            Probably one of the metrics in src.metrics or sklearn.metrics
         """
         self.model = model
         self.training_fn = training_fn
@@ -75,9 +75,10 @@ def score_sklearn_model(model, evaluation_fn):
     deterministic prediction methods for scikit-learn to evaluate a model
 
     :param model: a scikit-learn model
-    :param evaluation_fn: a function which takes the deterministic model 
-        predictions and scores them against the true values. Must be of the form 
-        (truths, predictions) -> float
+    :param evaluation_fn: a function which takes the deterministic or 
+        probabilistic model predictions and scores them against the true 
+        values. Must be of the form (truths, predictions) -> float
+        Probably one of the metrics in src.metrics or sklearn.metrics
     :returns: a callable which accepts (training_data, scoring_data) and returns
         a float
     """
@@ -89,9 +90,10 @@ def score_sklearn_model_with_probabilities(model, evaluation_fn):
     probabilistic prediction methods for scikit-learn to evaluate a model
 
     :param model: a scikit-learn model
-    :param evaluation_fn: a function which takes the deterministic model 
-        predictions and scores them against the true values. Must be of the form 
-        (truths, predictions) -> float
+    :param evaluation_fn: a function which takes the deterministic or 
+        probabilistic model predictions and scores them against the true 
+        values. Must be of the form (truths, predictions) -> float
+        Probably one of the metrics in src.metrics or sklearn.metrics
     :returns: a callable which accepts (training_data, scoring_data) and returns
         a float
     """
