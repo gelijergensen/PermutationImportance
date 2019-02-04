@@ -73,8 +73,8 @@ def test_sequential_forward_selection():
     assert expected.method == result.method
     assert expected.original_score == result.original_score
     assert (expected.variable_names == result.variable_names).all()
-    assert expected.retrieve_breiman() == result.retrieve_breiman()
-    assert expected.retrieve_laks() == result.retrieve_laks()
+    assert expected.retrieve_singlepass() == result.retrieve_singlepass()
+    assert expected.retrieve_multipass() == result.retrieve_multipass()
     for (exp_context, exp_result), (true_context, true_result) in zip(expected, result):
         assert exp_context == true_context
         assert exp_result == true_result
@@ -111,8 +111,8 @@ def test_sequential_backward_selection():
     assert expected.method == result.method
     assert expected.original_score == result.original_score
     assert (expected.variable_names == result.variable_names).all()
-    assert expected.retrieve_breiman() == result.retrieve_breiman()
-    assert expected.retrieve_laks() == result.retrieve_laks()
+    assert expected.retrieve_singlepass() == result.retrieve_singlepass()
+    assert expected.retrieve_multipass() == result.retrieve_multipass()
     for (exp_context, exp_result), (true_context, true_result) in zip(expected, result):
         assert exp_context == true_context
         assert exp_result == true_result

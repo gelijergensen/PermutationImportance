@@ -29,7 +29,7 @@ class model_scorer(object):
     predict, and evaluates the predictions with some metric
     """
 
-    def __init__(self, model, training_fn, prediction_fn, evaluation_fn):
+    def __init__(self, model, training_fn, prediction_fn, evaluation_fn, default_score=0.0):
         """Initializes the scoring object by storing the training, predicting,
         and evaluation functions
 
@@ -48,11 +48,13 @@ class model_scorer(object):
             probabilistic model predictions and scores them against the true 
             values. Must be of the form (truths, predictions) -> float
             Probably one of the metrics in src.metrics or sklearn.metrics
+        :param default_score: value to return if the model cannot be trained
         """
         self.model = model
         self.training_fn = training_fn
         self.prediction_fn = prediction_fn
         self.evaluation_fn = evaluation_fn
+        self.default_score = default_score
 
     def __call__(self, training_data, scoring_data):
         """Uses the training, predicting, and evaluation functions to score the
@@ -62,6 +64,10 @@ class model_scorer(object):
         :param scoring_data: (scoring_input, scoring_output)
         :returns: a float for the score
         """
+        if training_data[0].shape[1] == 0:
+            # There's no data to train on
+            return self.default_score
+
         (training_inputs, training_outputs) = training_data
         (scoring_inputs, scoring_outputs) = scoring_data
         trained_model = self.training_fn(
