@@ -10,15 +10,18 @@ import numpy as np
 def make_test_data():
     """This is a useful tool to help with making a dataset where the relative
     ranks of the variable importances is known"""
-    class_0 = np.random.uniform(size=(250, 3)) * \
-        np.array([4, 2, 1]) + np.array([-4, 9, 1])
-    class_1 = np.random.uniform(size=(250, 3)) * \
-        np.array([4, 2, 1]) + np.array([-5, 7, -1])
-    training_inputs = np.concatenate((class_0[:200], class_1[:200]), axis=0)
-    scoring_inputs = np.concatenate((class_0[200:], class_1[200:]), axis=0)
-    training_outputs = np.array([(0 if i < 200 else 1) for i in range(400)])
+    count = 750
+
+    class_0 = np.random.normal(size=(count, 3)) * \
+        np.array([4, 2, 1]) + np.array([0, 11, 3])
+    class_1 = np.random.normal(size=(count, 3)) * \
+        np.array([4, 2, 1]) + np.array([-3, 8, 0])
+    training_inputs = np.concatenate((class_0[:-50], class_1[:-50]), axis=0)
+    scoring_inputs = np.concatenate((class_0[-50:], class_1[-50:]), axis=0)
+    training_outputs = np.array([(0 if i < count-50 else 1)
+                                 for i in range(2*count - 100)])
     scoring_outputs = np.array([(0 if i < 50 else 1) for i in range(100)])
-    indices = np.random.permutation(400)
+    indices = np.random.permutation(2*count - 100)
     training_inputs = training_inputs[indices]
     training_outputs = training_outputs[indices]
     indices = np.random.permutation(100)

@@ -40,14 +40,14 @@ def test_result():
         "C": (1, 0.6),
         "D": (3, 0.8),
     }
-    assert expected_breiman == imp_result.retrieve_breiman()
+    assert expected_breiman == imp_result.retrieve_singlepass()
     expected_laks = {
         "A": (0, 0.5),
         "B": (1, 0.3),
         "C": (3, 0),
         "D": (2, 0.1),
     }
-    assert expected_laks == imp_result.retrieve_laks()
+    assert expected_laks == imp_result.retrieve_multipass()
     expected_1 = ({
         "A": (0, 0.5),
     }, {

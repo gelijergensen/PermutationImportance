@@ -1,7 +1,7 @@
 """The result object keeps track of the "context" for each round of results as
 well as the actual results. Additionally, it provides methods for the retrieval
-of both the results without any context (Breiman-like) and the most complete
-context (Laks-like)"""
+of both the results without any context (singlepass, Breiman) and the most 
+complete context (multipass, Lakshmanan)"""
 
 import warnings
 from itertools import izip
@@ -62,12 +62,10 @@ class ImportanceResult(object):
             warnings.warn(
                 "Cannot add new result to full ImportanceResult", FullImportanceResultWarning)
 
-    # TODO: We should figure out a better name for this
-    def retrieve_breiman(self):
+    def retrieve_singlepass(self):
         return self.results[0]
 
-    # TODO: We should figure out a better name for this
-    def retrieve_laks(self):
+    def retrieve_multipass(self):
         return self.contexts[-1]
 
     def __iter__(self):
