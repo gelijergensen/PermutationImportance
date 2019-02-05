@@ -57,7 +57,8 @@ def make_proba_test_data():
     scoring_outputs = np.array([(0 if i < 50 else 1) for i in range(100)])
     indices = np.random.permutation(400)
     training_inputs = training_inputs[indices]
-    training_outputs = training_outputs[indices]
+    training_outputs = np.stack(
+        (training_outputs[indices], 1 - training_outputs[indices]), axis=-1)
     indices = np.random.permutation(100)
     scoring_inputs = scoring_inputs[indices]
     scoring_outputs = np.stack(

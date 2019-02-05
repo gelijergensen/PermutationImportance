@@ -56,6 +56,9 @@ def test_gerrity_score():
     assert gerrity_score(truths, predictions) < 1e-6
     assert abs(1 - gerrity_score(truths, truths)) < 1e-6
 
+    predictions = np.array(["a", "b", "c", "a", "b", "c", "a", "a", "a"])
+    assert 0.5 < gerrity_score(truths, predictions) < 1
+
 
 def test_heidke_skill_score():
     truths = np.array(["a", "b", "c", "a", "b", "c", "a", "b", "c"])
@@ -64,6 +67,9 @@ def test_heidke_skill_score():
     assert 0 == heidke_skill_score(truths, predictions)
     assert 1 == heidke_skill_score(truths, truths)
 
+    predictions = np.array(["a", "b", "c", "a", "b", "c", "a", "a", "a"])
+    assert 0.5 < heidke_skill_score(truths, predictions) < 1
+
 
 def test_peirce_skill_score():
     truths = np.array(["a", "b", "c", "a", "b", "c", "a", "b", "c"])
@@ -71,3 +77,6 @@ def test_peirce_skill_score():
 
     assert 0 == peirce_skill_score(truths, predictions)
     assert 1 == peirce_skill_score(truths, truths)
+
+    predictions = np.array(["a", "b", "c", "a", "b", "c", "a", "a", "a"])
+    assert 0.5 < peirce_skill_score(truths, predictions) < 1

@@ -1,8 +1,9 @@
 
 from sklearn.metrics import accuracy_score
 from sklearn.svm import SVC
+from sklearn.neural_network import MLPClassifier
 
-from src.sklearn_api import train_model, predict_model, predict_proba_model, model_scorer, score_sklearn_model, score_sklearn_model_with_probabilities
+from src.sklearn_api import train_model, get_model, predict_model, predict_proba_model, model_scorer, score_untrained_sklearn_model, score_untrained_sklearn_model_with_probabilities, score_trained_sklearn_model, score_trained_sklearn_model_with_probabilities
 from test.utils import make_test_data, make_proba_test_data
 
 
@@ -30,7 +31,7 @@ def test_predict_proba_model():
 
     (training_inputs, training_outputs), (scoring_inputs,
                                           scoring_outputs) = make_proba_test_data()
-    model = SVC(gamma='auto', probability=True)
+    model = MLPClassifier(solver='lbfgs')
 
     assert predict_proba_model(train_model(model, training_inputs, training_outputs),
                                scoring_inputs).shape == scoring_outputs.shape
@@ -64,13 +65,26 @@ def test_model_scorer():
 def test_score_sklearn_models():
     model = SVC(gamma='auto', probability=True)
 
-    expected = score_sklearn_model(model, accuracy_score)
+    expected = score_untrained_sklearn_model(model, accuracy_score)
     result = model_scorer(model, train_model, predict_model, accuracy_score)
     for key in expected.__dict__:
         assert getattr(expected, key) == getattr(result, key)
 
-    expected = score_sklearn_model_with_probabilities(model, accuracy_score)
+    expected = score_untrained_sklearn_model_with_probabilities(
+        model, accuracy_score)
     result = model_scorer(model, train_model,
+                          predict_proba_model, accuracy_score)
+    for key in expected.__dict__:
+        assert getattr(expected, key) == getattr(result, key)
+
+    expected = score_trained_sklearn_model(model, accuracy_score)
+    result = model_scorer(model, get_model, predict_model, accuracy_score)
+    for key in expected.__dict__:
+        assert getattr(expected, key) == getattr(result, key)
+
+    expected = score_trained_sklearn_model_with_probabilities(
+        model, accuracy_score)
+    result = model_scorer(model, get_model,
                           predict_proba_model, accuracy_score)
     for key in expected.__dict__:
         assert getattr(expected, key) == getattr(result, key)

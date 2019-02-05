@@ -3,10 +3,22 @@
 from sklearn.neural_network import MLPClassifier
 
 
-from src.metrics import gerrity_score, peirce_skill_score
-from src.sequential_selection import sequential_forward_selection, sequential_backward_selection
-from src.sklearn_api import score_sklearn_model, score_sklearn_model_with_probabilities
+from src.metrics import gerrity_score, peirce_skill_score, heidke_skill_score
+from src.permutation_importance import sklearn_permutation_importance
+from src.sequential_selection import sklearn_sequential_forward_selection, sklearn_sequential_backward_selection
 from test.utils import make_test_data, make_proba_test_data
+
+
+def validate_result(result):
+    singlepass = result.retrieve_singlepass().values()
+    singlepass.sort(key=lambda x: x[0])
+    last = singlepass[0][1]
+    for val in singlepass:
+        assert last <= val[1]
+        last = val[1]
+
+    multipass = result.retrieve_multipass().values()
+    assert len(singlepass) == len(multipass)
 
 
 def test_deterministic():
@@ -14,20 +26,21 @@ def test_deterministic():
 
     model = MLPClassifier(solver='lbfgs')
 
-    scoring_fn = score_sklearn_model(model, peirce_skill_score)
+    # SFS
+    result = sklearn_sequential_forward_selection(
+        model, training_data, scoring_data, peirce_skill_score, "argmin")
+    validate_result(result)
 
-    result = sequential_forward_selection(
-        training_data, scoring_data, scoring_fn, "argmax")
+    # SBS
+    result = sklearn_sequential_backward_selection(
+        model, training_data, scoring_data, gerrity_score, "argmin")
+    validate_result(result)
 
-    singlepass = result.retrieve_singlepass().values()
-    singlepass.sort(key=lambda x: x[0])
-    last = 1
-    for val in singlepass:
-        assert last >= val[1]
-        last = val[1]
-
-    multipass = result.retrieve_multipass().values()
-    assert len(singlepass) == len(multipass)
+    # Permutation
+    trained_model = model.fit(*training_data)
+    result = sklearn_permutation_importance(trained_model,
+                                            scoring_data, heidke_skill_score, "argmin")
+    validate_result(result)
 
 
 def test_probabilistic():
@@ -35,18 +48,18 @@ def test_probabilistic():
 
     model = MLPClassifier(solver='lbfgs')
 
-    scoring_fn = score_sklearn_model_with_probabilities(
-        model, peirce_skill_score)
+    # SFS
+    result = sklearn_sequential_forward_selection(
+        model, training_data, scoring_data, heidke_skill_score, "argmin")
+    validate_result(result)
 
-    result = sequential_backward_selection(
-        training_data, scoring_data, scoring_fn, "argmax")
+    # SBS
+    result = sklearn_sequential_backward_selection(
+        model, training_data, scoring_data, peirce_skill_score, "argmin")
+    validate_result(result)
 
-    singlepass = result.retrieve_singlepass().values()
-    singlepass.sort(key=lambda x: x[0])
-    last = 1
-    for val in singlepass:
-        assert last >= val[1]
-        last = val[1]
-
-    multipass = result.retrieve_multipass().values()
-    assert len(singlepass) == len(multipass)
+    # Permutation
+    trained_model = model.fit(*training_data)
+    result = sklearn_permutation_importance(
+        trained_model, scoring_data, gerrity_score, "argmin")
+    validate_result(result)
