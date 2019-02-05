@@ -1,7 +1,6 @@
 """While there are slightly different strategies for performing the various
 importance methods, they all use the same base idea, which is represented here"""
 
-from itertools import imap, tee
 import numpy as np
 import multiprocessing as mp
 

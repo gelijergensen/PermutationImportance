@@ -11,7 +11,4 @@ from .sequential_selection import *
 from .result import ImportanceResult
 from . import sklearn_api
 
-__version__ = '1.2.0.0'
-
-print(sklearn_sequential_forward_selection)
-print(__version__)
+__version__ = '1.2.0.2'
