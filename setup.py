@@ -20,10 +20,11 @@ CLASSIFIERS = [
     'Operating System :: OS Independent',
     'Topic :: Scientific/Engineering :: Information Analysis']
 
-PACKAGE_REQUIREMENTS = ['numpy', 'pandas', 'scipy==1.1.0', 'sklearn']
+PACKAGE_REQUIREMENTS = ['numpy', 'pandas',
+                        'scipy==1.1.0', 'sklearn', 'itertools']
 
 if __name__ == '__main__':
-    setup(name='PermutationImportance', version='1.2.0.3',
+    setup(name='PermutationImportance', version='1.2.0.4',
           description=SHORT_DESCRIPTION,
           author='G. Eli Jergensen', author_email='gelijergensen@ou.edu',
           long_description=long_description,

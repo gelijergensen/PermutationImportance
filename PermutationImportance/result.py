@@ -5,6 +5,11 @@ complete context (multipass, Lakshmanan)"""
 
 import warnings
 
+try:
+    from itertools import izip as zip
+except ImportError:  # python3
+    pass
+
 from .error_handling import FullImportanceResultWarning
 
 
