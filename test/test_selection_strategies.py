@@ -7,7 +7,7 @@ from src.selection_strategies import SequentialForwardSelectionStrategy, Sequent
 
 def test_selection_strategy():
     x = np.array([])
-    strategy = SelectionStrategy((x, x), (x, x), 1, [], 0, 0)
+    strategy = SelectionStrategy((x, x), (x, x), 1, [])
 
     assert getattr(strategy, "name") == "Abstract Selection Strategy"
 
@@ -20,13 +20,11 @@ def test_sfs_strategy():
     training_data = (np.random.rand(5, 3), np.random.rand(5, ))
     scoring_data = (np.random.rand(5, 3), np.random.rand(5, ))
 
-    subsample = 5
-    bootstrap_iter = 0
     num_vars = training_data[0].shape[1]
     important_vars = [1]
 
     strategy = SequentialForwardSelectionStrategy(
-        training_data, scoring_data, num_vars, important_vars, bootstrap_iter, subsample)
+        training_data, scoring_data, num_vars, important_vars)
 
     assert getattr(strategy, "name") == "Sequential Forward Selection"
 
@@ -39,29 +37,17 @@ def test_sfs_strategy():
         assert (exp_score_data[0] == res_score_data[0]).all()
         assert (exp_score_data[1] == res_score_data[1]).all()
 
-    subsample = 3
-    strategy = SequentialForwardSelectionStrategy(
-        training_data, scoring_data, num_vars, important_vars, bootstrap_iter, subsample)
-
-    for (res_var, res_train_data, res_score_data) in strategy:
-        assert len(res_train_data[0]) == subsample
-        assert len(res_train_data[1]) == subsample
-        assert len(res_score_data[0]) == len(scoring_data[0])
-        assert len(res_score_data[1]) == len(scoring_data[1])
-
 
 def test_sbs_strategy():
 
     training_data = (np.random.rand(5, 3), np.random.rand(5, ))
     scoring_data = (np.random.rand(5, 3), np.random.rand(5, ))
 
-    subsample = 5
-    bootstrap_iter = 0
     num_vars = training_data[0].shape[1]
     important_vars = [1]
 
     strategy = SequentialBackwardSelectionStrategy(
-        training_data, scoring_data, num_vars, important_vars, bootstrap_iter, subsample)
+        training_data, scoring_data, num_vars, important_vars)
 
     assert getattr(strategy, "name") == "Sequential Backward Selection"
 
@@ -74,29 +60,17 @@ def test_sbs_strategy():
         assert (exp_score_data[0] == res_score_data[0]).all()
         assert (exp_score_data[1] == res_score_data[1]).all()
 
-    subsample = 3
-    strategy = SequentialForwardSelectionStrategy(
-        training_data, scoring_data, num_vars, important_vars, bootstrap_iter, subsample)
-
-    for (res_var, res_train_data, res_score_data) in strategy:
-        assert len(res_train_data[0]) == subsample
-        assert len(res_train_data[1]) == subsample
-        assert len(res_score_data[0]) == len(scoring_data[0])
-        assert len(res_score_data[1]) == len(scoring_data[1])
-
 
 def test_permutation_strategy():
 
     training_data = (np.random.rand(5, 3), np.random.rand(5, ))
     scoring_data = (np.random.rand(5, 3), np.random.rand(5, ))
 
-    subsample = 5
-    bootstrap_iter = 0
     num_vars = training_data[0].shape[1]
     important_vars = [1]
 
     strategy = PermutationImportanceSelectionStrategy(
-        training_data, scoring_data, num_vars, important_vars, bootstrap_iter, subsample)
+        training_data, scoring_data, num_vars, important_vars)
 
     assert getattr(strategy, "name") == "Permutation Importance"
 
@@ -115,13 +89,3 @@ def test_permutation_strategy():
         assert (exp_train_data[1] == res_train_data[1]).all()
         assert (exp_score_data[0] == res_score_data[0]).all()
         assert (exp_score_data[1] == res_score_data[1]).all()
-
-    subsample = 3
-    strategy = PermutationImportanceSelectionStrategy(
-        training_data, scoring_data, num_vars, important_vars, bootstrap_iter, subsample)
-
-    for (res_var, res_train_data, res_score_data) in strategy:
-        assert len(res_train_data[0]) == subsample
-        assert len(res_train_data[1]) == subsample
-        assert len(res_score_data[0]) == len(scoring_data[0])
-        assert len(res_score_data[1]) == len(scoring_data[1])

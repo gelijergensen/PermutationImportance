@@ -1,7 +1,10 @@
 """These tools are useful to assist the training and evaluation of sklearn 
 models as components of a scoring function"""
 
+import numpy as np
 from sklearn.base import clone
+
+from src.utils import get_data_subset
 
 
 __all__ = ["model_scorer", "score_sklearn_model",
@@ -29,7 +32,7 @@ class model_scorer(object):
     predict, and evaluates the predictions with some metric
     """
 
-    def __init__(self, model, training_fn, prediction_fn, evaluation_fn, default_score=0.0):
+    def __init__(self, model, training_fn, prediction_fn, evaluation_fn, default_score=0.0, nbootstrap=1, subsample=1):
         """Initializes the scoring object by storing the training, predicting,
         and evaluation functions
 
@@ -49,12 +52,22 @@ class model_scorer(object):
             values. Must be of the form (truths, predictions) -> float
             Probably one of the metrics in src.metrics or sklearn.metrics
         :param default_score: value to return if the model cannot be trained
+        :param nbootstrap: number of times to perform scoring on each variable.
+            Results over different bootstrap iterations are averaged. Defaults to 1
+        :param subsample: number of elements to sample (with replacement) per
+            bootstrap round. If between 0 and 1, treated as a fraction of the number
+            of total number of events (e.g. 0.5 means half the number of events).
+            If not specified, subsampling will not be used and the entire data will
+            be used (without replacement)
         """
+
         self.model = model
         self.training_fn = training_fn
         self.prediction_fn = prediction_fn
         self.evaluation_fn = evaluation_fn
         self.default_score = default_score
+        self.nbootstrap = nbootstrap
+        self.subsample = subsample
 
     def __call__(self, training_data, scoring_data):
         """Uses the training, predicting, and evaluation functions to score the
@@ -64,16 +77,34 @@ class model_scorer(object):
         :param scoring_data: (scoring_input, scoring_output)
         :returns: a float for the score
         """
-        if training_data[0].shape[1] == 0:
+        (training_inputs, training_outputs) = training_data
+        (scoring_inputs, scoring_outputs) = scoring_data
+
+        if training_inputs.shape[1] == 0:
             # There's no data to train on
             return self.default_score
 
-        (training_inputs, training_outputs) = training_data
-        (scoring_inputs, scoring_outputs) = scoring_data
+        subsample = int(len(scoring_data[0]) *
+                        self.subsample) if self.subsample <= 1 else self.subsample
+
+        # Train model
         trained_model = self.training_fn(
             self.model, training_inputs, training_outputs)
-        predictions = self.prediction_fn(trained_model, scoring_inputs)
-        return self.evaluation_fn(predictions, scoring_outputs)
+
+        # Score possibly multiple times
+        scores = list()
+        for _ in range(self.nbootstrap):
+            if subsample == scoring_inputs.shape[0]:
+                rows = np.arange(scoring_inputs.shape[0])
+            else:
+                rows = np.random.choice(
+                    scoring_inputs.shape[0], subsample)
+            subset_inputs = get_data_subset(scoring_inputs, rows)
+            subset_outputs = get_data_subset(scoring_outputs, rows)
+
+            predictions = self.prediction_fn(trained_model, subset_inputs)
+            scores.append(self.evaluation_fn(predictions, subset_outputs))
+        return np.average(scores)
 
 
 def score_sklearn_model(model, evaluation_fn):

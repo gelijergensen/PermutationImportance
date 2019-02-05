@@ -13,7 +13,7 @@ class SelectionStrategy(object):
 
     name = "Abstract Selection Strategy"
 
-    def __init__(self, training_data, scoring_data, num_vars, important_vars, bootstrap_iter, subsample):
+    def __init__(self, training_data, scoring_data, num_vars, important_vars):
         """Initializes the object by storing the data and keeping track of other
         important information
 
@@ -22,25 +22,11 @@ class SelectionStrategy(object):
         :param num_vars: integer for the total number of variables
         :param important_vars: a list of the indices of variables which are already
             considered important
-        :param bootstrap_iter: number for which bootstrap iteration this is
-        :param subsample: number of training examples to take
         """
+        self.training_data = training_data
         self.scoring_data = scoring_data
         self.num_vars = num_vars
         self.important_vars = important_vars
-        self.bootstrap_iter = bootstrap_iter
-        self.subsample = subsample
-
-        # We need to subsample the training_data now
-        if self.subsample == training_data[0].shape[0]:
-            # Deterministic
-            train_rows = np.arange(training_data[0].shape[0])
-        else:
-            # First we randomly pick the examples for training
-            train_rows = np.random.choice(
-                training_data[0].shape[0], self.subsample)
-        self.training_data = (get_data_subset(
-            training_data[0], train_rows), get_data_subset(training_data[1], train_rows))
 
     def generate_datasets(self, important_variables):
         """Generator which returns triples (variable, training_data, scoring_data)"""
@@ -115,7 +101,7 @@ class PermutationImportanceSelectionStrategy(SelectionStrategy):
 
     name = "Permutation Importance"
 
-    def __init__(self, training_data, scoring_data, num_vars, important_vars, bootstrap_iter, subsample):
+    def __init__(self, training_data, scoring_data, num_vars, important_vars):
         """Initializes the object by storing the data and keeping track of other
         important information
 
@@ -124,11 +110,9 @@ class PermutationImportanceSelectionStrategy(SelectionStrategy):
         :param num_vars: integer for the total number of variables
         :param important_vars: a list of the indices of variables which are already
             considered important
-        :param bootstrap_iter: number for which bootstrap iteration this is
-        :param subsample: number of training examples to take
         """
         super(PermutationImportanceSelectionStrategy, self).__init__(
-            training_data, scoring_data, num_vars, important_vars, bootstrap_iter, subsample)
+            training_data, scoring_data, num_vars, important_vars)
         # Also initialize the "shuffled data"
         scoring_inputs, __ = self.scoring_data
         indices = np.random.permutation(len(scoring_inputs))

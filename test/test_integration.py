@@ -17,7 +17,7 @@ def test_deterministic():
     scoring_fn = score_sklearn_model(model, peirce_skill_score)
 
     result = sequential_forward_selection(
-        training_data, scoring_data, scoring_fn, "argmax", nbootstrap=1)
+        training_data, scoring_data, scoring_fn, "argmax")
 
     singlepass = result.retrieve_singlepass().values()
     singlepass.sort(key=lambda x: x[0])
@@ -39,7 +39,7 @@ def test_probabilistic():
         model, peirce_skill_score)
 
     result = sequential_backward_selection(
-        training_data, scoring_data, scoring_fn, "argmax", nbootstrap=1)
+        training_data, scoring_data, scoring_fn, "argmax")
 
     singlepass = result.retrieve_singlepass().values()
     singlepass.sort(key=lambda x: x[0])

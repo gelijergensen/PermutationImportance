@@ -32,7 +32,7 @@ def test_sequential_forward_selection():
     expected.add_new_results({'C': (0, 6)})
 
     result = sequential_forward_selection(
-        training_data, scoring_data, scoring_fn, "argmin", nbootstrap=2, njobs=2)
+        training_data, scoring_data, scoring_fn, "argmin", njobs=2)
 
     assert expected.method == result.method
     assert expected.original_score == result.original_score
@@ -70,7 +70,7 @@ def test_sequential_backward_selection():
     expected.add_new_results({'A': (0, 0)})
 
     result = sequential_backward_selection(
-        training_data, scoring_data, scoring_fn, "argmin", nbootstrap=2, njobs=2)
+        training_data, scoring_data, scoring_fn, "argmin", njobs=2)
 
     assert expected.method == result.method
     assert expected.original_score == result.original_score
