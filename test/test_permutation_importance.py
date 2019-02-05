@@ -2,7 +2,7 @@
 import pandas as pd
 
 from src.result import ImportanceResult
-from src.permutation_importance import permuation_importance
+from src.permutation_importance import permutation_importance
 
 
 def test_permutation_importance():
@@ -26,7 +26,7 @@ def test_permutation_importance():
     expected.add_new_results({'B': (0, 3), 'C': (1, 3)})
     expected.add_new_results({'C': (0, 3)})
 
-    result = permuation_importance(
+    result = permutation_importance(
         scoring_data, scoring_fn, "argmin", njobs=2)
 
     assert expected.method == result.method

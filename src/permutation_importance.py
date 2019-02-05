@@ -7,10 +7,10 @@ import numpy as np
 from src.abstract_runner import abstract_variable_importance
 from src.selection_strategies import PermutationImportanceSelectionStrategy
 
-__all__ = ["permuation_importance"]
+__all__ = ["permutation_importance"]
 
 
-def permuation_importance(scoring_data, scoring_fn, scoring_strategy, variable_names=None, nimportant_vars=None, njobs=1):
+def permutation_importance(scoring_data, scoring_fn, scoring_strategy, variable_names=None, nimportant_vars=None, njobs=1):
     """Performs sequential forward selection over data given a particular
     set of functions for scoring and determining optimal variables
 
