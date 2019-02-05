@@ -140,3 +140,44 @@ def _gerrity_score(table):
         else:
             s[i, j] = s[j, i]
     return np.sum(table / float(table.sum()) * s)
+
+
+# This is unready for use, but is included here in case I decide to use it in future
+# def categorical_metascorer(scoring_fn, category=None, selection_strategy=None):
+#     """This is a meta-scorer which converts a binary-class scorer to a multi-class scorer for use above using a
+#     one-versus-rest strategy or another specified strategy
+
+#     :param scoring_fn: function which is a binary-class scorer (like bias). Must be of the form:
+#         (new_predictions, truths, classes, particular class) -> float
+#     :param category: the identity of the class to consider (if doing one-versus-rest)
+#     :param selection_strategy: either "maximimum", "minimum", "average", or a callable
+#         NOTE: if neither category or selection_strategy is specified, prints a warning and defaults to average
+#         callable must be of the form (list of scores) -> float
+#         category is ignored if selection_strategy is specified
+#     :returns: scoring function which wraps correctly around scoring_fn
+#     """
+#     # First determine whether we are doing ovr or a specified strategy
+
+#     if category is None and selection_strategy is None:
+#         print("WARNING: categorical_metascorer defaulting to averaging")
+#         selection_strategy = 'average'
+
+#     if 'max' in selection_strategy:
+#         selection_strategy = np.max
+#     elif 'min' in selection_strategy:
+#         selection_strategy = np.min
+#     elif 'avg' in selection_strategy or 'average' in selection_strategy:
+#         selection_strategy = np.average
+#     else:
+#         assert callable(
+#             selection_strategy), "ERROR: strategy must be 'minimize', 'maximize', 'average' or a callable"
+
+#     def cat_scorer(new_predictions, truths, classes):
+#         if selection_strategy is None:  # then we know category isn't None
+#             return scoring_fn(new_predictions, truths, classes, category)
+#         else:
+#             all_scores = [scoring_fn(
+#                 new_predictions, truths, classes, bin_class) for bin_class in classes]
+#             return selection_strategy(all_scores)
+
+#     return cat_scorer
