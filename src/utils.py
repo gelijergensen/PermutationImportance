@@ -6,7 +6,7 @@ import pandas as pd
 
 from src.error_handling import InvalidDataException
 
-__all__ = ["add_ranks_to_dict", "get_data_subset"]
+__all__ = ["add_ranks_to_dict", "get_data_subset", "make_data_from_columns"]
 
 
 def add_ranks_to_dict(result, variable_names, scoring_strategy):
@@ -56,3 +56,21 @@ def get_data_subset(data, rows=None, columns=None):
     else:
         raise InvalidDataException(
             data, "Data must be a pandas dataframe or numpy array")
+
+
+def make_data_from_columns(columns_list):
+    """Synthesizes a dataset out of a list of columns
+
+    :param columns_list: a list of either pandas series or numpy arrays
+    :returns: a pandas dataframe or a numpy array
+    """
+    if len(columns_list) == 0:
+        raise InvalidDataException(
+            columns_list, "Must have at least one column to synthesize dataset")
+    if isinstance(columns_list[0], pd.DataFrame):
+        return pd.concat(columns_list, axis=1)
+    elif isinstance(columns_list[0], np.ndarray):
+        return np.column_stack(columns_list)
+    else:
+        raise InvalidDataException(
+            columns_list, "Columns_list must come from a pandas dataframe or numpy arrays")

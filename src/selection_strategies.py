@@ -1,7 +1,7 @@
 
 import numpy as np
 
-from src.utils import get_data_subset
+from src.utils import get_data_subset, make_data_from_columns
 
 __all__ = ["SequentialForwardSelectionStrategy",
            "SequentialBackwardSelectionStrategy"]
@@ -67,7 +67,7 @@ class SequentialForwardSelectionStrategy(SelectionStrategy):
 
     def generate_datasets(self, important_variables):
         """Check each of the non-important variables. Dataset is the columns which
-        are important plus the one being evaluated
+        are important
 
         :returns: (training_data, scoring_data)
         """
@@ -92,7 +92,7 @@ class SequentialBackwardSelectionStrategy(SelectionStrategy):
 
     def generate_datasets(self, important_variables):
         """Check each of the non-important variables. Dataset is the columns which
-        are not important minus the one being evaluated
+        are not important
 
         :yields: a sequence of (variable being evaluated, columns to include)
         """
@@ -108,3 +108,41 @@ class SequentialBackwardSelectionStrategy(SelectionStrategy):
         scoring_inputs_subset = get_data_subset(
             scoring_inputs, None, columns)
         return (training_inputs_subset, training_outputs), (scoring_inputs_subset, scoring_outputs)
+
+
+class PermutationImportanceSelectionStrategy(SelectionStrategy):
+    """Permutation Importance shuffles the columns which are important"""
+
+    name = "Permutation Importance"
+
+    def __init__(self, training_data, scoring_data, num_vars, important_vars, bootstrap_iter, subsample):
+        """Initializes the object by storing the data and keeping track of other
+        important information
+
+        :param training_data: (training_inputs, training_outputs)
+        :param scoring_data: (scoring_inputs, scoring_outputs)
+        :param num_vars: integer for the total number of variables
+        :param important_vars: a list of the indices of variables which are already
+            considered important
+        :param bootstrap_iter: number for which bootstrap iteration this is
+        :param subsample: number of training examples to take
+        """
+        super(PermutationImportanceSelectionStrategy, self).__init__(
+            training_data, scoring_data, num_vars, important_vars, bootstrap_iter, subsample)
+        # Also initialize the "shuffled data"
+        scoring_inputs, __ = self.scoring_data
+        indices = np.random.permutation(len(scoring_inputs))
+        self.shuffled_scoring_inputs = get_data_subset(
+            scoring_inputs, indices)  # This copies
+
+    def generate_datasets(self, important_variables):
+        """Check each of the non-important variables. Dataset has columns which
+        are important shuffled
+
+        :returns: (training_data, scoring_data)
+        """
+        scoring_inputs, scoring_outputs = self.scoring_data
+        complete_scoring_inputs = make_data_from_columns(
+            [get_data_subset(self.shuffled_scoring_inputs if i in important_variables else scoring_inputs, None, [i]) for i in range(self.num_vars)])
+
+        return self.training_data, (complete_scoring_inputs, scoring_outputs)

@@ -50,7 +50,7 @@ def abstract_variable_importance(training_data, scoring_data, scoring_fn, scorin
     training_data = verify_data(training_data)
     scoring_data = verify_data(scoring_data)
     scoring_strategy = verify_scoring_strategy(scoring_strategy)
-    variable_names = determine_variable_names(training_data, variable_names)
+    variable_names = determine_variable_names(scoring_data, variable_names)
     nimportant_vars = len(
         variable_names) if nimportant_vars is None else nimportant_vars
     method = getattr(selection_strategy, "name", getattr(
