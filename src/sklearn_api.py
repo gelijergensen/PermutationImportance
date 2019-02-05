@@ -34,7 +34,6 @@ def predict_model(model, scoring_inputs):
 
 def predict_proba_model(model, scoring_inputs):
     """Uses a trained model to predict class probabilities for the scoring data"""
-    print(model.predict_proba(scoring_inputs))
     return model.predict_proba(scoring_inputs)
 
 
