@@ -4,8 +4,8 @@ import numpy as np
 import pytest
 
 
-from src.metrics import gerrity_score, heidke_skill_score, peirce_skill_score, _get_contingency_table
-from src.error_handling import AmbiguousProbabilisticForecastsException, UnmatchingProbabilisticForecastsException, UnmatchedLengthPredictionsException
+from PermutationImportance.metrics import gerrity_score, heidke_skill_score, peirce_skill_score, _get_contingency_table
+from PermutationImportance.error_handling import AmbiguousProbabilisticForecastsException, UnmatchingProbabilisticForecastsException, UnmatchedLengthPredictionsException
 
 
 def test__get_contingency_table():

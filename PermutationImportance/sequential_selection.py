@@ -1,9 +1,9 @@
 """Sequential Selection methods iteratively add variables to the set of 
 important variables by training a new model for each subset of the variables"""
 
-from src.abstract_runner import abstract_variable_importance
-from src.selection_strategies import SequentialForwardSelectionStrategy, SequentialBackwardSelectionStrategy
-from src.sklearn_api import score_untrained_sklearn_model, score_untrained_sklearn_model_with_probabilities
+from .abstract_runner import abstract_variable_importance
+from .selection_strategies import SequentialForwardSelectionStrategy, SequentialBackwardSelectionStrategy
+from .sklearn_api import score_untrained_sklearn_model, score_untrained_sklearn_model_with_probabilities
 
 __all__ = ["sequential_forward_selection",
            "sklearn_sequential_forward_selection",
@@ -47,7 +47,7 @@ def sklearn_sequential_forward_selection(model, training_data, scoring_data, eva
     :param evaluation_fn: a function which takes the deterministic or 
         probabilistic model predictions and scores them against the true 
         values. Must be of the form (truths, predictions) -> float
-        Probably one of the metrics in src.metrics or sklearn.metrics
+        Probably one of the metrics in .metrics or sklearn.metrics
     :param scoring_strategy: a function to be used for determining optimal
         variables. Should be of the form([floats]) -> index
     :param variable_names: an optional list for variable names. If not given,
@@ -112,7 +112,7 @@ def sklearn_sequential_backward_selection(model, training_data, scoring_data, ev
     :param evaluation_fn: a function which takes the deterministic or 
         probabilistic model predictions and scores them against the true 
         values. Must be of the form (truths, predictions) -> float
-        Probably one of the metrics in src.metrics or sklearn.metrics
+        Probably one of the metrics in .metrics or sklearn.metrics
     :param scoring_strategy: a function to be used for determining optimal
         variables. Should be of the form([floats]) -> index
     :param variable_names: an optional list for variable names. If not given,

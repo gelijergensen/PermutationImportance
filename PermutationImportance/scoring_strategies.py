@@ -4,7 +4,7 @@ we want to maximize, then we should return the argmax"""
 
 import numpy as np
 
-from src.error_handling import InvalidStrategyException
+from .error_handling import InvalidStrategyException
 
 __all__ = ["verify_scoring_strategy", "VALID_SCORING_STRATEGIES"]
 

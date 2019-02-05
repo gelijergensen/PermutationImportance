@@ -3,8 +3,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src.data_verification import verify_data, determine_variable_names
-from src.error_handling import InvalidDataException, InvalidInputException
+from PermutationImportance.data_verification import verify_data, determine_variable_names
+from PermutationImportance.error_handling import InvalidDataException, InvalidInputException
 
 
 def test_pandas_dataframes():

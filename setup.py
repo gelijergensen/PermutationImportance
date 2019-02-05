@@ -5,7 +5,7 @@ from setuptools import setup
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-PACKAGE_NAMES = ['src']
+PACKAGE_NAMES = ['PermutationImportance']
 KEYWORDS = [
     'variable importance', 'model evaluation']
 SHORT_DESCRIPTION = (

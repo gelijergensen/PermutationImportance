@@ -3,8 +3,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src.error_handling import InvalidDataException
-from src.utils import add_ranks_to_dict, get_data_subset, make_data_from_columns
+from PermutationImportance.error_handling import InvalidDataException
+from PermutationImportance.utils import add_ranks_to_dict, get_data_subset, make_data_from_columns
 
 
 def test_add_ranks_to_dict():

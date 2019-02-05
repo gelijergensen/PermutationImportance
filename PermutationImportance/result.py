@@ -6,7 +6,7 @@ complete context (multipass, Lakshmanan)"""
 import warnings
 from itertools import izip
 
-from src.error_handling import FullImportanceResultWarning
+from .error_handling import FullImportanceResultWarning
 
 
 class ImportanceResult(object):

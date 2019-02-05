@@ -1,7 +1,7 @@
 
 import numpy as np
 
-from src.utils import get_data_subset, make_data_from_columns
+from .utils import get_data_subset, make_data_from_columns
 
 __all__ = ["SequentialForwardSelectionStrategy",
            "SequentialBackwardSelectionStrategy"]

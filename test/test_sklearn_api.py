@@ -3,7 +3,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.svm import SVC
 from sklearn.neural_network import MLPClassifier
 
-from src.sklearn_api import train_model, get_model, predict_model, predict_proba_model, model_scorer, score_untrained_sklearn_model, score_untrained_sklearn_model_with_probabilities, score_trained_sklearn_model, score_trained_sklearn_model_with_probabilities
+from PermutationImportance.sklearn_api import train_model, get_model, predict_model, predict_proba_model, model_scorer, score_untrained_sklearn_model, score_untrained_sklearn_model_with_probabilities, score_trained_sklearn_model, score_trained_sklearn_model_with_probabilities
 from test.utils import make_test_data, make_proba_test_data
 
 

@@ -1,7 +1,7 @@
 
 import pandas as pd
 
-from src.abstract_runner import _singlethread_iteration, _multithread_iteration
+from PermutationImportance.abstract_runner import _singlethread_iteration, _multithread_iteration
 
 
 def test__singlethread_iteration():

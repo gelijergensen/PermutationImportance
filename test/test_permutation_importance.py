@@ -1,8 +1,8 @@
 
 import pandas as pd
 
-from src.result import ImportanceResult
-from src.permutation_importance import permutation_importance
+from PermutationImportance.result import ImportanceResult
+from PermutationImportance.permutation_importance import permutation_importance
 
 
 def test_permutation_importance():
