@@ -50,6 +50,16 @@ def test_model_scorer():
     assert 0 <= score
     assert score <= 1
 
+    score_fn = model_scorer(model, train_model, predict_model,
+                            accuracy_score, nbootstrap=5, subsample=0.2)
+
+    assert callable(score_fn)
+
+    score = score_fn(training_data, scoring_data)
+
+    assert 0 <= score
+    assert score <= 1
+
 
 def test_score_sklearn_models():
     model = SVC(gamma='auto', probability=True)
