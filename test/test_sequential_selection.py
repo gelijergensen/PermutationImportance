@@ -3,43 +3,7 @@
 import pandas as pd
 
 from src.result import ImportanceResult
-from src.sequential_selection import _singlethread_iteration, _multithread_iteration, sequential_forward_selection, sequential_backward_selection
-
-
-def test__singlethread_iteration():
-    A = [1, 2]
-    B = [2, 4]
-    C = [3, 6]
-    D = [1, 0]
-    inputs = pd.DataFrame({'A': A, 'B': B, 'C': C})
-    outputs = pd.DataFrame({'D': D})
-
-    def scoring_fn(training_data, scoring_data):
-        return scoring_data[0].iloc[0, 1]
-    selection_iterator = [(0, (inputs.iloc[:, [1, 0]], outputs), (inputs.iloc[:, [
-                           1, 0]], outputs)), (2, (inputs.iloc[:, [1, 2]], outputs), (inputs.iloc[:, [1, 2]], outputs))]
-
-    expected = {0: 1, 2: 3}
-    assert expected == _singlethread_iteration(selection_iterator,
-                                               scoring_fn)
-
-
-def test__multithread_iteration():
-    A = [1, 2]
-    B = [2, 4]
-    C = [3, 6]
-    D = [1, 0]
-    inputs = pd.DataFrame({'A': A, 'B': B, 'C': C})
-    outputs = pd.DataFrame({'D': D})
-
-    def scoring_fn(training_data, scoring_data):
-        return scoring_data[0].iloc[0, 1]
-    selection_iterator = [(0, (inputs.iloc[:, [1, 0]], outputs), (inputs.iloc[:, [
-                           1, 0]], outputs)), (2, (inputs.iloc[:, [1, 2]], outputs), (inputs.iloc[:, [1, 2]], outputs))]
-
-    expected = {0: 1, 2: 3}
-    assert expected == _multithread_iteration(selection_iterator,
-                                              scoring_fn, njobs=2)
+from src.sequential_selection import sequential_forward_selection, sequential_backward_selection
 
 
 def test_sequential_forward_selection():
@@ -68,7 +32,7 @@ def test_sequential_forward_selection():
     expected.add_new_results({'C': (0, 6)})
 
     result = sequential_forward_selection(
-        training_data, scoring_data, scoring_fn, "argmin", nbootstrap=2)
+        training_data, scoring_data, scoring_fn, "argmin", nbootstrap=2, njobs=2)
 
     assert expected.method == result.method
     assert expected.original_score == result.original_score
@@ -106,7 +70,7 @@ def test_sequential_backward_selection():
     expected.add_new_results({'A': (0, 0)})
 
     result = sequential_backward_selection(
-        training_data, scoring_data, scoring_fn, "argmin", nbootstrap=2)
+        training_data, scoring_data, scoring_fn, "argmin", nbootstrap=2, njobs=2)
 
     assert expected.method == result.method
     assert expected.original_score == result.original_score
