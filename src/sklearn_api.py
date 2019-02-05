@@ -49,6 +49,14 @@ class model_scorer(object):
             values. Must be of the form (truths, predictions) -> float
             Probably one of the metrics in src.metrics or sklearn.metrics
         :param default_score: value to return if the model cannot be trained
+        TODO 
+        :param nbootstrap: number of times to perform scoring on each variable.
+            Results over different bootstrap iterations are averaged. Defaults to 1
+        :param subsample: number of elements to sample (with replacement) per
+            bootstrap round. If between 0 and 1, treated as a fraction of the number
+            of total number of events (e.g. 0.5 means half the number of events).
+            If not specified, subsampling will not be used and the entire data will
+            be used (without replacement)
         """
         self.model = model
         self.training_fn = training_fn

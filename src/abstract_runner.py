@@ -11,7 +11,7 @@ from src.scoring_strategies import verify_scoring_strategy
 from src.utils import add_ranks_to_dict, get_data_subset
 
 
-def abstract_variable_importance(training_data, scoring_data, scoring_fn, scoring_strategy, selection_strategy, variable_names=None, nimportant_vars=None, method=None, nbootstrap=1, subsample=1, njobs=1):
+def abstract_variable_importance(training_data, scoring_data, scoring_fn, scoring_strategy, selection_strategy, variable_names=None, nimportant_vars=None, method=None, njobs=1):
     """Performs an abstract sequential selection over data given a particular
     set of functions for scoring, determining optimal variables, and selecting
     data
@@ -35,13 +35,6 @@ def abstract_variable_importance(training_data, scoring_data, scoring_fn, scorin
         variable. Defaults to all
     :param method: a string for the name of the method used. Defaults to the
         name of the selection_strategy if not given
-    :param nbootstrap: number of times to perform scoring on each variable.
-        Results over different bootstrap iterations are averaged. Defaults to 1
-    :param subsample: number of elements to sample (with replacement) per
-        bootstrap round. If between 0 and 1, treated as a fraction of the number
-        of total number of events (e.g. 0.5 means half the number of events).
-        If not specified, subsampling will not be used and the entire data will
-        be used (without replacement)
     :param njobs: an integer for the number of threads to use. If negative, will
         use the number of cpus + njobs. Defaults to 1
     :returns: ImportanceResult object which contains the results for each run
@@ -55,8 +48,6 @@ def abstract_variable_importance(training_data, scoring_data, scoring_fn, scorin
         variable_names) if nimportant_vars is None else nimportant_vars
     method = getattr(selection_strategy, "name", getattr(
         selection_strategy, "__name__")) if method is None else method
-    subsample = int(len(training_data[0]) *
-                    subsample) if subsample <= 1 else subsample
     njobs = mp.cpu_count() + njobs if njobs <= 0 else njobs
 
     important_vars = list()
@@ -64,31 +55,19 @@ def abstract_variable_importance(training_data, scoring_data, scoring_fn, scorin
 
     # Compute the original score (score over no variables considered important)
     original_score = scoring_fn(*selection_strategy(
-        training_data, scoring_data, num_vars, important_vars, 0, subsample).generate_datasets([]))
+        training_data, scoring_data, num_vars, important_vars).generate_datasets([]))
     result_obj = ImportanceResult(method, variable_names, original_score)
     for _ in range(nimportant_vars):
-        result = dict()
-        for i in range(nbootstrap):
-            # This must return in the same order each time
-            selection_iter = selection_strategy(
-                training_data, scoring_data, num_vars, important_vars, i, subsample)
-            if njobs == 1:
-                result_i = _singlethread_iteration(
-                    selection_iter, scoring_fn)
-            else:
-                result_i = _multithread_iteration(
-                    selection_iter, scoring_fn, njobs)
-            if len(result) == 0:
-                for var, score in result_i.items():
-                    result[var] = [score]
-            else:
-                for var, score in result_i.items():
-                    result[var].append(score)
-        avg_result = {var: np.average(scores)
-                      for var, scores in result.items()}
-
+        selection_iter = selection_strategy(
+            training_data, scoring_data, num_vars, important_vars)
+        if njobs == 1:
+            result = _singlethread_iteration(
+                selection_iter, scoring_fn)
+        else:
+            result = _multithread_iteration(
+                selection_iter, scoring_fn, njobs)
         next_result = add_ranks_to_dict(
-            avg_result, variable_names, scoring_strategy)
+            result, variable_names, scoring_strategy)
         best_var = min(
             next_result.keys(), key=lambda key: next_result[key][0])
         best_index = np.flatnonzero(variable_names == best_var)[0]

@@ -27,7 +27,7 @@ def test_permutation_importance():
     expected.add_new_results({'C': (0, 3)})
 
     result = permuation_importance(
-        scoring_data, scoring_fn, "argmin", nbootstrap=2, njobs=2)
+        scoring_data, scoring_fn, "argmin", njobs=2)
 
     assert expected.method == result.method
     assert expected.original_score == result.original_score
