@@ -5,7 +5,7 @@ scikit-learn should also work"""
 
 import numpy as np
 
-from src.error_handling import AmbiguousProbabilisticForecastsException, UnmatchingProbabilisticForecastsException, UnmatchedLengthPredictionsException
+from .error_handling import AmbiguousProbabilisticForecastsException, UnmatchingProbabilisticForecastsException, UnmatchedLengthPredictionsException
 
 
 __all__ = ["gerrity_score", "peirce_skill_score", "heidke_skill_score"]

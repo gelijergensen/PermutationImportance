@@ -2,6 +2,15 @@
 
 [![Build Status](https://travis-ci.com/gelijergensen/PermutationImportance.svg?branch=master)](https://travis-ci.com/gelijergensen/PermutationImportance)
 
+### Update (05 Feb. 2019):
+
+The documentation is not yet up-to-date for the current version (1.2.0.0). We
+expect to have that complete within a few days, but for the time being, if you
+wish to see how to use the most recent version, please look at the file
+`test/test_integration.py` for example uses or email me with questions.
+
+#
+
 Provides an efficient method to compute variable importance through the
 permutation of input variables. Uses multithreading and supports both Windows
 and Unix systems and Python 2 and 3.

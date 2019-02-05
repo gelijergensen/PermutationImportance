@@ -1,8 +1,8 @@
 
 import pytest
 
-from src.error_handling import FullImportanceResultWarning
-from src.result import ImportanceResult
+from PermutationImportance.error_handling import FullImportanceResultWarning
+from PermutationImportance.result import ImportanceResult
 
 
 def test_result():

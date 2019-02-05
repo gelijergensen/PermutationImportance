@@ -4,7 +4,7 @@ models as components of a scoring function"""
 import numpy as np
 from sklearn.base import clone
 
-from src.utils import get_data_subset
+from .utils import get_data_subset
 
 
 __all__ = ["model_scorer", "score_untrained_sklearn_model",
@@ -61,7 +61,7 @@ class model_scorer(object):
         :param evaluation_fn: a function which takes the deterministic or 
             probabilistic model predictions and scores them against the true 
             values. Must be of the form (truths, predictions) -> float
-            Probably one of the metrics in src.metrics or sklearn.metrics
+            Probably one of the metrics in .metrics or sklearn.metrics
         :param default_score: value to return if the model cannot be trained
         :param nbootstrap: number of times to perform scoring on each variable.
             Results over different bootstrap iterations are averaged. Defaults to 1
@@ -126,7 +126,7 @@ def score_untrained_sklearn_model(model, evaluation_fn, nbootstrap=1, subsample=
     :param evaluation_fn: a function which takes the deterministic or 
         probabilistic model predictions and scores them against the true 
         values. Must be of the form (truths, predictions) -> float
-        Probably one of the metrics in src.metrics or sklearn.metrics
+        Probably one of the metrics in .metrics or sklearn.metrics
     :param nbootstrap: number of times to perform scoring on each variable.
         Results over different bootstrap iterations are averaged. Defaults to 1
     :param subsample: number of elements to sample (with replacement) per
@@ -148,7 +148,7 @@ def score_untrained_sklearn_model_with_probabilities(model, evaluation_fn, nboot
     :param evaluation_fn: a function which takes the deterministic or 
         probabilistic model predictions and scores them against the true 
         values. Must be of the form (truths, predictions) -> float
-        Probably one of the metrics in src.metrics or sklearn.metrics
+        Probably one of the metrics in .metrics or sklearn.metrics
     :param nbootstrap: number of times to perform scoring on each variable.
         Results over different bootstrap iterations are averaged. Defaults to 1
     :param subsample: number of elements to sample (with replacement) per
@@ -170,7 +170,7 @@ def score_trained_sklearn_model(model, evaluation_fn, nbootstrap=1, subsample=1)
     :param evaluation_fn: a function which takes the deterministic or 
         probabilistic model predictions and scores them against the true 
         values. Must be of the form (truths, predictions) -> float
-        Probably one of the metrics in src.metrics or sklearn.metrics
+        Probably one of the metrics in .metrics or sklearn.metrics
     :param nbootstrap: number of times to perform scoring on each variable.
         Results over different bootstrap iterations are averaged. Defaults to 1
     :param subsample: number of elements to sample (with replacement) per
@@ -192,7 +192,7 @@ def score_trained_sklearn_model_with_probabilities(model, evaluation_fn, nbootst
     :param evaluation_fn: a function which takes the deterministic or 
         probabilistic model predictions and scores them against the true 
         values. Must be of the form (truths, predictions) -> float
-        Probably one of the metrics in src.metrics or sklearn.metrics
+        Probably one of the metrics in .metrics or sklearn.metrics
     :param nbootstrap: number of times to perform scoring on each variable.
         Results over different bootstrap iterations are averaged. Defaults to 1
     :param subsample: number of elements to sample (with replacement) per

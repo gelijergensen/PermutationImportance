@@ -1,14 +1,13 @@
 """While there are slightly different strategies for performing the various
 importance methods, they all use the same base idea, which is represented here"""
 
-from itertools import imap, tee
 import numpy as np
 import multiprocessing as mp
 
-from src.data_verification import verify_data, determine_variable_names
-from src.result import ImportanceResult
-from src.scoring_strategies import verify_scoring_strategy
-from src.utils import add_ranks_to_dict, get_data_subset
+from .data_verification import verify_data, determine_variable_names
+from .result import ImportanceResult
+from .scoring_strategies import verify_scoring_strategy
+from .utils import add_ranks_to_dict, get_data_subset
 
 
 def abstract_variable_importance(training_data, scoring_data, scoring_fn, scoring_strategy, selection_strategy, variable_names=None, nimportant_vars=None, method=None, njobs=1):

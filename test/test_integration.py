@@ -3,9 +3,9 @@
 from sklearn.neural_network import MLPClassifier
 
 
-from src.metrics import gerrity_score, peirce_skill_score, heidke_skill_score
-from src.permutation_importance import sklearn_permutation_importance
-from src.sequential_selection import sklearn_sequential_forward_selection, sklearn_sequential_backward_selection
+from PermutationImportance.metrics import gerrity_score, peirce_skill_score, heidke_skill_score
+from PermutationImportance.permutation_importance import sklearn_permutation_importance
+from PermutationImportance.sequential_selection import sklearn_sequential_forward_selection, sklearn_sequential_backward_selection
 from test.utils import make_test_data, make_proba_test_data
 
 

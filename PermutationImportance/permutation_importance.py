@@ -4,9 +4,9 @@ evaluating a model on the partially permuted data"""
 
 import numpy as np
 
-from src.abstract_runner import abstract_variable_importance
-from src.selection_strategies import PermutationImportanceSelectionStrategy
-from src.sklearn_api import score_trained_sklearn_model, score_trained_sklearn_model_with_probabilities
+from .abstract_runner import abstract_variable_importance
+from .selection_strategies import PermutationImportanceSelectionStrategy
+from .sklearn_api import score_trained_sklearn_model, score_trained_sklearn_model_with_probabilities
 
 __all__ = ["permutation_importance", "sklearn_permutation_importance"]
 
@@ -45,7 +45,7 @@ def sklearn_permutation_importance(model, scoring_data, evaluation_fn, scoring_s
     :param evaluation_fn: a function which takes the deterministic or 
         probabilistic model predictions and scores them against the true 
         values. Must be of the form (truths, predictions) -> float
-        Probably one of the metrics in src.metrics or sklearn.metrics
+        Probably one of the metrics in PermutationImportance.metrics or sklearn.metrics
     :param scoring_strategy: a function to be used for determining optimal
         variables. Should be of the form([floats]) -> index
     :param variable_names: an optional list for variable names. If not given,

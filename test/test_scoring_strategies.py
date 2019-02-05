@@ -1,8 +1,8 @@
 import numpy as np
 import pytest
 
-from src.scoring_strategies import verify_scoring_strategy, VALID_SCORING_STRATEGIES
-from src.error_handling import InvalidStrategyException
+from PermutationImportance.scoring_strategies import verify_scoring_strategy, VALID_SCORING_STRATEGIES
+from PermutationImportance.error_handling import InvalidStrategyException
 
 
 def test_valid_callable():

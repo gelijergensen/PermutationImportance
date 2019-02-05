@@ -4,7 +4,7 @@ variable importance"""
 import numpy as np
 import pandas as pd
 
-from src.error_handling import InvalidDataException
+from .error_handling import InvalidDataException
 
 __all__ = ["add_ranks_to_dict", "get_data_subset", "make_data_from_columns"]
 

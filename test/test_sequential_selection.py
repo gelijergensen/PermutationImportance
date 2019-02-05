@@ -2,8 +2,8 @@
 
 import pandas as pd
 
-from src.result import ImportanceResult
-from src.sequential_selection import sequential_forward_selection, sequential_backward_selection
+from PermutationImportance.result import ImportanceResult
+from PermutationImportance.sequential_selection import sequential_forward_selection, sequential_backward_selection
 
 
 def test_sequential_forward_selection():

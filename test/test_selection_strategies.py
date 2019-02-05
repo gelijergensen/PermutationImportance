@@ -2,7 +2,7 @@
 import numpy as np
 import pytest
 
-from src.selection_strategies import SequentialForwardSelectionStrategy, SequentialBackwardSelectionStrategy, SelectionStrategy, PermutationImportanceSelectionStrategy
+from PermutationImportance.selection_strategies import SequentialForwardSelectionStrategy, SequentialBackwardSelectionStrategy, SelectionStrategy, PermutationImportanceSelectionStrategy
 
 
 def test_selection_strategy():

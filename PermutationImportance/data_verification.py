@@ -4,7 +4,7 @@ two different dataframes, or two numpy arrays"""
 import numpy as np
 import pandas as pd
 
-from src.error_handling import InvalidDataException, InvalidInputException
+from .error_handling import InvalidDataException, InvalidInputException
 
 __all__ = ["verify_data", "determine_variable_names"]
 
