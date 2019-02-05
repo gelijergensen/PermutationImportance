@@ -4,7 +4,6 @@ of both the results without any context (singlepass, Breiman) and the most
 complete context (multipass, Lakshmanan)"""
 
 import warnings
-from itertools import izip
 
 from .error_handling import FullImportanceResultWarning
 
@@ -69,7 +68,7 @@ class ImportanceResult(object):
         return self.contexts[-1]
 
     def __iter__(self):
-        return izip(self.contexts, self.results)
+        return zip(self.contexts, self.results)
 
     def __getitem__(self, index):
         if index < 0:
