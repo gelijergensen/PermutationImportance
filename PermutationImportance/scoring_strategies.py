@@ -6,17 +6,8 @@ import numpy as np
 
 from .error_handling import InvalidStrategyException
 
-__all__ = ["verify_scoring_strategy", "VALID_SCORING_STRATEGIES"]
-
-
-VALID_SCORING_STRATEGIES = {
-    'max': np.argmax,
-    'maximize': np.argmax,
-    'argmax': np.argmax,
-    'min': np.argmin,
-    'minimize': np.argmin,
-    'argmin': np.argmin,
-}
+__all__ = ["verify_scoring_strategy", "VALID_SCORING_STRATEGIES",
+           "argmin_of_mean", "argmax_of_mean"]
 
 
 def verify_scoring_strategy(scoring_strategy):
@@ -35,3 +26,23 @@ def verify_scoring_strategy(scoring_strategy):
     else:
         raise InvalidStrategyException(
             scoring_strategy, options=VALID_SCORING_STRATEGIES.keys())
+
+
+def argmin_of_mean(scores):
+    return np.argmin(np.mean(scores))
+
+
+def argmax_of_mean(scores):
+    return np.argmin(np.mean(scores))
+
+
+VALID_SCORING_STRATEGIES = {
+    'max': np.argmax,
+    'maximize': np.argmax,
+    'argmax': np.argmax,
+    'min': np.argmin,
+    'minimize': np.argmin,
+    'argmin': np.argmin,
+    'argmin_of_mean': argmin_of_mean,
+    'argmax_of_mean': argmax_of_mean,
+}

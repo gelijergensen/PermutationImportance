@@ -48,8 +48,8 @@ def test_model_scorer():
 
     score = score_fn(training_data, scoring_data)
 
-    assert 0 <= score
-    assert score <= 1
+    assert (0 <= score).all()
+    assert (score <= 1).all()
 
     score_fn = model_scorer(model, train_model, predict_model,
                             accuracy_score, nbootstrap=5, subsample=0.2)
@@ -58,8 +58,8 @@ def test_model_scorer():
 
     score = score_fn(training_data, scoring_data)
 
-    assert 0 <= score
-    assert score <= 1
+    assert (0 <= score).all()
+    assert (score <= 1).all()
 
 
 def test_score_sklearn_models():
