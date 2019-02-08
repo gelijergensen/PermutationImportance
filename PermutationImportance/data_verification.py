@@ -69,7 +69,7 @@ def determine_variable_names(data, variable_names):
                 raise InvalidInputException(
                     variable_names, "Variable names should have length %i" % data[0].shape[1])
             else:
-                return variable_names
+                return np.array(variable_names)
     else:
         if isinstance(data[0], pd.DataFrame):
             return data[0].columns.values
