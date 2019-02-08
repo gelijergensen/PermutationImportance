@@ -35,7 +35,7 @@ def sequential_forward_selection(training_data, scoring_data, scoring_fn, scorin
     return abstract_variable_importance(training_data, scoring_data, scoring_fn, scoring_strategy, SequentialForwardSelectionStrategy, variable_names=variable_names, nimportant_vars=nimportant_vars, njobs=njobs)
 
 
-def sklearn_sequential_forward_selection(model, training_data, scoring_data, evaluation_fn, scoring_strategy, variable_names=None, nimportant_vars=None, njobs=1, nbootstrap=1, subsample=1):
+def sklearn_sequential_forward_selection(model, training_data, scoring_data, evaluation_fn, scoring_strategy, variable_names=None, nimportant_vars=None, njobs=1, nbootstrap=None, subsample=1, **kwargs):
     """Performs sequential forward selection for a particular model, 
     scoring_data, evaluation_fn, and strategy for determining optimal variables
 
@@ -46,10 +46,10 @@ def sklearn_sequential_forward_selection(model, training_data, scoring_data, eva
         scoring_fn
     :param evaluation_fn: a function which takes the deterministic or 
         probabilistic model predictions and scores them against the true 
-        values. Must be of the form (truths, predictions) -> float
-        Probably one of the metrics in .metrics or sklearn.metrics
+        values. Must be of the form (truths, predictions) -> some_value
+        Probably one of the metrics in PermutationImportance.metrics or sklearn.metrics
     :param scoring_strategy: a function to be used for determining optimal
-        variables. Should be of the form([floats]) -> index
+        variables. Should be of the form([some_value]) -> index
     :param variable_names: an optional list for variable names. If not given,
         will use names of columns of data(if pandas dataframe) or column
         indices
@@ -64,15 +64,16 @@ def sklearn_sequential_forward_selection(model, training_data, scoring_data, eva
         of total number of events (e.g. 0.5 means half the number of events).
         If not specified, subsampling will not be used and the entire data will
         be used (without replacement)
+    :param kwargs: all other kwargs will be passed on to the evaluation_fn
     :returns: ImportanceResult object which contains the results for each run
     """
     # Check if the data is probabilistic
     if len(scoring_data[1].shape) > 1 and scoring_data[1].shape[1] > 1:
         scoring_fn = score_untrained_sklearn_model_with_probabilities(
-            model, evaluation_fn, nbootstrap=nbootstrap, subsample=subsample)
+            model, evaluation_fn, nbootstrap=nbootstrap, subsample=subsample, **kwargs)
     else:
         scoring_fn = score_untrained_sklearn_model(
-            model, evaluation_fn, nbootstrap=nbootstrap, subsample=subsample)
+            model, evaluation_fn, nbootstrap=nbootstrap, subsample=subsample, **kwargs)
     return sequential_forward_selection(training_data, scoring_data, scoring_fn, scoring_strategy, variable_names=variable_names, nimportant_vars=nimportant_vars, njobs=njobs)
 
 
@@ -100,7 +101,7 @@ def sequential_backward_selection(training_data, scoring_data, scoring_fn, scori
     return abstract_variable_importance(training_data, scoring_data, scoring_fn, scoring_strategy, SequentialBackwardSelectionStrategy, variable_names=variable_names, nimportant_vars=nimportant_vars, njobs=njobs)
 
 
-def sklearn_sequential_backward_selection(model, training_data, scoring_data, evaluation_fn, scoring_strategy, variable_names=None, nimportant_vars=None, njobs=1, nbootstrap=1, subsample=1):
+def sklearn_sequential_backward_selection(model, training_data, scoring_data, evaluation_fn, scoring_strategy, variable_names=None, nimportant_vars=None, njobs=1, nbootstrap=None, subsample=1, **kwargs):
     """Performs sequential backward selection for a particular model, 
     scoring_data, evaluation_fn, and strategy for determining optimal variables
 
@@ -111,10 +112,10 @@ def sklearn_sequential_backward_selection(model, training_data, scoring_data, ev
         scoring_fn
     :param evaluation_fn: a function which takes the deterministic or 
         probabilistic model predictions and scores them against the true 
-        values. Must be of the form (truths, predictions) -> float
-        Probably one of the metrics in .metrics or sklearn.metrics
+        values. Must be of the form (truths, predictions) -> some_value
+        Probably one of the metrics in PermutationImportance.metrics or sklearn.metrics
     :param scoring_strategy: a function to be used for determining optimal
-        variables. Should be of the form([floats]) -> index
+        variables. Should be of the form([some_value]) -> index
     :param variable_names: an optional list for variable names. If not given,
         will use names of columns of data(if pandas dataframe) or column
         indices
@@ -129,13 +130,14 @@ def sklearn_sequential_backward_selection(model, training_data, scoring_data, ev
         of total number of events (e.g. 0.5 means half the number of events).
         If not specified, subsampling will not be used and the entire data will
         be used (without replacement)
+    :param kwargs: all other kwargs will be passed on to the evaluation_fn
     :returns: ImportanceResult object which contains the results for each run
     """
     # Check if the data is probabilistic
     if len(scoring_data[1].shape) > 1 and scoring_data[1].shape[1] > 1:
         scoring_fn = score_untrained_sklearn_model_with_probabilities(
-            model, evaluation_fn, nbootstrap=nbootstrap, subsample=subsample)
+            model, evaluation_fn, nbootstrap=nbootstrap, subsample=subsample, **kwargs)
     else:
         scoring_fn = score_untrained_sklearn_model(
-            model, evaluation_fn, nbootstrap=nbootstrap, subsample=subsample)
+            model, evaluation_fn, nbootstrap=nbootstrap, subsample=subsample, **kwargs)
     return sequential_backward_selection(training_data, scoring_data, scoring_fn, scoring_strategy, variable_names=variable_names, nimportant_vars=nimportant_vars, njobs=njobs)

@@ -20,10 +20,10 @@ def abstract_variable_importance(training_data, scoring_data, scoring_fn, scorin
     :param scoring_data: a 2-tuple (inputs, outputs) for scoring in the
         scoring_fn
     :param scoring_fn: a function to be used for scoring. Should be of the form
-        (training_data, scoring_data) -> float
+        (training_data, scoring_data) -> some value
     :param scoring_strategy: a function to be used for determining optimal
         variables or a string. If a function, should be of the form
-            ([floats]) -> index. If a string, must be one of the options in
+            ([some value]) -> index. If a string, must be one of the options in
         scoring_strategies.VALID_SCORING_STRATEGIES
     :param selection_strategy: an object which, when iterated, produces triples
         (var, training_data, scoring_data). Almost certainly a SelectionStrategy
