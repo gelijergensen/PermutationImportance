@@ -1,4 +1,6 @@
 
+import numpy as np
+
 from sklearn.metrics import accuracy_score
 from sklearn.svm import SVC
 from sklearn.neural_network import MLPClassifier
@@ -60,6 +62,12 @@ def test_model_scorer():
 
     assert (0 <= score).all()
     assert (score <= 1).all()
+
+    score2 = score_fn(
+        (training_data[0][:, 0:0], training_data[1]), scoring_data)
+
+    assert score.shape == score2.shape
+    assert (score_fn.default_score == score2).all()
 
 
 def test_score_sklearn_models():

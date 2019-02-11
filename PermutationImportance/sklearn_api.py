@@ -102,7 +102,10 @@ class model_scorer(object):
         # If we didn't succeed in training (probably because there weren't any
         # training predictors), return the default_score
         if trained_model is None:
-            return self.default_score
+            if self.nbootstrap is None:
+                return self.default_score
+            else:
+                return np.full((self.nbootstrap,), self.default_score)
 
         # Predict
         predictions = self.prediction_fn(trained_model, scoring_inputs)

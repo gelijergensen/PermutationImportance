@@ -53,9 +53,8 @@ def abstract_variable_importance(training_data, scoring_data, scoring_fn, scorin
     important_vars = list()
     num_vars = len(variable_names)
 
-    # Compute the original score (score over no variables considered important)
-    original_score = scoring_fn(*selection_strategy(
-        training_data, scoring_data, num_vars, important_vars).generate_datasets([]))
+    # Compute the original score over all the data
+    original_score = scoring_fn(training_data, scoring_data)
     result_obj = ImportanceResult(method, variable_names, original_score)
     for _ in range(nimportant_vars):
         selection_iter = selection_strategy(
