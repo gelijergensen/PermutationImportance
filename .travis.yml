@@ -2,6 +2,7 @@ language: python
 install:
   - "pip install -U pip"
   - "python setup.py install"
+  - "pip install pytest-timeout"
 jobs:
   include:
     - script: pytest

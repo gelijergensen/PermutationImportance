@@ -5,6 +5,7 @@ import numpy as np
 import multiprocessing as mp
 
 from .data_verification import verify_data, determine_variable_names
+from .multiprocessing_utils import pool_imap_unordered
 from .result import ImportanceResult
 from .scoring_strategies import verify_scoring_strategy
 from .utils import add_ranks_to_dict, get_data_subset
@@ -105,35 +106,7 @@ def _multithread_iteration(selection_iterator, scoring_fn, njobs):
     :param num_jobs: number of processes to use
     :returns: a dict of {var: score}
     """
-    in_queue = mp.Queue(maxsize=njobs)
-    out_queue = mp.Queue()
-    pool = mp.Pool(njobs, initializer=_multithreaded_runner,
-                   initargs=(in_queue, out_queue, scoring_fn))
-    for item in selection_iterator:
-        in_queue.put(item)
-    for _ in range(njobs):
-        # tell the workers we are finished
-        in_queue.put(None)
-    pool.close()
-    pool.join()
     result = dict()
-    while not out_queue.empty():
-        res = out_queue.get()
-        result[res[0]] = res[1]
+    for index, score in pool_imap_unordered(scoring_fn, selection_iterator, njobs):
+        result[index] = score
     return result
-
-
-def _multithreaded_runner(in_queue, out_queue, func):
-    """Actual process running in parallel. Accepts a function to perform on
-    members of the queue. Only applies the function to all but the first item of
-    each member
-
-    :param in_queue: queue which is providing the inputs
-    :param out_queue: queue which holds the outputs
-    """
-    while True:
-        in_args = in_queue.get()
-        if in_args is None:
-            break
-        else:
-            out_queue.put((in_args[0], func(*in_args[1:])))
