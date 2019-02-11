@@ -26,7 +26,7 @@ def test_sequential_forward_selection():
             return scoring_data[0].iloc[1, -1] / 2
 
     expected = ImportanceResult(
-        "Sequential Forward Selection", ["A", "B", "C"], 0)
+        "Sequential Forward Selection", ["A", "B", "C"], 6)
     expected.add_new_results({'A': (0, 2), 'B': (1, 2), 'C': (2, 3)})
     expected.add_new_results({'B': (0, 4), 'C': (1, 6)})
     expected.add_new_results({'C': (0, 6)})
