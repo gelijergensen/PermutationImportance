@@ -4,10 +4,13 @@ https://stackoverflow.com/questions/5318936/python-multiprocessing-pool-lazy-ite
 It allows for a lazy imap over an iterable and the return of very large objects
 """
 
-
 from multiprocessing import Process, Queue, cpu_count
-from Queue import Full as QueueFull
-from Queue import Empty as QueueEmpty
+try:
+    from Queue import Full as QueueFull
+    from Queue import Empty as QueueEmpty
+except ImportError:  # python3
+    from queue import Full as QueueFull
+    from queue import Empty as QueueEmpty
 
 __all__ = ["pool_imap_unordered"]
 

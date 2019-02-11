@@ -23,7 +23,7 @@ CLASSIFIERS = [
 PACKAGE_REQUIREMENTS = ['numpy', 'pandas', 'scipy==1.1.0', 'sklearn']
 
 if __name__ == '__main__':
-    setup(name='PermutationImportance', version='1.2.1.2',
+    setup(name='PermutationImportance', version='1.2.1.3',
           description=SHORT_DESCRIPTION,
           author='G. Eli Jergensen', author_email='gelijergensen@ou.edu',
           long_description=long_description,
