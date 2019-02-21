@@ -1,5 +1,22 @@
-"""These tools are useful to assist the training and evaluation of sklearn 
-models as components of a scoring function"""
+"""While the various variable importance methods can, in general, for many 
+different situations, such as evaluating the model-agnostic presence of 
+information withing a dataset, the most typical application of the method is to
+determine the importance of variables as evaluated by a particular model. The 
+tools provide here are useful to assist in the training and evaluation of 
+sklearn models. This is done by wrapping the training and evaluation of the 
+model into a single function which is then used as the `scoring_fn` of a 
+generalized variable importance method.
+
+All of the variable importance methods with a "sklearn_" prefix use these tools
+to determine 1) whether to retrain a model at each step (as is necessary for
+Sequential Selection, but not for Permutation Importance) and 2) how to evaluate
+the resulting predictions of a model.
+
+Here, the powerhouse is the `model_scorer` object, which handles all of the 
+typical use-cases for any model by separately applying a training, prediction,
+and evaluation function. Supplied with proper functions for each of these, the
+`model_scorer` object could also be implemented to score other types of models,
+such as Keras models."""
 
 import numpy as np
 from sklearn.base import clone
@@ -28,18 +45,22 @@ def get_model(model, training_inputs, training_outputs):
 
 
 def predict_model(model, scoring_inputs):
-    """Uses a trained model to predict over the scoring data"""
+    """Uses a trained scikit-learn model to predict over the scoring data"""
     return model.predict(scoring_inputs)
 
 
 def predict_proba_model(model, scoring_inputs):
-    """Uses a trained model to predict class probabilities for the scoring data"""
+    """Uses a trained scikit-learn model to predict class probabilities for the 
+    scoring data"""
     return model.predict_proba(scoring_inputs)
 
 
 class model_scorer(object):
-    """General purpose scoring method which trains a model, uses the model to
-    predict, and evaluates the predictions with some metric
+    """General purpose scoring method which takes a particular model, trains the
+    model over the given training data, uses the trained model to predict on the
+    given scoring data, and then evaluates those predictions using some 
+    evaluation function. Additionally provides the tools for bootstrapping the
+    scores and providing a distribution of scores to be used for statistics.
     """
 
     def __init__(self, model, training_fn, prediction_fn, evaluation_fn, default_score=0.0, nbootstrap=None, subsample=1, **kwargs):
@@ -173,8 +194,8 @@ def score_untrained_sklearn_model_with_probabilities(model, evaluation_fn, nboot
 
 
 def score_trained_sklearn_model(model, evaluation_fn, nbootstrap=None, subsample=1, **kwargs):
-    """A convenience method which uses the default training and the 
-    deterministic prediction methods for scikit-learn to evaluate a model
+    """A convenience method which does not retrain a scikit-learn model and uses
+    deterministic prediction methods to evaluate the model
 
     :param model: a scikit-learn model
     :param evaluation_fn: a function which takes the deterministic or 
@@ -196,8 +217,8 @@ def score_trained_sklearn_model(model, evaluation_fn, nbootstrap=None, subsample
 
 
 def score_trained_sklearn_model_with_probabilities(model, evaluation_fn, nbootstrap=None, subsample=1, **kwargs):
-    """A convenience method which uses the default training and the 
-    probabilistic prediction methods for scikit-learn to evaluate a model
+    """A convenience method which does not retrain a scikit-learn model and uses
+    probabilistic prediction methods to evaluate the model
 
     :param model: a scikit-learn model
     :param evaluation_fn: a function which takes the deterministic or 

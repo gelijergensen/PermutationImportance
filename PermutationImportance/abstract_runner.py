@@ -1,5 +1,17 @@
-"""While there are slightly different strategies for performing the various
-importance methods, they all use the same base idea, which is represented here"""
+"""The general algorithm for all of the data-based variable importance methods
+is the same, regardless of whether the method is Sequential Selection or 
+Permutation Importance or something else. This is represented in the 
+`abstract_variable_importance` function. All of the different methods we provide
+use this function under the hood and the only difference between them is the
+`selection_strategy` object, which is detailed in 
+PermutationImportance.selection_strategies. Typically, you will not need to use
+this method but can instead us one of the methods imported directly into the 
+top package of PermutationImportance.
+
+If you wish to implement your own variable importance method, you will need to
+devise your own `selection_strategy`. We recommend using
+PermutationImportance.sequential_selection as a template for implementing your
+own variable importance method."""
 
 import numpy as np
 import multiprocessing as mp
@@ -12,7 +24,7 @@ from .utils import add_ranks_to_dict, get_data_subset
 
 
 def abstract_variable_importance(training_data, scoring_data, scoring_fn, scoring_strategy, selection_strategy, variable_names=None, nimportant_vars=None, method=None, njobs=1):
-    """Performs an abstract sequential selection over data given a particular
+    """Performs an abstract variable importance over data given a particular
     set of functions for scoring, determining optimal variables, and selecting
     data
 
@@ -78,8 +90,8 @@ def abstract_variable_importance(training_data, scoring_data, scoring_fn, scorin
 
 
 def _singlethread_iteration(selection_iterator, scoring_fn):
-    """Handles a single pass of the sequential selection algorithm, assuming a
-    single worker thread
+    """Handles a single pass of the abstract variable importance algorithm, 
+    assuming a single worker thread
 
     :param selection_iterator: an object which, when iterated, produces triples
         (var, training_data, scoring_data). Typically a SelectionStrategy
@@ -95,8 +107,8 @@ def _singlethread_iteration(selection_iterator, scoring_fn):
 
 
 def _multithread_iteration(selection_iterator, scoring_fn, njobs):
-    """Handles a single pass of the sequential selection algorithm, assuming a
-    single worker thread
+    """Handles a single pass of the abstract variable importance algorithm using
+    multithreading
 
     :param selection_iterator: an object which, when iterated, produces triples
         (var, training_data, scoring_data). Typically a SelectionStrategy

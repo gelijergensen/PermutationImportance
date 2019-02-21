@@ -1,6 +1,15 @@
-"""Permutation Importance iteratively adds variables to the set of important 
-variables by permuting the columns of variables considered important and 
-evaluating a model on the partially permuted data"""
+"""Permutation Importance determines which variables are important by comparing
+performance on a dataset where some of the variables are permuted in their 
+individual columns to performance on the dataset without any permutation. The
+permutation of an individual variable in this manner has the effect of breaking
+any relationship between the input variable and the target. The variable which,
+when permuted, results in the worst performance is typically taken as the most
+important variable.
+
+Typically, when using a performance metric or skill score with Permutation 
+Importance, the `scoring_strategy` should be to minimize the performance. On the
+other hand, when using an error or loss function, the `scoring_strategy` should
+be to maximize the error or loss function."""
 
 import numpy as np
 

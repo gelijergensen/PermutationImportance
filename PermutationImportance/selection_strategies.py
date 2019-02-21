@@ -1,15 +1,36 @@
+"""Each of the various variable importance methods uses the same code to compute
+successively important variables. The only difference between each of these 
+methods is the data which is provided to the scoring function. The 
+`SelectionStrategy` handles the process of converting the original training
+and scoring data to the form required for each of the individual variables. This
+is done by using the current list of important variables to generate a sequence
+of triples (variable, training_data, scoring_data), which will later be passed
+to the scoring function to determine the score for variable.
+
+Below, `SelectionStrategy` encapsulates the base functionality which houses the
+parameters necessary to produce the generator as well as the default method for
+providing only the datasets which are necessary to be evaluated. Each of the
+other classes extends this base class to implement a particular variable 
+importance method.
+
+If you wish to design your own variable importance method, you will want to
+extend the `SelectionStrategy` base class in the same way as the other 
+strategies.
+"""
 
 import numpy as np
 
 from .utils import get_data_subset, make_data_from_columns
 
 __all__ = ["SequentialForwardSelectionStrategy",
-           "SequentialBackwardSelectionStrategy"]
+           "SequentialBackwardSelectionStrategy",
+           "PermutationImportanceSelectionStrategy"]
 
 
 class SelectionStrategy(object):
-    """Selection strategies accept the data and know how to provide necessary
-    subsets of it"""
+    """The base SelectionStrategy only provides the tools for storing the 
+    data and other important information as well as the convenience method for
+    iterating over the selection strategies triples lazily."""
 
     name = "Abstract Selection Strategy"
 
@@ -46,14 +67,16 @@ class SelectionStrategy(object):
 
 
 class SequentialForwardSelectionStrategy(SelectionStrategy):
-    """Sequential Forward Selection tests each variable and attempts to add one
-    new variable to the dataset on each iteration"""
+    """Sequential Forward Selection tests all variables which are not yet 
+    considered important by adding that columns to the other columns which are
+    returned. This means that the shape of the training_data will be
+    (num_rows, num_important_vars + 1)."""
 
     name = "Sequential Forward Selection"
 
     def generate_datasets(self, important_variables):
-        """Check each of the non-important variables. Dataset is the columns which
-        are important
+        """Check each of the non-important variables. Dataset is the columns 
+        which are important
 
         :returns: (training_data, scoring_data)
         """
@@ -71,14 +94,16 @@ class SequentialForwardSelectionStrategy(SelectionStrategy):
 
 
 class SequentialBackwardSelectionStrategy(SelectionStrategy):
-    """Sequential Backward Selection tests each variable and attempts to remove
-    one new variable from the dataset on each iteration"""
+    """Sequential Backward Selection tests all variables which are not yet 
+    considered important by removing that column from the data. This means that
+    the shape of the training_data will be 
+    (num_rows, num_vars - num_important_vars - 1)."""
 
     name = "Sequential Backward Selection"
 
     def generate_datasets(self, important_variables):
-        """Check each of the non-important variables. Dataset is the columns which
-        are not important
+        """Check each of the non-important variables. Dataset is the columns 
+        which are not important
 
         :yields: a sequence of (variable being evaluated, columns to include)
         """
@@ -97,7 +122,10 @@ class SequentialBackwardSelectionStrategy(SelectionStrategy):
 
 
 class PermutationImportanceSelectionStrategy(SelectionStrategy):
-    """Permutation Importance shuffles the columns which are important"""
+    """Permutation Importance tests all variables which are not yet considered
+    important by shuffling that column in addition to the columns of the 
+    variables which are considered important. The shape of the data will remain
+    constant, but at each step, one additional columns will be permuted."""
 
     name = "Permutation Importance"
 
@@ -108,8 +136,8 @@ class PermutationImportanceSelectionStrategy(SelectionStrategy):
         :param training_data: (training_inputs, training_outputs)
         :param scoring_data: (scoring_inputs, scoring_outputs)
         :param num_vars: integer for the total number of variables
-        :param important_vars: a list of the indices of variables which are already
-            considered important
+        :param important_vars: a list of the indices of variables which are 
+            already considered important
         """
         super(PermutationImportanceSelectionStrategy, self).__init__(
             training_data, scoring_data, num_vars, important_vars)

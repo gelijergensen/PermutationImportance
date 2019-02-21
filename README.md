@@ -2,6 +2,17 @@
 
 [![Build Status](https://travis-ci.com/gelijergensen/PermutationImportance.svg?branch=master)](https://travis-ci.com/gelijergensen/PermutationImportance)
 
+### Ideas for examples:
+
+1. Straight-forward use of each method with a toy problem
+2. More complex use of Permutation Importance (not the sklearn version)
+3. Construction and use of a custom metric (bias)
+4. Construction and use of a corresponding scoring strategy (and with
+   bootstrapping)
+5. Plotting code
+6. Modification of sklearn api to use Keras model
+7. Construction of selection strategy to use abstract runner method
+
 ### Update (05 Feb. 2019):
 
 The documentation is not yet up-to-date for the current version (1.2.0.0). We

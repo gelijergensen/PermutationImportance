@@ -1,6 +1,12 @@
-"""A scoring strategy is a function which takes a list of floats and returns
-the index of the one which should be considered most "optimal". For instance, if
-we want to maximize, then we should return the argmax"""
+"""In a variable importance method, the `scoring_strategy` is a function which 
+is used to determine which of the scores corresponding to a given variable 
+indicates that the variable is "most important". This will be dependent on the
+particular type of object which is returned as a score.
+
+Here, we provide a few functions which can be used directly as scoring 
+strategies as well as some utilities for construction scoring strategies. 
+Moreover, we also provide a dictionary of aliases for several commonly used
+strategies in VALID_SCORING_STRATEGIES."""
 
 import numpy as np
 
@@ -29,6 +35,15 @@ def verify_scoring_strategy(scoring_strategy):
 
 
 class indexer_of_converter(object):
+    """This object is designed to help construct a scoring strategy by breaking
+    the process of determining an optimal score into two pieces:
+    First, each of the scores are converted to a simpler representation. For 
+    instance, an array of scores resulting from a bootstrapped evaluation method
+    may be converted to just their mean.
+    Second, each of the simpler representations are compared to determine the 
+    index of the one which is most optimal. This is typically just an `argmin`
+    or `argmax` call.
+    """
 
     def __init__(self, indexer, converter):
         """Constructs a function which first converts all objects in a list to

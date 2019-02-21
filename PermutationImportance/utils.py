@@ -1,5 +1,5 @@
-"""Various and sundry useful functions which handy for different types of
-variable importance"""
+"""Various and sundry useful functions which are handy for manipulating data or
+results of the variable importance"""
 
 import numpy as np
 import pandas as pd
@@ -10,7 +10,8 @@ __all__ = ["add_ranks_to_dict", "get_data_subset", "make_data_from_columns"]
 
 
 def add_ranks_to_dict(result, variable_names, scoring_strategy):
-    """Takes a list of (var, score) and converts to a dictionary
+    """Takes a list of (var, score) and converts to a dictionary of 
+    {var: (rank, score)}
 
     :param result: a dict of {var_index: score}
     :param variable_names: a list of variable names
@@ -33,7 +34,8 @@ def add_ranks_to_dict(result, variable_names, scoring_strategy):
 
 
 def get_data_subset(data, rows=None, columns=None):
-    """Returns a subset of the data corresponding to the desired columns
+    """Returns a subset of the data corresponding to the desired rows and
+    columns
 
     :param data: either a pandas dataframe or a numpy array
     :param rows: a list of row indices

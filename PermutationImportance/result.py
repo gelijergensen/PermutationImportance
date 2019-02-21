@@ -1,7 +1,11 @@
-"""The result object keeps track of the "context" for each round of results as
-well as the actual results. Additionally, it provides methods for the retrieval
-of both the results without any context (singlepass, Breiman) and the most 
-complete context (multipass, Lakshmanan)"""
+"""The `ImportanceResult` is an object which keeps track of the full context and
+scoring determined by a variable importance method. Because the variable 
+importance methods iteratively determine the next most important variable, this
+yields a sequence of pairs of "contexts" (i.e. the previous ranks/scores of 
+variables) and "results" (i.e. the current ranks/scores of variables). This
+object keeps track of those pairs and additionally provides methods for the easy
+retrieve of both the results with empty context (singlepass, Breiman) and the
+most complete context (multipass, Lakshmanan)."""
 
 import warnings
 
@@ -40,7 +44,8 @@ class ImportanceResult(object):
         self.complete = False
 
     def add_new_results(self, new_results, next_important_variable=None):
-        """Adds a new round of results
+        """Adds a new round of results. Warns if the ImportanceResult is already
+        complete
 
         :param new_results: a dictionary with keys of variable names and values
             of (rank, score)
@@ -67,9 +72,13 @@ class ImportanceResult(object):
                 "Cannot add new result to full ImportanceResult", FullImportanceResultWarning)
 
     def retrieve_singlepass(self):
+        """Returns the singlepass results as a dictionary with keys of variable 
+        names and values of (rank, score)."""
         return self.results[0]
 
     def retrieve_multipass(self):
+        """Returns the multipass results as a dictionary with keys of variable 
+        names and values of (rank, score)."""
         return self.contexts[-1]
 
     def __iter__(self):

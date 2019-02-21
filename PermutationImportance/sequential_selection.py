@@ -1,5 +1,26 @@
-"""Sequential Selection methods iteratively add variables to the set of 
-important variables by training a new model for each subset of the variables"""
+"""Sequential Selection determines which variables are important by evaluating
+performance on a dataset where only some of the variables are present. Variables
+which, when present, greatly improve the performance are typically considered
+important and varaibles which, when removed, do not or only minorly degrade the
+performance are typically considered unimportant.
+
+Sequential Forward Selection iteratively adds variables to the set of important
+variables, meaning that initially the dataset is empty and at each step the
+number of columns in the dataset increases by 1. A variable which, when added
+results in the best performance is typically taken as the most important 
+variable.
+
+Sequential Backward Selection iteratively removes variables from the set of 
+important variables, meaning that initially the dataset is complete and at each 
+step the number of columns in the dataset decreases by 1. A variable which, when
+removed, results in the best performance is typically taken as the least 
+important variable.
+
+Typically, when using a performance metric or skill score with any Sequential
+Selection method, the `scoring_strategy` should be to maximize the performance.
+On the other hand, when using an error or loss function, the `scoring_strategy`
+should be to minimize the error or loss function."""
+
 
 from .abstract_runner import abstract_variable_importance
 from .selection_strategies import SequentialForwardSelectionStrategy, SequentialBackwardSelectionStrategy

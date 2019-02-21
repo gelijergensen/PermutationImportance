@@ -1,5 +1,7 @@
-"""We can accept either a pandas dataframe with the target column indicated,
-two different dataframes, or two numpy arrays"""
+"""These utilities are designed to check whether the given data and variable
+names match the expected format. For the training or scoring data, we accept 
+either a pandas dataframe with the target column indicated, two different 
+dataframes, or two numpy arrays"""
 
 import numpy as np
 import pandas as pd
