@@ -13,3 +13,6 @@ env/
 
 # Vscode directory
 .vscode/
+
+# Documentation helpers
+docs/_*/

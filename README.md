@@ -1,6 +1,7 @@
 # PermutationImportance
 
 [![Build Status](https://travis-ci.com/gelijergensen/PermutationImportance.svg?branch=master)](https://travis-ci.com/gelijergensen/PermutationImportance)
+[![Documentation Status](https://readthedocs.org/projects/permutationimportance/badge/?version=latest)](https://permutationimportance.readthedocs.io/en/latest/?badge=latest)
 
 ### Ideas for examples:
 
