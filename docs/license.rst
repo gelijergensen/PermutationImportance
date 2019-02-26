@@ -1,6 +1,9 @@
 .. title:: License
 
-.. license:
+.. _license:
+
+License
+=======
 
 MIT License
 -----------
