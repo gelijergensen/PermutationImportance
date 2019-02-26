@@ -7,9 +7,9 @@ with open("README.md", "r") as fh:
 
 PACKAGE_NAMES = ['PermutationImportance']
 KEYWORDS = [
-    'variable importance', 'model evaluation']
+    'predictor importance', 'variable importance', 'model evaluation']
 SHORT_DESCRIPTION = (
-    'Important variables determined through permutation selection')
+    'Important variables determined through data-based variable importance methods')
 
 CLASSIFIERS = [
     'Development Status :: 4 - Beta',
@@ -23,7 +23,7 @@ CLASSIFIERS = [
 PACKAGE_REQUIREMENTS = ['numpy', 'pandas', 'scipy==1.1.0', 'sklearn']
 
 if __name__ == '__main__':
-    setup(name='PermutationImportance', version='1.2.1.4',
+    setup(name='PermutationImportance', version='1.2.1.5',
           description=SHORT_DESCRIPTION,
           author='G. Eli Jergensen', author_email='gelijergensen@ou.edu',
           long_description=long_description,

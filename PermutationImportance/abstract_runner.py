@@ -28,28 +28,26 @@ def abstract_variable_importance(training_data, scoring_data, scoring_fn, scorin
     set of functions for scoring, determining optimal variables, and selecting
     data
 
-    :param training_data: a 2-tuple (inputs, outputs) for training in the
+    :param training_data: a 2-tuple ``(inputs, outputs)`` for training in the
         scoring_fn
-    :param scoring_data: a 2-tuple (inputs, outputs) for scoring in the
+    :param scoring_data: a 2-tuple ``(inputs, outputs)`` for scoring in the
         scoring_fn
     :param scoring_fn: a function to be used for scoring. Should be of the form
-        (training_data, scoring_data) -> some value
+        ``(training_data, scoring_data) -> some_value``, but should only use the 
+        scoring_data to produce a score
     :param scoring_strategy: a function to be used for determining optimal
-        variables or a string. If a function, should be of the form
-            ([some value]) -> index. If a string, must be one of the options in
-        scoring_strategies.VALID_SCORING_STRATEGIES
-    :param selection_strategy: an object which, when iterated, produces triples
-        (var, training_data, scoring_data). Almost certainly a SelectionStrategy
+        variables. Should be of the form ``([some_value]) -> index``
     :param variable_names: an optional list for variable names. If not given,
         will use names of columns of data (if pandas dataframe) or column
         indices
-    :param nimportant_vars: number of times to compute the next most important
-        variable. Defaults to all
+    :param nimportant_vars: number of variables to compute importance for.
+        Defaults to all variables
     :param method: a string for the name of the method used. Defaults to the
         name of the selection_strategy if not given
     :param njobs: an integer for the number of threads to use. If negative, will
-        use the number of cpus + njobs. Defaults to 1
-    :returns: ImportanceResult object which contains the results for each run
+        use ``num_cpus + njobs``. Defaults to 1
+    :returns: :ref:`ImportanceResult<importance_result>` object which contains 
+        the results for each run
     """
 
     training_data = verify_data(training_data)

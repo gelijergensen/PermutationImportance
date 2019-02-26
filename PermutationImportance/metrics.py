@@ -16,8 +16,7 @@ __all__ = ["gerrity_score", "peirce_skill_score", "heidke_skill_score"]
 
 
 def gerrity_score(truths, predictions, classes=None):
-    """Determines the Gerrity Score, returning a scalar. See 
-    http://www.cawcr.gov.au/projects/verification/#Methods_for_multi-category_forecasts
+    """Determines the Gerrity Score, returning a scalar. See `here <http://www.cawcr.gov.au/projects/verification/#Methods_for_multi-category_forecasts>`_
     for more details on the Gerrity Score
 
     :param truths: The true labels of these data
@@ -32,7 +31,7 @@ def gerrity_score(truths, predictions, classes=None):
 
 def peirce_skill_score(truths, predictions, classes=None):
     """Determines the Peirce Skill Score (True Skill Score), returning a scalar.
-    See http://www.cawcr.gov.au/projects/verification/#Methods_for_multi-category_forecasts
+    See `here <http://www.cawcr.gov.au/projects/verification/#Methods_for_multi-category_forecasts>`_
     for more details on the Peirce Skill Score
 
     :param truths: The true labels of these data
@@ -47,7 +46,7 @@ def peirce_skill_score(truths, predictions, classes=None):
 
 def heidke_skill_score(truths, predictions, classes=None):
     """Determines the Heidke Skill Score, returning a scalar. See
-    http://www.cawcr.gov.au/projects/verification/#Methods_for_multi-category_forecasts
+    `here <http://www.cawcr.gov.au/projects/verification/#Methods_for_multi-category_forecasts>`_
     for more details on the Peirce Skill Score
 
     :param truths: The true labels of these data

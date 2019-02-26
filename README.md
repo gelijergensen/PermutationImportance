@@ -6,13 +6,14 @@
 ### Ideas for examples:
 
 1. Straight-forward use of each method with a toy problem
-2. More complex use of Permutation Importance (not the sklearn version)
-3. Construction and use of a custom metric (bias)
-4. Construction and use of a corresponding scoring strategy (and with
+2. Simple usage of all objects
+3. More complex use of Permutation Importance (not the sklearn version)
+4. Construction and use of a custom metric (bias)
+5. Construction and use of a corresponding scoring strategy (and with
    bootstrapping)
-5. Plotting code
-6. Modification of sklearn api to use Keras model
-7. Construction of selection strategy to use abstract runner method
+6. Plotting code
+7. Modification of sklearn api to use Keras model
+8. Construction of selection strategy to use abstract runner method
 
 ### Update (05 Feb. 2019):
 

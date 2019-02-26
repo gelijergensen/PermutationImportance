@@ -37,7 +37,7 @@ def permutation_importance(scoring_data, scoring_fn, scoring_strategy, variable_
     :param nimportant_vars: number of variables to compute multipass importance
         for. Defaults to all variables
     :param njobs: an integer for the number of threads to use. If negative, will
-        use the number of `cpus + njobs``. Defaults to 1
+        use ``num_cpus + njobs``. Defaults to 1
     :returns: :ref:`ImportanceResult<importance_result>` object which contains 
         the results for each run
     """
@@ -66,7 +66,7 @@ def sklearn_permutation_importance(model, scoring_data, evaluation_fn, scoring_s
     :param nimportant_vars: number of variables to compute multipass importance
         for. Defaults to all variables
     :param njobs: an integer for the number of threads to use. If negative, will
-        use the number of ``cpus + njobs``. Defaults to 1
+        use ``num_cpus + njobs``. Defaults to 1
     :param nbootstrap: number of times to perform scoring on each variable.
         Results over different bootstrap iterations are averaged. Defaults to 1
     :param subsample: number of elements to sample (with replacement) per

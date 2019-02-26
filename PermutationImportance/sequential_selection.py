@@ -1,7 +1,7 @@
 """Sequential Selection determines which variables are important by evaluating
 performance on a dataset where only some of the variables are present. Variables
 which, when present, greatly improve the performance are typically considered
-important and varaibles which, when removed, do not or only minorly degrade the
+important and variables which, when removed, do not or only minorly degrade the
 performance are typically considered unimportant.
 
 Sequential Forward Selection iteratively adds variables to the set of important
@@ -36,22 +36,24 @@ def sequential_forward_selection(training_data, scoring_data, scoring_fn, scorin
     """Performs sequential forward selection over data given a particular
     set of functions for scoring and determining optimal variables
 
-    :param training_data: a 2-tuple(inputs, outputs) for training in the
+    :param training_data: a 2-tuple ``(inputs, outputs)`` for training in the
         scoring_fn
-    :param scoring_data: a 2-tuple(inputs, outputs) for scoring in the
+    :param scoring_data: a 2-tuple ``(inputs, outputs)`` for scoring in the
         scoring_fn
     :param scoring_fn: a function to be used for scoring. Should be of the form
-        (training_data, scoring_data) -> float
+        ``(training_data, scoring_data) -> some_value``, but should only use the 
+        scoring_data to produce a score
     :param scoring_strategy: a function to be used for determining optimal
-        variables. Should be of the form([floats]) -> index
+        variables. Should be of the form ``([some_value]) -> index``
     :param variable_names: an optional list for variable names. If not given,
-        will use names of columns of data(if pandas dataframe) or column
+        will use names of columns of data (if pandas dataframe) or column
         indices
-    :param nimportant_vars: number of times to compute the next most important
-        variable. Defaults to all
+    :param nimportant_vars: number of variables to compute importance for.
+        Defaults to all variables
     :param njobs: an integer for the number of threads to use. If negative, will
-        use the number of cpus + njobs. Defaults to 1
-    :returns: ImportanceResult object which contains the results for each run
+        use ``num_cpus + njobs``. Defaults to 1
+    :returns: :ref:`ImportanceResult<importance_result>` object which contains 
+        the results for each run
     """
     return abstract_variable_importance(training_data, scoring_data, scoring_fn, scoring_strategy, SequentialForwardSelectionStrategy, variable_names=variable_names, nimportant_vars=nimportant_vars, njobs=njobs)
 
@@ -61,23 +63,25 @@ def sklearn_sequential_forward_selection(model, training_data, scoring_data, eva
     scoring_data, evaluation_fn, and strategy for determining optimal variables
 
     :param model: a sklearn model
-    :param training_data: a 2-tuple(inputs, outputs) for training in the
+    :param training_data: a 2-tuple ``(inputs, outputs)`` for training in the
         scoring_fn
-    :param scoring_data: a 2-tuple(inputs, outputs) for scoring in the
+    :param scoring_data: a 2-tuple ``(inputs, outputs)`` for scoring in the
         scoring_fn
     :param evaluation_fn: a function which takes the deterministic or 
         probabilistic model predictions and scores them against the true 
-        values. Must be of the form (truths, predictions) -> some_value
-        Probably one of the metrics in PermutationImportance.metrics or sklearn.metrics
+        values. Must be of the form ``(truths, predictions) -> some_value``
+        Probably one of the metrics in 
+        :ref:`PermutationImportance.metrics<metrics>` or 
+        `sklearn.metrics <https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics>`_
     :param scoring_strategy: a function to be used for determining optimal
-        variables. Should be of the form([some_value]) -> index
+        variables. Should be of the form ``([some_value]) -> index``
     :param variable_names: an optional list for variable names. If not given,
-        will use names of columns of data(if pandas dataframe) or column
+        will use names of columns of data (if pandas dataframe) or column
         indices
-    :param nimportant_vars: number of times to compute the next most important
-        variable. Defaults to all
+    :param nimportant_vars: number of variables to compute importance for.
+        Defaults to all variables
     :param njobs: an integer for the number of threads to use. If negative, will
-        use the number of cpus + njobs. Defaults to 1
+        use ``num_cpus + njobs``. Defaults to 1
     :param nbootstrap: number of times to perform scoring on each variable.
         Results over different bootstrap iterations are averaged. Defaults to 1
     :param subsample: number of elements to sample (with replacement) per
@@ -86,7 +90,8 @@ def sklearn_sequential_forward_selection(model, training_data, scoring_data, eva
         If not specified, subsampling will not be used and the entire data will
         be used (without replacement)
     :param kwargs: all other kwargs will be passed on to the evaluation_fn
-    :returns: ImportanceResult object which contains the results for each run
+    :returns: :ref:`ImportanceResult<importance_result>` object which contains 
+        the results for each run
     """
     # Check if the data is probabilistic
     if len(scoring_data[1].shape) > 1 and scoring_data[1].shape[1] > 1:
@@ -102,22 +107,24 @@ def sequential_backward_selection(training_data, scoring_data, scoring_fn, scori
     """Performs sequential backward selection over data given a particular
     set of functions for scoring and determining optimal variables
 
-    :param training_data: a 2-tuple(inputs, outputs) for training in the
+    :param training_data: a 2-tuple ``(inputs, outputs)`` for training in the
         scoring_fn
-    :param scoring_data: a 2-tuple(inputs, outputs) for scoring in the
+    :param scoring_data: a 2-tuple ``(inputs, outputs)`` for scoring in the
         scoring_fn
     :param scoring_fn: a function to be used for scoring. Should be of the form
-        (training_data, scoring_data) -> float
+        ``(training_data, scoring_data) -> some_value``, but should only use the 
+        scoring_data to produce a score
     :param scoring_strategy: a function to be used for determining optimal
-        variables. Should be of the form([floats]) -> index
+        variables. Should be of the form ``([some_value]) -> index``
     :param variable_names: an optional list for variable names. If not given,
-        will use names of columns of data(if pandas dataframe) or column
+        will use names of columns of data (if pandas dataframe) or column
         indices
-    :param nimportant_vars: number of times to compute the next most important
-        variable. Defaults to all
+    :param nimportant_vars: number of variables to compute importance for.
+        Defaults to all variables
     :param njobs: an integer for the number of threads to use. If negative, will
-        use the number of cpus + njobs. Defaults to 1
-    :returns: ImportanceResult object which contains the results for each run
+        use ``num_cpus + njobs``. Defaults to 1
+    :returns: :ref:`ImportanceResult<importance_result>` object which contains 
+        the results for each run
     """
     return abstract_variable_importance(training_data, scoring_data, scoring_fn, scoring_strategy, SequentialBackwardSelectionStrategy, variable_names=variable_names, nimportant_vars=nimportant_vars, njobs=njobs)
 
@@ -126,24 +133,25 @@ def sklearn_sequential_backward_selection(model, training_data, scoring_data, ev
     """Performs sequential backward selection for a particular model, 
     scoring_data, evaluation_fn, and strategy for determining optimal variables
 
-    :param model: a sklearn model
-    :param training_data: a 2-tuple(inputs, outputs) for training in the
+    :param training_data: a 2-tuple ``(inputs, outputs)`` for training in the
         scoring_fn
-    :param scoring_data: a 2-tuple(inputs, outputs) for scoring in the
+    :param scoring_data: a 2-tuple ``(inputs, outputs)`` for scoring in the
         scoring_fn
     :param evaluation_fn: a function which takes the deterministic or 
         probabilistic model predictions and scores them against the true 
-        values. Must be of the form (truths, predictions) -> some_value
-        Probably one of the metrics in PermutationImportance.metrics or sklearn.metrics
+        values. Must be of the form ``(truths, predictions) -> some_value``
+        Probably one of the metrics in 
+        :ref:`PermutationImportance.metrics<metrics>` or 
+        `sklearn.metrics <https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics>`_
     :param scoring_strategy: a function to be used for determining optimal
-        variables. Should be of the form([some_value]) -> index
+        variables. Should be of the form ``([some_value]) -> index``
     :param variable_names: an optional list for variable names. If not given,
-        will use names of columns of data(if pandas dataframe) or column
+        will use names of columns of data (if pandas dataframe) or column
         indices
-    :param nimportant_vars: number of times to compute the next most important
-        variable. Defaults to all
+    :param nimportant_vars: number of variables to compute importance for.
+        Defaults to all variables
     :param njobs: an integer for the number of threads to use. If negative, will
-        use the number of cpus + njobs. Defaults to 1
+        use ``num_cpus + njobs``. Defaults to 1
     :param nbootstrap: number of times to perform scoring on each variable.
         Results over different bootstrap iterations are averaged. Defaults to 1
     :param subsample: number of elements to sample (with replacement) per
@@ -152,7 +160,8 @@ def sklearn_sequential_backward_selection(model, training_data, scoring_data, ev
         If not specified, subsampling will not be used and the entire data will
         be used (without replacement)
     :param kwargs: all other kwargs will be passed on to the evaluation_fn
-    :returns: ImportanceResult object which contains the results for each run
+    :returns: :ref:`ImportanceResult<importance_result>` object which contains 
+        the results for each run
     """
     # Check if the data is probabilistic
     if len(scoring_data[1].shape) > 1 and scoring_data[1].shape[1] > 1:

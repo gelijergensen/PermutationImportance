@@ -11,15 +11,17 @@ predictor importance. The methods implemented are model-agnostic and can be used
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
    about.rst
    abstraction.rst
    permutation.rst
-   metrics.rst
+   sequentialselection.rst
    result.rst
+   metrics.rst
    license.rst
+   modules.rst
    
 
 
