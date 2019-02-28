@@ -26,6 +26,8 @@ This method was originally designed for random forests by :ref:`Breiman (2001)<p
 
 
 
+TODO say that we ignore training_data!
+
 Usage
 -----
 
@@ -42,12 +44,14 @@ Model-Based
 ^^^^^^^^^^^
 
 .. autofunction:: PermutationImportance.permutation_importance.sklearn_permutation_importance
+   :noindex:
 
 
 Method-Specific
 ^^^^^^^^^^^^^^^
 
 .. autofunction:: PermutationImportance.permutation_importance.permutation_importance
+   :noindex:
 
 .. _permutation-references:
 

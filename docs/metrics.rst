@@ -16,12 +16,15 @@ as the ``evaluation_fn`` of a model-based method. In addition to these metrics, 
 -----
 
 .. autofunction:: PermutationImportance.metrics.gerrity_score
+   :noindex:
 
 -----
 
 .. autofunction:: PermutationImportance.metrics.peirce_skill_score
+   :noindex:
 
 -----
 
 .. autofunction:: PermutationImportance.metrics.heidke_skill_score
+   :noindex:
 

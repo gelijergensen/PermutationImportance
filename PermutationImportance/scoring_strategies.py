@@ -1,4 +1,4 @@
-"""In a variable importance method, the `scoring_strategy` is a function which 
+"""In a variable importance method, the ``scoring_strategy`` is a function which 
 is used to determine which of the scores corresponding to a given variable 
 indicates that the variable is "most important". This will be dependent on the
 particular type of object which is returned as a score.
@@ -6,7 +6,8 @@ particular type of object which is returned as a score.
 Here, we provide a few functions which can be used directly as scoring 
 strategies as well as some utilities for construction scoring strategies. 
 Moreover, we also provide a dictionary of aliases for several commonly used
-strategies in VALID_SCORING_STRATEGIES."""
+strategies in ``VALID_SCORING_STRATEGIES``.
+"""
 
 import numpy as np
 
@@ -21,8 +22,8 @@ def verify_scoring_strategy(scoring_strategy):
 
     :param scoring_strategy: a function to be used for determining optimal
         variables or a string. If a function, should be of the form 
-            ([floats]) -> index. If a string, must be one of the options in 
-        VALID_SCORING_STRATEGIES
+        ``([some value]) -> index``. If a string, must be one of the options in 
+        ``VALID_SCORING_STRATEGIES``
     :returns: a function to be used for determining optimal variables
     """
     if callable(scoring_strategy):
@@ -41,8 +42,8 @@ class indexer_of_converter(object):
     instance, an array of scores resulting from a bootstrapped evaluation method
     may be converted to just their mean.
     Second, each of the simpler representations are compared to determine the 
-    index of the one which is most optimal. This is typically just an `argmin`
-    or `argmax` call.
+    index of the one which is most optimal. This is typically just an ``argmin``
+    or ``argmax`` call.
     """
 
     def __init__(self, indexer, converter):

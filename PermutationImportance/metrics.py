@@ -1,10 +1,12 @@
 """These are metric functions which can be used to score model predictions 
 against the true values. They are designed to be used either as a component of
-an `scoring_fn` of the generalized variable importance methods or stand-alone 
-as the `evaluation_fn` of a sklearn-style variable importance method.
+an ``scoring_fn`` of the method-specific variable importance methods or 
+stand-alone as the ``evaluation_fn`` of a model-based variable importance 
+method.
 
-In addition to these metrics, all of the metrics and loss functions provided by
-scikit-learn should also work."""
+In addition to these metrics, all of the metrics and loss functions provided in
+`sklearn.metrics <https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics>`_
+should also work."""
 
 
 import numpy as np

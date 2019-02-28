@@ -21,7 +21,7 @@ from .error_handling import FullImportanceResultWarning
 
 class ImportanceResult(object):
     """Houses the result of any importance method, which consists of a
-    sequence of contexts and results. A individual result can only be truly
+    sequence of contexts and results. An individual result can only be truly
     interpreted correctly in light of the corresponding context. This object
     allows for indexing into the contexts and results and also provides
     convenience methods for retrieving the results with no context and the
@@ -50,7 +50,7 @@ class ImportanceResult(object):
         complete
 
         :param new_results: a dictionary with keys of variable names and values
-            of (rank, score)
+            of ``(rank, score)``
         :param next_important_variable: variable name of the next most important
             variable. If not given, will select the variable with the smallest
             rank
@@ -75,21 +75,24 @@ class ImportanceResult(object):
 
     def retrieve_singlepass(self):
         """Returns the singlepass results as a dictionary with keys of variable 
-        names and values of (rank, score)."""
+        names and values of ``(rank, score)``."""
         return self.results[0]
 
     def retrieve_multipass(self):
         """Returns the multipass results as a dictionary with keys of variable 
-        names and values of (rank, score)."""
+        names and values of ``(rank, score)``."""
         return self.contexts[-1]
 
     def __iter__(self):
+        """Iterates over pairs of contexts and results"""
         return zip(self.contexts, self.results)
 
     def __getitem__(self, index):
+        """Retrieves the ith pair of ``(context, result)``"""
         if index < 0:
             index = len(self.results) + index
         return (self.contexts[index], self.results[index])
 
     def __len__(self):
+        """Returns the total number of results computed"""
         return len(self.results)

@@ -6,7 +6,7 @@ performance are typically considered unimportant.
 
 Sequential Forward Selection iteratively adds variables to the set of important
 variables, meaning that initially the dataset is empty and at each step the
-number of columns in the dataset increases by 1. A variable which, when added
+number of columns in the dataset increases by 1. A variable which, when added,
 results in the best performance is typically taken as the most important 
 variable.
 
@@ -17,9 +17,9 @@ removed, results in the best performance is typically taken as the least
 important variable.
 
 Typically, when using a performance metric or skill score with any Sequential
-Selection method, the `scoring_strategy` should be to maximize the performance.
-On the other hand, when using an error or loss function, the `scoring_strategy`
-should be to minimize the error or loss function."""
+Selection method, the ``scoring_strategy`` should be to maximize the 
+performance. On the other hand, when using an error or loss function, the 
+``scoring_strategy`` should be to minimize the error or loss function."""
 
 
 from .abstract_runner import abstract_variable_importance
@@ -37,12 +37,11 @@ def sequential_forward_selection(training_data, scoring_data, scoring_fn, scorin
     set of functions for scoring and determining optimal variables
 
     :param training_data: a 2-tuple ``(inputs, outputs)`` for training in the
-        scoring_fn
+        ``scoring_fn``
     :param scoring_data: a 2-tuple ``(inputs, outputs)`` for scoring in the
-        scoring_fn
+        ``scoring_fn``
     :param scoring_fn: a function to be used for scoring. Should be of the form
-        ``(training_data, scoring_data) -> some_value``, but should only use the 
-        scoring_data to produce a score
+        ``(training_data, scoring_data) -> some_value``
     :param scoring_strategy: a function to be used for determining optimal
         variables. Should be of the form ``([some_value]) -> index``
     :param variable_names: an optional list for variable names. If not given,
@@ -52,26 +51,27 @@ def sequential_forward_selection(training_data, scoring_data, scoring_fn, scorin
         Defaults to all variables
     :param njobs: an integer for the number of threads to use. If negative, will
         use ``num_cpus + njobs``. Defaults to 1
-    :returns: :ref:`ImportanceResult<importance_result>` object which contains 
-        the results for each run
+    :returns: :class:`PermutationImportance.result.ImportanceResult` object 
+        which contains the results for each run
     """
     return abstract_variable_importance(training_data, scoring_data, scoring_fn, scoring_strategy, SequentialForwardSelectionStrategy, variable_names=variable_names, nimportant_vars=nimportant_vars, njobs=njobs)
 
 
 def sklearn_sequential_forward_selection(model, training_data, scoring_data, evaluation_fn, scoring_strategy, variable_names=None, nimportant_vars=None, njobs=1, nbootstrap=None, subsample=1, **kwargs):
     """Performs sequential forward selection for a particular model, 
-    scoring_data, evaluation_fn, and strategy for determining optimal variables
+    ``scoring_data``, ``evaluation_fn``, and strategy for determining optimal 
+    variables
 
     :param model: a sklearn model
     :param training_data: a 2-tuple ``(inputs, outputs)`` for training in the
-        scoring_fn
+        ``scoring_fn``
     :param scoring_data: a 2-tuple ``(inputs, outputs)`` for scoring in the
-        scoring_fn
+        ``scoring_fn``
     :param evaluation_fn: a function which takes the deterministic or 
         probabilistic model predictions and scores them against the true 
         values. Must be of the form ``(truths, predictions) -> some_value``
         Probably one of the metrics in 
-        :ref:`PermutationImportance.metrics<metrics>` or 
+        :mod:`PermutationImportance.metrics` or 
         `sklearn.metrics <https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics>`_
     :param scoring_strategy: a function to be used for determining optimal
         variables. Should be of the form ``([some_value]) -> index``
@@ -89,9 +89,9 @@ def sklearn_sequential_forward_selection(model, training_data, scoring_data, eva
         of total number of events (e.g. 0.5 means half the number of events).
         If not specified, subsampling will not be used and the entire data will
         be used (without replacement)
-    :param kwargs: all other kwargs will be passed on to the evaluation_fn
-    :returns: :ref:`ImportanceResult<importance_result>` object which contains 
-        the results for each run
+    :param kwargs: all other kwargs will be passed on to the ``evaluation_fn``
+    :returns: :class:`PermutationImportance.result.ImportanceResult` object 
+        which contains the results for each run
     """
     # Check if the data is probabilistic
     if len(scoring_data[1].shape) > 1 and scoring_data[1].shape[1] > 1:
@@ -108,12 +108,11 @@ def sequential_backward_selection(training_data, scoring_data, scoring_fn, scori
     set of functions for scoring and determining optimal variables
 
     :param training_data: a 2-tuple ``(inputs, outputs)`` for training in the
-        scoring_fn
+        ``scoring_fn``
     :param scoring_data: a 2-tuple ``(inputs, outputs)`` for scoring in the
-        scoring_fn
+        ``scoring_fn``
     :param scoring_fn: a function to be used for scoring. Should be of the form
-        ``(training_data, scoring_data) -> some_value``, but should only use the 
-        scoring_data to produce a score
+        ``(training_data, scoring_data) -> some_value``
     :param scoring_strategy: a function to be used for determining optimal
         variables. Should be of the form ``([some_value]) -> index``
     :param variable_names: an optional list for variable names. If not given,
@@ -123,25 +122,27 @@ def sequential_backward_selection(training_data, scoring_data, scoring_fn, scori
         Defaults to all variables
     :param njobs: an integer for the number of threads to use. If negative, will
         use ``num_cpus + njobs``. Defaults to 1
-    :returns: :ref:`ImportanceResult<importance_result>` object which contains 
-        the results for each run
+    :returns: :class:`PermutationImportance.result.ImportanceResult` object 
+        which contains the results for each run
     """
     return abstract_variable_importance(training_data, scoring_data, scoring_fn, scoring_strategy, SequentialBackwardSelectionStrategy, variable_names=variable_names, nimportant_vars=nimportant_vars, njobs=njobs)
 
 
 def sklearn_sequential_backward_selection(model, training_data, scoring_data, evaluation_fn, scoring_strategy, variable_names=None, nimportant_vars=None, njobs=1, nbootstrap=None, subsample=1, **kwargs):
     """Performs sequential backward selection for a particular model, 
-    scoring_data, evaluation_fn, and strategy for determining optimal variables
+    ``scoring_data``, ``evaluation_fn``, and strategy for determining optimal 
+    variables
 
+    :param model: a sklearn model
     :param training_data: a 2-tuple ``(inputs, outputs)`` for training in the
-        scoring_fn
+        ``scoring_fn``
     :param scoring_data: a 2-tuple ``(inputs, outputs)`` for scoring in the
-        scoring_fn
+        ``scoring_fn``
     :param evaluation_fn: a function which takes the deterministic or 
         probabilistic model predictions and scores them against the true 
         values. Must be of the form ``(truths, predictions) -> some_value``
         Probably one of the metrics in 
-        :ref:`PermutationImportance.metrics<metrics>` or 
+        :mod:`PermutationImportance.metrics` or 
         `sklearn.metrics <https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics>`_
     :param scoring_strategy: a function to be used for determining optimal
         variables. Should be of the form ``([some_value]) -> index``
@@ -159,9 +160,9 @@ def sklearn_sequential_backward_selection(model, training_data, scoring_data, ev
         of total number of events (e.g. 0.5 means half the number of events).
         If not specified, subsampling will not be used and the entire data will
         be used (without replacement)
-    :param kwargs: all other kwargs will be passed on to the evaluation_fn
-    :returns: :ref:`ImportanceResult<importance_result>` object which contains 
-        the results for each run
+    :param kwargs: all other kwargs will be passed on to the ``evaluation_fn``
+    :returns: :class:`PermutationImportance.result.ImportanceResult` object 
+        which contains the results for each run
     """
     # Check if the data is probabilistic
     if len(scoring_data[1].shape) > 1 and scoring_data[1].shape[1] > 1:

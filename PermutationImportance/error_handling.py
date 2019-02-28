@@ -79,5 +79,6 @@ class AmbiguousProbabilisticForecastsException(Exception):
 
 
 class FullImportanceResultWarning(Warning):
-    """Thrown when we try to add a result to a full ImportanceResult"""
+    """Thrown when we try to add a result to a full 
+    :class:`PermutationImportance.result.ImportanceResult`"""
     pass

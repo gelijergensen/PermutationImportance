@@ -1,21 +1,23 @@
 """Each of the various variable importance methods uses the same code to compute
 successively important variables. The only difference between each of these 
 methods is the data which is provided to the scoring function. The 
-`SelectionStrategy` handles the process of converting the original training
+``SelectionStrategy`` handles the process of converting the original training
 and scoring data to the form required for each of the individual variables. This
 is done by using the current list of important variables to generate a sequence
-of triples (variable, training_data, scoring_data), which will later be passed
-to the scoring function to determine the score for variable.
+of triples ``(variable, training_data, scoring_data)``, which will later be 
+passed to the scoring function to determine the score for variable.
 
-Below, `SelectionStrategy` encapsulates the base functionality which houses the
+Below, ``SelectionStrategy`` encapsulates the base functionality which houses the
 parameters necessary to produce the generator as well as the default method for
 providing only the datasets which are necessary to be evaluated. Each of the
 other classes extends this base class to implement a particular variable 
 importance method.
 
 If you wish to design your own variable importance method, you will want to
-extend the `SelectionStrategy` base class in the same way as the other 
+extend the ``SelectionStrategy`` base class in the same way as the other 
 strategies.
+
+-----
 """
 
 import numpy as np
@@ -24,11 +26,12 @@ from .utils import get_data_subset, make_data_from_columns
 
 __all__ = ["SequentialForwardSelectionStrategy",
            "SequentialBackwardSelectionStrategy",
-           "PermutationImportanceSelectionStrategy"]
+           "PermutationImportanceSelectionStrategy",
+           "SelectionStrategy"]
 
 
 class SelectionStrategy(object):
-    """The base SelectionStrategy only provides the tools for storing the 
+    """The base ``SelectionStrategy`` only provides the tools for storing the 
     data and other important information as well as the convenience method for
     iterating over the selection strategies triples lazily."""
 
@@ -69,8 +72,8 @@ class SelectionStrategy(object):
 class SequentialForwardSelectionStrategy(SelectionStrategy):
     """Sequential Forward Selection tests all variables which are not yet 
     considered important by adding that columns to the other columns which are
-    returned. This means that the shape of the training_data will be
-    (num_rows, num_important_vars + 1)."""
+    returned. This means that the shape of the training data will be
+    ``(num_rows, num_important_vars + 1)``."""
 
     name = "Sequential Forward Selection"
 
@@ -96,8 +99,8 @@ class SequentialForwardSelectionStrategy(SelectionStrategy):
 class SequentialBackwardSelectionStrategy(SelectionStrategy):
     """Sequential Backward Selection tests all variables which are not yet 
     considered important by removing that column from the data. This means that
-    the shape of the training_data will be 
-    (num_rows, num_vars - num_important_vars - 1)."""
+    the shape of the training data will be 
+    ``(num_rows, num_vars - num_important_vars - 1)``."""
 
     name = "Sequential Backward Selection"
 
@@ -125,7 +128,7 @@ class PermutationImportanceSelectionStrategy(SelectionStrategy):
     """Permutation Importance tests all variables which are not yet considered
     important by shuffling that column in addition to the columns of the 
     variables which are considered important. The shape of the data will remain
-    constant, but at each step, one additional columns will be permuted."""
+    constant, but at each step, one additional column will be permuted."""
 
     name = "Permutation Importance"
 

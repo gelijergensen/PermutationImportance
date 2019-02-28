@@ -19,3 +19,4 @@ over the ``(context, results)`` pairs and for indexing into the list of pairs.
 
 .. autoclass:: PermutationImportance.ImportanceResult
    :members: __init__, retrieve_singlepass, retrieve_multipass
+   :noindex:

@@ -1,9 +1,9 @@
 """These are utilities designed for carefully handling communication between
 processes while multithreading.
 
-The code for `pool_imap_unordered` is copied nearly wholesale from GrantJ's 
-answer here:
-https://stackoverflow.com/questions/5318936/python-multiprocessing-pool-lazy-iteration?noredirect=1&lq=1
+The code for ``pool_imap_unordered`` is copied nearly wholesale from GrantJ's 
+`Stack Overflow answer here
+<https://stackoverflow.com/questions/5318936/python-multiprocessing-pool-lazy-iteration?noredirect=1&lq=1>`_.
 It allows for a lazy imap over an iterable and the return of very large objects
 """
 
@@ -28,7 +28,7 @@ def pool_imap_unordered(func, iterable, procs=cpu_count()):
     """Lazily imaps in an unordered manner over an iterable in parallel as a 
     generator
 
-    @author Grant Jenks <https://stackoverflow.com/users/232571/grantj> 
+    Author: Grant Jenks <https://stackoverflow.com/users/232571/grantj> 
 
     :param func: function to perform on each iterable
     :param iterable: iterable which has items to map over

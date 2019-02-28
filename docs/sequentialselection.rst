@@ -48,20 +48,24 @@ Model-Based
 ^^^^^^^^^^^
 
 .. autofunction:: PermutationImportance.sequential_selection.sklearn_sequential_forward_selection
+   :noindex:
 
 -----
 
 .. autofunction:: PermutationImportance.sequential_selection.sklearn_sequential_backward_selection
+   :noindex:
 
 
 Method-Specific
 ^^^^^^^^^^^^^^^
 
 .. autofunction:: PermutationImportance.sequential_selection.sequential_forward_selection
+   :noindex:
 
 -----
 
 .. autofunction:: PermutationImportance.sequential_selection.sequential_backward_selection
+   :noindex:
 
 .. _sequential-selection-references:
 

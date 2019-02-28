@@ -18,6 +18,7 @@ predictor importance. The methods implemented are model-agnostic and can be used
    abstraction.rst
    permutation.rst
    sequentialselection.rst
+   custommethods.rst
    result.rst
    metrics.rst
    license.rst

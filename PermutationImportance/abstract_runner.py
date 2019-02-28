@@ -1,17 +1,17 @@
 """The general algorithm for all of the data-based variable importance methods
 is the same, regardless of whether the method is Sequential Selection or 
 Permutation Importance or something else. This is represented in the 
-`abstract_variable_importance` function. All of the different methods we provide
-use this function under the hood and the only difference between them is the
-`selection_strategy` object, which is detailed in 
-PermutationImportance.selection_strategies. Typically, you will not need to use
-this method but can instead us one of the methods imported directly into the 
-top package of PermutationImportance.
+``abstract_variable_importance`` function. All of the different methods we 
+provide use this function under the hood and the only difference between them is
+the ``selection_strategy`` object, which is detailed in 
+:mod:`PermutationImportance.selection_strategies`. Typically, you will not need 
+to use this method but can instead use one of the methods imported directly into 
+the top package of **PermutationImportance**.
 
 If you wish to implement your own variable importance method, you will need to
-devise your own `selection_strategy`. We recommend using
-PermutationImportance.sequential_selection as a template for implementing your
-own variable importance method."""
+devise your own ``selection_strategy``. We recommend using
+:mod:`PermutationImportance.selection_strategies` as a template for implementing 
+your own variable importance method."""
 
 import numpy as np
 import multiprocessing as mp
@@ -29,12 +29,11 @@ def abstract_variable_importance(training_data, scoring_data, scoring_fn, scorin
     data
 
     :param training_data: a 2-tuple ``(inputs, outputs)`` for training in the
-        scoring_fn
+        ``scoring_fn``
     :param scoring_data: a 2-tuple ``(inputs, outputs)`` for scoring in the
-        scoring_fn
+        ``scoring_fn``
     :param scoring_fn: a function to be used for scoring. Should be of the form
-        ``(training_data, scoring_data) -> some_value``, but should only use the 
-        scoring_data to produce a score
+        ``(training_data, scoring_data) -> some_value``
     :param scoring_strategy: a function to be used for determining optimal
         variables. Should be of the form ``([some_value]) -> index``
     :param variable_names: an optional list for variable names. If not given,
@@ -43,11 +42,11 @@ def abstract_variable_importance(training_data, scoring_data, scoring_fn, scorin
     :param nimportant_vars: number of variables to compute importance for.
         Defaults to all variables
     :param method: a string for the name of the method used. Defaults to the
-        name of the selection_strategy if not given
+        name of the ``selection_strategy`` if not given
     :param njobs: an integer for the number of threads to use. If negative, will
         use ``num_cpus + njobs``. Defaults to 1
-    :returns: :ref:`ImportanceResult<importance_result>` object which contains 
-        the results for each run
+    :returns: :class:`PermutationImportance.result.ImportanceResult` object 
+        which contains the results for each run
     """
 
     training_data = verify_data(training_data)
@@ -92,10 +91,11 @@ def _singlethread_iteration(selection_iterator, scoring_fn):
     assuming a single worker thread
 
     :param selection_iterator: an object which, when iterated, produces triples
-        (var, training_data, scoring_data). Typically a SelectionStrategy
+       ``(var, training_data, scoring_data)``. Typically a 
+       :class:`PermutationImportance.selection_strategies.SelectionStrategy`
     :param scoring_fn: a function to be used for scoring. Should be of the form
-        (training_data, scoring_data) -> float
-    :returns: a dict of {var: score}
+        ``(training_data, scoring_data) -> float``
+    :returns: a dict of ``{var: score}``
     """
     result = dict()
     for var, training_data, scoring_data in selection_iterator:
@@ -109,11 +109,12 @@ def _multithread_iteration(selection_iterator, scoring_fn, njobs):
     multithreading
 
     :param selection_iterator: an object which, when iterated, produces triples
-        (var, training_data, scoring_data). Typically a SelectionStrategy
+        ``(var, training_data, scoring_data)``. Typically a 
+        :class:`PermutationImportance.selection_strategies.SelectionStrategy`
     :param scoring_fn: a function to be used for scoring. Should be of the form
-        (training_data, scoring_data) -> float
+        ``(training_data, scoring_data) -> float``
     :param num_jobs: number of processes to use
-    :returns: a dict of {var: score}
+    :returns: a dict of ``{var: score}``
     """
     result = dict()
     for index, score in pool_imap_unordered(scoring_fn, selection_iterator, njobs):
