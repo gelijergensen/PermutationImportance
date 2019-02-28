@@ -84,7 +84,7 @@ class model_scorer(object):
             probabilistic model predictions and scores them against the true 
             values. Must be of the form ``(truths, predictions) -> some_value``
             Probably one of the metrics in 
-            :ref:`PermutationImportance.metrics<metrics>` or 
+            :mod:`PermutationImportance.metrics` or 
             `sklearn.metrics <https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics>`_
         :param default_score: value to return if the model cannot be trained
         :param nbootstrap: number of times to perform scoring on each variable.
@@ -159,7 +159,7 @@ def score_untrained_sklearn_model(model, evaluation_fn, nbootstrap=None, subsamp
         probabilistic model predictions and scores them against the true 
         values. Must be of the form ``(truths, predictions) -> some_value``
         Probably one of the metrics in 
-        :ref:`PermutationImportance.metrics<metrics>` or 
+        :mod:`PermutationImportance.metrics` or 
         `sklearn.metrics <https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics>`_
     :param nbootstrap: number of times to perform scoring on each variable.
         Results over different bootstrap iterations are averaged. Defaults to 1
@@ -184,7 +184,7 @@ def score_untrained_sklearn_model_with_probabilities(model, evaluation_fn, nboot
         probabilistic model predictions and scores them against the true 
         values. Must be of the form ``(truths, predictions) -> some_value``
         Probably one of the metrics in 
-        :ref:`PermutationImportance.metrics<metrics>` or 
+        :mod:`PermutationImportance.metrics` or 
         `sklearn.metrics <https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics>`_
     :param nbootstrap: number of times to perform scoring on each variable.
         Results over different bootstrap iterations are averaged. Defaults to 1
@@ -209,7 +209,7 @@ def score_trained_sklearn_model(model, evaluation_fn, nbootstrap=None, subsample
         probabilistic model predictions and scores them against the true 
         values. Must be of the form ``(truths, predictions) -> some_value``
         Probably one of the metrics in 
-        :ref:`PermutationImportance.metrics<metrics>` or 
+        :mod:`PermutationImportance.metrics` or 
         `sklearn.metrics <https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics>`_
     :param nbootstrap: number of times to perform scoring on each variable.
         Results over different bootstrap iterations are averaged. Defaults to 1
@@ -234,7 +234,7 @@ def score_trained_sklearn_model_with_probabilities(model, evaluation_fn, nbootst
         probabilistic model predictions and scores them against the true 
         values. Must be of the form ``(truths, predictions) -> some_value``
         Probably one of the metrics in 
-        :ref:`PermutationImportance.metrics<metrics>` or 
+        :mod:`PermutationImportance.metrics` or 
         `sklearn.metrics <https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics>`_
     :param nbootstrap: number of times to perform scoring on each variable.
         Results over different bootstrap iterations are averaged. Defaults to 1

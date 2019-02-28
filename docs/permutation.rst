@@ -24,10 +24,6 @@ This method was originally designed for random forests by :ref:`Breiman (2001)<p
    
    Fig. 2: Multipass permutation importance performs singlepass permutation importance as many times as there as predictors to iteratively determine the next-most important predictor
 
-
-
-TODO say that we ignore training_data!
-
 Usage
 -----
 
@@ -36,8 +32,8 @@ As with all methods, we provide the permutation importance method at two differe
 Singlepass permutation importance is computed as a byproduct of the generalized method. To compute singlepass permutation importance only, set ``nimportant_vars=1``, which will only perform the multipass method for precisely one pass.
 
 Typically, when using a performance metric or skill score with permutation 
-importance, the `scoring_strategy` should be to minimize the performance. On the
-other hand, when using an error or loss function, the `scoring_strategy` should
+importance, the ``scoring_strategy`` should be to minimize the performance. On the
+other hand, when using an error or loss function, the ``scoring_strategy`` should
 be to maximize the error or loss function.
 
 Model-Based

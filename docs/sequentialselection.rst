@@ -40,8 +40,8 @@ Usage
 As with all methods, we provide all sequential forward selection methods at two different levels of abstraction. For more information on the levels of abstraction and when to use each, please see :ref:`levels_of_abstraction`
 
 Typically, when using a performance metric or skill score with any sequential
-selection method, the `scoring_strategy` should be to maximize the performance.
-On the other hand, when using an error or loss function, the `scoring_strategy`
+selection method, the ``scoring_strategy`` should be to maximize the performance.
+On the other hand, when using an error or loss function, the ``scoring_strategy``
 should be to minimize the error or loss function.
 
 Model-Based

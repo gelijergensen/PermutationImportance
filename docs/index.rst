@@ -6,21 +6,15 @@
 Welcome to PermutationImportance's documentation!
 =================================================
 
-PermutationImportance provides several methods for computing data-based
+**PermutationImportance** provides several methods for computing data-based
 predictor importance. The methods implemented are model-agnostic and can be used for any machine learning model in many stages of development. For more information on the particular methods, please see the documentation for that particular method.
-
 
 .. toctree::
    :maxdepth: 3
    :caption: Contents:
 
    about.rst
-   abstraction.rst
-   permutation.rst
-   sequentialselection.rst
-   custommethods.rst
-   result.rst
-   metrics.rst
+   methods.rst
    license.rst
    modules.rst
    

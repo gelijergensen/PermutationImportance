@@ -90,9 +90,9 @@ def _singlethread_iteration(selection_iterator, scoring_fn):
     """Handles a single pass of the abstract variable importance algorithm, 
     assuming a single worker thread
 
-    :param selection_iterator: an object which, when iterated, produces triples
-       ``(var, training_data, scoring_data)``. Typically a 
-       :class:`PermutationImportance.selection_strategies.SelectionStrategy`
+    :param selection_iterator: an iterator which yields triples
+        ``(variable, training_data, scoring_data)``. Typically a 
+        :class:`PermutationImportance.selection_strategies.SelectionStrategy`
     :param scoring_fn: a function to be used for scoring. Should be of the form
         ``(training_data, scoring_data) -> float``
     :returns: a dict of ``{var: score}``
@@ -108,8 +108,8 @@ def _multithread_iteration(selection_iterator, scoring_fn, njobs):
     """Handles a single pass of the abstract variable importance algorithm using
     multithreading
 
-    :param selection_iterator: an object which, when iterated, produces triples
-        ``(var, training_data, scoring_data)``. Typically a 
+    :param selection_iterator: an iterator which yields triples
+        ``(variable, training_data, scoring_data)``. Typically a 
         :class:`PermutationImportance.selection_strategies.SelectionStrategy`
     :param scoring_fn: a function to be used for scoring. Should be of the form
         ``(training_data, scoring_data) -> float``

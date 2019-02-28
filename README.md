@@ -3,6 +3,12 @@
 [![Build Status](https://travis-ci.com/gelijergensen/PermutationImportance.svg?branch=master)](https://travis-ci.com/gelijergensen/PermutationImportance)
 [![Documentation Status](https://readthedocs.org/projects/permutationimportance/badge/?version=latest)](https://permutationimportance.readthedocs.io/en/latest/?badge=latest)
 
+TODO:
+
+1. Add favicon
+2. Play with colors
+3. See if you can get that header to float?
+
 ### Ideas for examples:
 
 1. Straight-forward use of each method with a toy problem
