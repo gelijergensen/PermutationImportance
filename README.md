@@ -5,8 +5,6 @@
 
 TODO:
 
-1. Add favicon
-
 ### Ideas for examples:
 
 1. Straight-forward use of each method with a toy problem

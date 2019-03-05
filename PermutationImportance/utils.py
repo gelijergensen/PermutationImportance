@@ -24,11 +24,11 @@ def add_ranks_to_dict(result, variable_names, scoring_strategy):
     result_dict = dict()
     rank = 0
     while len(result) > 1:
-        best_var = result.keys()[scoring_strategy(result.values())]
+        best_var = list(result.keys())[scoring_strategy(result.values())]
         score = result.pop(best_var)
         result_dict[variable_names[best_var]] = (rank, score)
         rank += 1
-    var, score = result.items()[0]
+    var, score = list(result.items())[0]
     result_dict[variable_names[var]] = (rank, score)
     return result_dict
 
