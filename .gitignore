@@ -15,4 +15,4 @@ env/
 .vscode/
 
 # Documentation helpers
-docs/_*/
+docs/_build/
