@@ -18,7 +18,11 @@ import sys
 sys.path.insert(0, os.path.abspath('..'))
 
 
+def setup(app):
+    app.add_stylesheet('css/stylesheet.css')
+
 # -- Project information -----------------------------------------------------
+
 
 project = u'PermutationImportance'
 copyright = u'2019, G. Eli Jergensen'
@@ -91,6 +95,8 @@ html_theme_options = {
     'stickysidebar': True,
     'externalrefs': True
 }
+
+html_favicon = 'images/favicon.ico'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

@@ -6,8 +6,6 @@
 TODO:
 
 1. Add favicon
-2. Play with colors
-3. See if you can get that header to float?
 
 ### Ideas for examples:
 

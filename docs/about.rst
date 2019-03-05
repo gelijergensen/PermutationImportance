@@ -1,12 +1,21 @@
+.. role:: permutationimportancetitle
+
 .. title:: About PermutationImportance
 
-***************************
-About PermutationImportance
-***************************
+*********************************************************
+About :permutationimportancetitle:`PermutationImportance`
+*********************************************************
 
-Welcome to the **PermutationImportance** library! 
+.. _pi_image:
+.. image:: ./images/favicon.png  
+   :align: right
+   :scale: 200%
 
-**PermutationImportance** is a data-science library which provides several data-based methods for computing the importance of predictors in a machine learning model. Recently, machine learning has achieved breakthrough in a number of fields, but despite its observed successes and its wide adoption in many domains, machine learning is often criticized as being a "black box". Often, users do not understand how a machine learning model makes its predictions and are hesitant to rely on a device which seems to pull its predictions out of the air. Predictor importance evaluation is one technique used to help allieviate the interpretability problem.
+
+
+Welcome to the :permutationimportancetitle:`PermutationImportance` library! 
+
+:permutationimportancetitle:`PermutationImportance` is a data-science library which provides several data-based methods for computing the importance of predictors in a machine learning model. Recently, machine learning has achieved breakthrough in a number of fields, but despite its observed successes and its wide adoption in many domains, machine learning is often criticized as being a "black box". Often, users do not understand how a machine learning model makes its predictions and are hesitant to rely on a device which seems to pull its predictions out of the air. Predictor importance evaluation is one technique used to help allieviate the interpretability problem.
 
 Evaluation of predictor importance, like many other methods for model interpretation, is useful in several phases of machine learning model development. Initially, it can be used to aid with debugging by identifying predictors upon which the model is either relying too heavily or predictors which the model is ignoring entirely. Later, as the model is going into production, predictor importance provides a evaluation tool which highlights the skills of the model and hints at its strengths and shortcomings. Finally, if the model surpasses human skill, predictor importance can provide insight into the workings of the model, allowing us to learn from its decisions. Whether as a diagnostic, evaluative, or didactic tool, predictor importance can help guide and support machine learning model development.
 
@@ -16,7 +25,7 @@ There are several methods implemented in this library, such as permutation impor
 Installation
 ************
 
-**PermutationImportance** can be easily installed using pip::
+:permutationimportancetitle:`PermutationImportance` can be easily installed using pip::
 
   pip install -U PermutationImportance
 
