@@ -32,7 +32,7 @@ def verify_scoring_strategy(scoring_strategy):
         return VALID_SCORING_STRATEGIES[scoring_strategy]
     else:
         raise InvalidStrategyException(
-            scoring_strategy, options=VALID_SCORING_STRATEGIES.keys())
+            scoring_strategy, options=list(VALID_SCORING_STRATEGIES.keys()))
 
 
 class indexer_of_converter(object):
@@ -69,11 +69,11 @@ argmax_of_mean = indexer_of_converter(np.argmax, np.mean)
 
 
 VALID_SCORING_STRATEGIES = {
-    'max': np.argmax,
-    'maximize': np.argmax,
+    'max': argmax_of_mean,
+    'maximize': argmax_of_mean,
     'argmax': np.argmax,
-    'min': np.argmin,
-    'minimize': np.argmin,
+    'min': argmin_of_mean,
+    'minimize': argmin_of_mean,
     'argmin': np.argmin,
     'argmin_of_mean': argmin_of_mean,
     'argmax_of_mean': argmax_of_mean,
