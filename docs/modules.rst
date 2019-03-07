@@ -104,7 +104,7 @@ Sklearn API
 -----------
 
 .. automodule:: PermutationImportance.sklearn_api
-   :members:
+   :members: 
    :special-members:
    :private-members:
    :show-inheritance:

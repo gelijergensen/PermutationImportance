@@ -79,3 +79,14 @@ for i, (cntxt, res) in enumerate(result):
     print("Context %i: %r" % (i, cntxt))
     print("Result %i: %r" % (i, res))
 # ------------------------------------------------------------------------------
+
+# Use the plotting code in examples/plotting.py, found here:
+# https://github.com/gelijergensen/PermutationImportance
+try:
+    from plotting import plot_variable_importance
+except Exception as e:
+    print("An error occurred while plotting. You probably don't have matplotlib installed")
+    print(e)
+else:
+    plot_variable_importance(
+        result, 'example_sequential_forward_selection.png')
