@@ -27,7 +27,8 @@ from .utils import get_data_subset
 __all__ = ["model_scorer", "score_untrained_sklearn_model",
            "score_untrained_sklearn_model_with_probabilities",
            "score_trained_sklearn_model",
-           "score_trained_sklearn_model_with_probabilities"]
+           "score_trained_sklearn_model_with_probabilities", "train_model",
+           "get_model", "predict_model", "predict_proba_model"]
 
 
 def train_model(model, training_inputs, training_outputs):

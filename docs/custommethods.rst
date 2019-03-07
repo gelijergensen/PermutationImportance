@@ -35,3 +35,7 @@ For convenience, we provide the base ``SelectionStrategy`` object, which should 
    :noindex:
 
 
+Example of Custom Variable Importance
+-------------------------------------
+
+.. literalinclude::  ../examples/custom_variable_importance.py

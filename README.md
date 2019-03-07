@@ -7,15 +7,7 @@ TODO:
 
 ### Ideas for examples:
 
-1. Straight-forward use of each method with a toy problem
-2. Simple usage of all objects
-3. More complex use of Permutation Importance (not the sklearn version)
-4. Construction and use of a custom metric (bias)
-5. Construction and use of a corresponding scoring strategy (and with
-   bootstrapping)
-6. Plotting code
-7. Modification of sklearn api to use Keras model
-8. Construction of selection strategy to use abstract runner method
+1. Plotting code
 
 Hey, make sure to mention that this only works for Python 2.7 and 3.5+
 
