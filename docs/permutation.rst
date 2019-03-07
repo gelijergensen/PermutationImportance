@@ -42,6 +42,13 @@ Model-Based
 .. autofunction:: PermutationImportance.permutation_importance.sklearn_permutation_importance
    :noindex:
 
+Simple Example
+""""""""""""""
+.. literalinclude:: ../examples/simple_sklearn_permutation_importance.py
+
+Complete Example
+""""""""""""""""
+.. literalinclude:: ../examples/complete_sklearn_permutation_importance.py
 
 Method-Specific
 ^^^^^^^^^^^^^^^

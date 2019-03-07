@@ -1,7 +1,7 @@
 from sklearn.datasets import load_iris
 from sklearn.metrics import accuracy_score
 from sklearn.neural_network import MLPClassifier
-from PermutationImportance import sklearn_permutation_importance
+from PermutationImportance import sklearn_sequential_backward_selection
 
 # Separate out the last 20% for scoring data
 iris = load_iris(return_X_y=False)
@@ -18,11 +18,13 @@ model = MLPClassifier(solver='lbfgs')
 model.fit(training_inputs, training_outputs)
 
 # Package the data into the right shape
+training_data = (training_inputs, training_outputs)
 scoring_data = (scoring_inputs, scoring_outputs)
 
-# Use the sklearn_permutation_importance to compute importances
-result = sklearn_permutation_importance(
-    model, scoring_data, accuracy_score, 'min', variable_names=predictor_names)
+# Use the sklearn_sequential_backward_selection to compute importances
+result = sklearn_sequential_backward_selection(
+    model,  training_data, scoring_data, accuracy_score, 'max',
+    variable_names=predictor_names)
 
 # Get the Breiman-like singlepass results
 print("Singlepass")
@@ -37,6 +39,6 @@ for predictor in multipass.keys():
     rank, score = multipass[predictor]
     print("Predictor: %s, Rank: %i, Score: %f" % (predictor, rank, score))
 # Iterate over the (context, result) pairs
-for cntxt, res in result:
-    print("Context: %r" % cntxt)
-    print("Result: %r" % res)
+for i, (cntxt, res) in enumerate(result):
+    print("Context %i: %r" % (i, cntxt))
+    print("Result %i: %r" % (i, res))

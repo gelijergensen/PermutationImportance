@@ -24,7 +24,7 @@ Sequential forward selection iteratively adds predictors to the set of important
 Sequential Backward Selection
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Sequential backward selection iteratively removes variables from the set of important variables by taking the predictor at each step which least degrades the performance of the model when removed from the set of training predictors. This effectively determines the :math:`k` least important predictors. The process is demonstrated in :ref:`Fig. 2: Sequential backward selection<fig-sbs>`.
+Sequential backward selection iteratively removes variables from the set of important variables by taking the predictor at each step which least degrades the performance of the model when removed from the set of training predictors. This effectively determines the :math:`k` least important predictors. The process is demonstrated in :ref:`Fig. 2: Sequential backward selection<fig-sbs>`. A word of caution: sequential backward selection can take many times longer than sequential forward selection because it is training many more models with nearly complete sets of predictors. When there are more than 50 predictors, sequential backward selection often becomes computationally infeasible for some models.
 
 .. _fig-sbs:
 .. figure:: ./images/SBS.gif
@@ -50,10 +50,24 @@ Model-Based
 .. autofunction:: PermutationImportance.sequential_selection.sklearn_sequential_forward_selection
    :noindex:
 
------
+Simple Example
+""""""""""""""
+.. literalinclude:: ../examples/simple_sklearn_sequential_forward_selection.py
+
+Complete Example
+""""""""""""""""
+.. literalinclude:: ../examples/complete_sklearn_sequential_forward_selection.py
 
 .. autofunction:: PermutationImportance.sequential_selection.sklearn_sequential_backward_selection
    :noindex:
+
+Simple Example
+""""""""""""""
+.. literalinclude:: ../examples/simple_sklearn_sequential_backward_selection.py
+
+Complete Example
+""""""""""""""""
+.. literalinclude:: ../examples/complete_sklearn_sequential_backward_selection.py
 
 
 Method-Specific

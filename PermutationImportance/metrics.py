@@ -113,7 +113,11 @@ def _peirce_skill_score(table):
     nf = table.sum(axis=1)
     no = table.sum(axis=0)
     correct = float(table.trace())
-    return (correct / n - (nf * no).sum() / n ** 2) / (1 - (no * no).sum() / n ** 2)
+    no_squared = (no * no).sum()
+    if n ** 2 == no_squared:
+        return correct / n
+    else:
+        return (n * correct - (nf * no).sum()) / (n ** 2 - no_squared)
 
 
 def _heidke_skill_score(table):
