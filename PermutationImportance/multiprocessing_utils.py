@@ -42,7 +42,7 @@ def pool_imap_unordered(func, iterable, procs=cpu_count()):
 
     # Start worker processes.
 
-    for rpt in xrange(procs):
+    for rpt in range(procs):
         Process(target=worker, args=(func, sendq, recvq)).start()
 
     # Iterate iterable and communicate with worker processes.
@@ -52,12 +52,12 @@ def pool_imap_unordered(func, iterable, procs=cpu_count()):
     itr = iter(iterable)
 
     try:
-        value = itr.next()
+        value = next(itr)
         while True:
             try:
                 sendq.put(value, True, 0.1)
                 send_len += 1
-                value = itr.next()
+                value = next(itr)
             except QueueFull:
                 while True:
                     try:
@@ -78,5 +78,5 @@ def pool_imap_unordered(func, iterable, procs=cpu_count()):
 
     # Terminate worker processes.
 
-    for rpt in xrange(procs):
+    for rpt in range(procs):
         sendq.put(None)

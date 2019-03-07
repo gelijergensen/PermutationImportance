@@ -8,6 +8,11 @@ import pandas as pd
 
 from .error_handling import InvalidDataException, InvalidInputException
 
+try:
+    basestring
+except NameError:  # Python3
+    basestring = str
+
 __all__ = ["verify_data", "determine_variable_names"]
 
 
