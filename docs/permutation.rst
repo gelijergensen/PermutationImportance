@@ -46,8 +46,8 @@ Simple Example
 """"""""""""""
 .. literalinclude:: ../examples/simple_sklearn_permutation_importance.py
 
-Complete Example
-""""""""""""""""
+Complex Example
+"""""""""""""""
 .. literalinclude:: ../examples/complete_sklearn_permutation_importance.py
 
 Method-Specific
@@ -55,6 +55,10 @@ Method-Specific
 
 .. autofunction:: PermutationImportance.permutation_importance.permutation_importance
    :noindex:
+
+Example
+"""""""
+.. literalinclude:: ../examples/custom_permutation_importance.py
 
 .. _permutation-references:
 

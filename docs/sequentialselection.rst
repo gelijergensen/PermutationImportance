@@ -50,23 +50,23 @@ Model-Based
 .. autofunction:: PermutationImportance.sequential_selection.sklearn_sequential_forward_selection
    :noindex:
 
-Simple Example
-""""""""""""""
+Simple SFS Example
+""""""""""""""""""
 .. literalinclude:: ../examples/simple_sklearn_sequential_forward_selection.py
 
-Complete Example
-""""""""""""""""
+Complex SFS Example
+"""""""""""""""""""
 .. literalinclude:: ../examples/complete_sklearn_sequential_forward_selection.py
 
 .. autofunction:: PermutationImportance.sequential_selection.sklearn_sequential_backward_selection
    :noindex:
 
-Simple Example
-""""""""""""""
+Simple SBS Example
+""""""""""""""""""
 .. literalinclude:: ../examples/simple_sklearn_sequential_backward_selection.py
 
-Complete Example
-""""""""""""""""
+Complex SBS Example
+"""""""""""""""""""
 .. literalinclude:: ../examples/complete_sklearn_sequential_backward_selection.py
 
 
@@ -76,10 +76,16 @@ Method-Specific
 .. autofunction:: PermutationImportance.sequential_selection.sequential_forward_selection
    :noindex:
 
------
+SFS Example
+"""""""""""
+.. literalinclude:: ../examples/custom_sequential_forward_selection.py
 
 .. autofunction:: PermutationImportance.sequential_selection.sequential_backward_selection
    :noindex:
+
+SBS Example
+"""""""""""
+.. literalinclude:: ../examples/custom_sequential_backward_selection.py
 
 .. _sequential-selection-references:
 
