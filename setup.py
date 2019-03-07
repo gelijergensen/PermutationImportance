@@ -24,6 +24,7 @@ PACKAGE_REQUIREMENTS = ['numpy', 'pandas', 'scipy==1.1.0', 'sklearn']
 
 if __name__ == '__main__':
     setup(name='PermutationImportance', version='1.2.1.5',
+          python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*',
           description=SHORT_DESCRIPTION,
           author='G. Eli Jergensen', author_email='gelijergensen@ou.edu',
           long_description=long_description,

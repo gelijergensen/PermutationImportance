@@ -36,6 +36,7 @@ multipass = result.retrieve_multipass()
 for predictor in multipass.keys():
     rank, score = multipass[predictor]
     print("Predictor: %s, Rank: %i, Score: %f" % (predictor, rank, score))
-
-for item in result:
-    print(item)
+# Iterate over the (context, result) pairs
+for cntxt, res in result:
+    print("Context: %r" % cntxt)
+    print("Result: %r" % res)

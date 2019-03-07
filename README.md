@@ -17,6 +17,8 @@ TODO:
 7. Modification of sklearn api to use Keras model
 8. Construction of selection strategy to use abstract runner method
 
+Hey, make sure to mention that this only works for Python 2.7 and 3.5+
+
 ### Update (05 Feb. 2019):
 
 The documentation is not yet up-to-date for the current version (1.2.0.0). We
