@@ -3,17 +3,14 @@
 [![Build Status](https://travis-ci.com/gelijergensen/PermutationImportance.svg?branch=master)](https://travis-ci.com/gelijergensen/PermutationImportance)
 [![Documentation Status](https://readthedocs.org/projects/permutationimportance/badge/?version=latest)](https://permutationimportance.readthedocs.io/en/latest/?badge=latest)
 
-![PermutationImportance Logo](docs/images/favicon.png)
+![PermutationImportance Logo](https://github.com/gelijergensen/PermutationImportance/blob/master/docs/images/favicon.png)
 
-<link rel="stylesheet" href="docs/_static/css/stylesheet.css">
-Welcome to the <span 
-class="permutationimportancetitle">PermutationImportance</span> library!
+Welcome to the PermutationImportance library!
 
-<span class="permutationimportancetitle">PermutationImportance</span> is a
-Python package for Python 2.7 and 3.5+ which provides several methods for
-computing data-based predictor importance. The methods implemented are
-model-agnostic and can be used for any machine learning model in many stages of
-development. The complete documentation can be found at our
+PermutationImportance is a Python package for Python 2.7 and 3.5+ which provides
+several methods for computing data-based predictor importance. The methods
+implemented are model-agnostic and can be used for any machine learning model in
+many stages of development. The complete documentation can be found at our
 [Read The Docs](https://permutationimportance.readthedocs.io/en/latest/).
 
 ## Version History
