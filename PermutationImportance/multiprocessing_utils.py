@@ -1,6 +1,9 @@
-"""This code is copied nearly wholesale from GrantJ's answer here:
-https://stackoverflow.com/questions/5318936/python-multiprocessing-pool-lazy-iteration?noredirect=1&lq=1
+"""These are utilities designed for carefully handling communication between
+processes while multithreading.
 
+The code for ``pool_imap_unordered`` is copied nearly wholesale from GrantJ's 
+`Stack Overflow answer here
+<https://stackoverflow.com/questions/5318936/python-multiprocessing-pool-lazy-iteration?noredirect=1&lq=1>`_.
 It allows for a lazy imap over an iterable and the return of very large objects
 """
 
@@ -22,13 +25,14 @@ def worker(func, recvq, sendq):
 
 
 def pool_imap_unordered(func, iterable, procs=cpu_count()):
-    """
-    Lazily imaps in an unordered manner over an iterable in parallel as a 
+    """Lazily imaps in an unordered manner over an iterable in parallel as a 
     generator
+
+    :Author: Grant Jenks <https://stackoverflow.com/users/232571/grantj> 
 
     :param func: function to perform on each iterable
     :param iterable: iterable which has items to map over
-    :param procs: number of workers in the pool
+    :param procs: number of workers in the pool. Defaults to the cpu count
     :yields: the results of the mapping
     """
     # Create queues for sending/receiving items from iterable.
@@ -38,7 +42,7 @@ def pool_imap_unordered(func, iterable, procs=cpu_count()):
 
     # Start worker processes.
 
-    for rpt in xrange(procs):
+    for rpt in range(procs):
         Process(target=worker, args=(func, sendq, recvq)).start()
 
     # Iterate iterable and communicate with worker processes.
@@ -48,12 +52,12 @@ def pool_imap_unordered(func, iterable, procs=cpu_count()):
     itr = iter(iterable)
 
     try:
-        value = itr.next()
+        value = next(itr)
         while True:
             try:
                 sendq.put(value, True, 0.1)
                 send_len += 1
-                value = itr.next()
+                value = next(itr)
             except QueueFull:
                 while True:
                     try:
@@ -74,5 +78,5 @@ def pool_imap_unordered(func, iterable, procs=cpu_count()):
 
     # Terminate worker processes.
 
-    for rpt in xrange(procs):
+    for rpt in range(procs):
         sendq.put(None)

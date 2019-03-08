@@ -1,5 +1,5 @@
-"""There are a handful of different errors that we can report. This houses all
-of them and provides information regarding ways to fix them."""
+"""There are a handful of different errors and warnings that we can report. This
+houses all of them and provides information regarding ways to fix them."""
 
 
 class InvalidStrategyException(Exception):
@@ -10,7 +10,7 @@ class InvalidStrategyException(Exception):
             msg = "%s is not a valid strategy for determining the optimal variable. " % strategy
             msg += "\nShould be a callable or a valid string option. "
             if options is not None:
-                msg += "Valid options are %r" % options
+                msg += "Valid options are\n%r" % options
 
         super(InvalidStrategyException, self).__init__(msg)
         self.strategy = strategy
@@ -67,7 +67,7 @@ class UnmatchingProbabilisticForecastsException(Exception):
 
 class AmbiguousProbabilisticForecastsException(Exception):
     """Thrown when classes were not provided for converting probabilistic 
-    predictions to deterministic ones"""
+    predictions to deterministic ones but are required"""
 
     def __init__(self, truths, predictions, msg=None):
         if msg is None:
@@ -79,5 +79,6 @@ class AmbiguousProbabilisticForecastsException(Exception):
 
 
 class FullImportanceResultWarning(Warning):
-    """Thrown when we try to add a result to a full ImportanceResult"""
+    """Thrown when we try to add a result to a full 
+    :class:`PermutationImportance.result.ImportanceResult`"""
     pass

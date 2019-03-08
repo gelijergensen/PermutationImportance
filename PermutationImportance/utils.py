@@ -1,5 +1,5 @@
-"""Various and sundry useful functions which handy for different types of
-variable importance"""
+"""Various and sundry useful functions which are handy for manipulating data or
+results of the variable importance"""
 
 import numpy as np
 import pandas as pd
@@ -10,7 +10,8 @@ __all__ = ["add_ranks_to_dict", "get_data_subset", "make_data_from_columns"]
 
 
 def add_ranks_to_dict(result, variable_names, scoring_strategy):
-    """Takes a list of (var, score) and converts to a dictionary
+    """Takes a list of (var, score) and converts to a dictionary of 
+    {var: (rank, score)}
 
     :param result: a dict of {var_index: score}
     :param variable_names: a list of variable names
@@ -23,17 +24,23 @@ def add_ranks_to_dict(result, variable_names, scoring_strategy):
     result_dict = dict()
     rank = 0
     while len(result) > 1:
-        best_var = result.keys()[scoring_strategy(result.values())]
+        var_idxs = list(result.keys())
+        idxs = np.argsort(var_idxs)
+        # Sort by indices to guarantee order
+        variables = list(np.array(var_idxs)[idxs])
+        scores = list(np.array(list(result.values()))[idxs])
+        best_var = variables[scoring_strategy(scores)]
         score = result.pop(best_var)
         result_dict[variable_names[best_var]] = (rank, score)
         rank += 1
-    var, score = result.items()[0]
+    var, score = list(result.items())[0]
     result_dict[variable_names[var]] = (rank, score)
     return result_dict
 
 
 def get_data_subset(data, rows=None, columns=None):
-    """Returns a subset of the data corresponding to the desired columns
+    """Returns a subset of the data corresponding to the desired rows and
+    columns
 
     :param data: either a pandas dataframe or a numpy array
     :param rows: a list of row indices

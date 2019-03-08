@@ -1,8 +1,11 @@
 language: python
+python:
+  - "2.7"
+  - "3.5"
+  - "3.6"
+  - "nightly"
 install:
   - "pip install -U pip"
   - "python setup.py install"
   - "pip install pytest-timeout"
-jobs:
-  include:
-    - script: pytest
+script: pytest

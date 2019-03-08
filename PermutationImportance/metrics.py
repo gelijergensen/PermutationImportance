@@ -1,6 +1,12 @@
-"""These are handy metric functions which can be used to score model predictions
-against the true values. Additionally, all of the metrics provided by
-scikit-learn should also work"""
+"""These are metric functions which can be used to score model predictions 
+against the true values. They are designed to be used either as a component of
+an ``scoring_fn`` of the method-specific variable importance methods or 
+stand-alone as the ``evaluation_fn`` of a model-based variable importance 
+method.
+
+In addition to these metrics, all of the metrics and loss functions provided in
+`sklearn.metrics <https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics>`_
+should also work."""
 
 
 import numpy as np
@@ -12,7 +18,8 @@ __all__ = ["gerrity_score", "peirce_skill_score", "heidke_skill_score"]
 
 
 def gerrity_score(truths, predictions, classes=None):
-    """Determines the gerrity score, returning a scalar
+    """Determines the Gerrity Score, returning a scalar. See `here <http://www.cawcr.gov.au/projects/verification/#Methods_for_multi-category_forecasts>`_
+    for more details on the Gerrity Score
 
     :param truths: The true labels of these data
     :param predictions: The predictions of the model
@@ -25,7 +32,9 @@ def gerrity_score(truths, predictions, classes=None):
 
 
 def peirce_skill_score(truths, predictions, classes=None):
-    """Determines the peirce skill score, returning a scalar
+    """Determines the Peirce Skill Score (True Skill Score), returning a scalar.
+    See `here <http://www.cawcr.gov.au/projects/verification/#Methods_for_multi-category_forecasts>`_
+    for more details on the Peirce Skill Score
 
     :param truths: The true labels of these data
     :param predictions: The predictions of the model
@@ -38,7 +47,9 @@ def peirce_skill_score(truths, predictions, classes=None):
 
 
 def heidke_skill_score(truths, predictions, classes=None):
-    """Determines the heidke skill score, returning a scalar
+    """Determines the Heidke Skill Score, returning a scalar. See
+    `here <http://www.cawcr.gov.au/projects/verification/#Methods_for_multi-category_forecasts>`_
+    for more details on the Peirce Skill Score
 
     :param truths: The true labels of these data
     :param predictions: The predictions of the model
@@ -92,7 +103,7 @@ def _get_contingency_table(truths, predictions, classes=None):
 
 
 def _peirce_skill_score(table):
-    """This score is borrowed with modification from the hagelslag repository
+    """This function is borrowed with modification from the hagelslag repository
     MulticlassContingencyTable class. It is used here with permission of
     David John Gagne II <djgagne@ou.edu>
 
@@ -102,11 +113,15 @@ def _peirce_skill_score(table):
     nf = table.sum(axis=1)
     no = table.sum(axis=0)
     correct = float(table.trace())
-    return (correct / n - (nf * no).sum() / n ** 2) / (1 - (no * no).sum() / n ** 2)
+    no_squared = (no * no).sum()
+    if n ** 2 == no_squared:
+        return correct / n
+    else:
+        return (n * correct - (nf * no).sum()) / (n ** 2 - no_squared)
 
 
 def _heidke_skill_score(table):
-    """This score is borrowed with modification from the hagelslag repository
+    """This function is borrowed with modification from the hagelslag repository
     MulticlassContingencyTable class. It is used here with permission of
     David John Gagne II <djgagne@ou.edu>
     """
@@ -118,11 +133,12 @@ def _heidke_skill_score(table):
 
 
 def _gerrity_score(table):
-    """This score is borrowed with modification from the hagelslag repository
+    """This function is borrowed with modification from the hagelslag repository
     MulticlassContingencyTable class. It is used here with permission of
     David John Gagne II <djgagne@ou.edu>
 
-    Gerrity Score, which weights each cell in the contingency table by its observed relative frequency.
+    Gerrity Score, which weights each cell in the contingency table by its 
+    observed relative frequency.
     """
     k = table.shape[0]
     n = float(table.sum())

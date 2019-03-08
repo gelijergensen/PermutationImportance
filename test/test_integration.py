@@ -10,14 +10,14 @@ from test.utils import make_test_data, make_proba_test_data
 
 
 def validate_result(result):
-    singlepass = result.retrieve_singlepass().values()
+    singlepass = list(result.retrieve_singlepass().values())
     singlepass.sort(key=lambda x: x[0])
     last = singlepass[0][1]
     for val in singlepass:
         assert last <= val[1]
         last = val[1]
 
-    multipass = result.retrieve_multipass().values()
+    multipass = list(result.retrieve_multipass().values())
     assert len(singlepass) == len(multipass)
 
 

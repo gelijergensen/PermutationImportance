@@ -1,10 +1,17 @@
-"""We can accept either a pandas dataframe with the target column indicated,
-two different dataframes, or two numpy arrays"""
+"""These utilities are designed to check whether the given data and variable
+names match the expected format. For the training or scoring data, we accept 
+either a pandas dataframe with the target column indicated, two different 
+dataframes, or two numpy arrays"""
 
 import numpy as np
 import pandas as pd
 
 from .error_handling import InvalidDataException, InvalidInputException
+
+try:
+    basestring
+except NameError:  # Python3
+    basestring = str
 
 __all__ = ["verify_data", "determine_variable_names"]
 
@@ -14,8 +21,8 @@ def verify_data(data):
     numpy arrays for the code under the hood
 
     :param data: one of the following:
-        (pandas dataframe, string for target column)
-        (pandas dataframe for inputs, pandas dataframe for outputs)
+        (pandas dataframe, string for target column),
+        (pandas dataframe for inputs, pandas dataframe for outputs),
         (numpy array for inputs, numpy array for outputs)
     :returns: (numpy array for input, numpy array for output) or 
         (pandas dataframe for input, pandas dataframe for output)
@@ -51,8 +58,9 @@ def verify_data(data):
 
 
 def determine_variable_names(data, variable_names):
-    """Uses the data and/or the variable_names to determine what the variable 
-    names are. If variable_names are not specified, defaults to the column indices
+    """Uses ``data`` and/or the ``variable_names`` to determine what the 
+    variable names are. If ``variable_names`` is not specified and ``data`` is 
+    not a pandas dataframe, defaults to the column indices
 
     :param data: a 2-tuple where the input data is the first item
     :param variable_names: either a list of variable names or None
