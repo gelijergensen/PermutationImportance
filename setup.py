@@ -20,7 +20,7 @@ CLASSIFIERS = [
     'Operating System :: OS Independent',
     'Topic :: Scientific/Engineering :: Information Analysis']
 
-PACKAGE_REQUIREMENTS = ['numpy', 'pandas', 'scipy==1.1.0', 'scikit-learn>=0.20']
+PACKAGE_REQUIREMENTS = ['numpy', 'pandas', 'scipy==1.1.0', 'scikit-learn==0.20']
 
 if __name__ == '__main__':
     setup(name='PermutationImportance', version='1.2.1.6',
