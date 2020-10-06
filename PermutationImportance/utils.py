@@ -75,7 +75,7 @@ def make_data_from_columns(columns_list):
         raise InvalidDataException(
             columns_list, "Must have at least one column to synthesize dataset")
     if isinstance(columns_list[0], pd.DataFrame):
-        return pd.concat(columns_list, axis=1)
+        return pd.concat(columns_list, axis=1, join="inner")
     elif isinstance(columns_list[0], np.ndarray):
         return np.column_stack(columns_list)
     else:
