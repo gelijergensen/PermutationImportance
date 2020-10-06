@@ -7,7 +7,7 @@
 
 Welcome to the PermutationImportance library!
 
-PermutationImportance is a Python package for Python 2.7 and 3.5+ which provides
+PermutationImportance is a Python package for Python 2.7 and 3.6+ which provides
 several methods for computing data-based predictor importance. The methods
 implemented are model-agnostic and can be used for any machine learning model in
 many stages of development. The complete documentation can be found at our
