@@ -65,7 +65,7 @@ def get_data_subset(data, rows=None, columns=None):
             data, "Data must be a pandas dataframe or numpy array")
 
 
-def make_data_from_columns(columns_list):
+def make_data_from_columns(columns_list, index=None):
     """Synthesizes a dataset out of a list of columns
 
     :param columns_list: a list of either pandas series or numpy arrays
@@ -74,8 +74,12 @@ def make_data_from_columns(columns_list):
     if len(columns_list) == 0:
         raise InvalidDataException(
             columns_list, "Must have at least one column to synthesize dataset")
-    if isinstance(columns_list[0], pd.DataFrame):
-        return pd.concat(columns_list, axis=1, join="inner")
+    if isinstance(columns_list[0], pd.DataFrame) or isinstance(columns_list[0], pd.Series):
+        df = pd.concat([c.reset_index(drop=True) for c in columns_list], axis=1)
+        if index is not None:
+            return df.set_index(index)
+        else:
+            return df
     elif isinstance(columns_list[0], np.ndarray):
         return np.column_stack(columns_list)
     else:

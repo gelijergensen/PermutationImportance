@@ -15,6 +15,7 @@ many stages of development. The complete documentation can be found at our
 
 ## Version History
 
+- 1.2.1.8: Shuffled pandas dataframes now retain the proper row indexing
 - 1.2.1.7: Fixed a bug where pandas dataframes were being unshuffled when 
   concatenated
 - 1.2.1.5: Added documentation and examples and ensured compatibility with

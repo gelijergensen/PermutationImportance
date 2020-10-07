@@ -21,6 +21,7 @@ strategies.
 """
 
 import numpy as np
+import pandas as pd
 
 from .utils import get_data_subset, make_data_from_columns
 
@@ -149,6 +150,8 @@ class PermutationImportanceSelectionStrategy(SelectionStrategy):
         indices = np.random.permutation(len(scoring_inputs))
         self.shuffled_scoring_inputs = get_data_subset(
             scoring_inputs, indices)  # This copies
+        # keep track of the initial index (assuming this is pandas data)
+        self.original_index = scoring_inputs.index if isinstance(scoring_inputs, pd.DataFrame) else None
 
     def generate_datasets(self, important_variables):
         """Check each of the non-important variables. Dataset has columns which
@@ -158,6 +161,6 @@ class PermutationImportanceSelectionStrategy(SelectionStrategy):
         """
         scoring_inputs, scoring_outputs = self.scoring_data
         complete_scoring_inputs = make_data_from_columns(
-            [get_data_subset(self.shuffled_scoring_inputs if i in important_variables else scoring_inputs, None, [i]) for i in range(self.num_vars)])
+            [get_data_subset(self.shuffled_scoring_inputs if i in important_variables else scoring_inputs, None, [i]) for i in range(self.num_vars)], index=self.original_index)
 
         return self.training_data, (complete_scoring_inputs, scoring_outputs)
